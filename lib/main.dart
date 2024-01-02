@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,8 +11,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: BottomNavigation(),
+    return MaterialApp(
+      // Hide debug banner
+      debugShowCheckedModeBanner: false,
+      home: const BottomNavigation(),
+      // // #FCFDFD
+      // backgroundColor: Color(0xFFE5E5E5),
+      theme: _buildTheme(Brightness.light),
+    );
+  }
+
+  ThemeData _buildTheme(brightness) {
+    var baseTheme = ThemeData(brightness: brightness);
+
+    return baseTheme.copyWith(
+      textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
     );
   }
 }
@@ -43,7 +57,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        // #3A3A37
+        indicatorColor: const Color(0xFF3A3A37),
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
@@ -75,12 +90,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your App Name'),
-      ),
-      body: const Center(
-        child: Text('Home'),
+    return const Scaffold(
+      body: Center(
+        // Make font size bigger
+        child: Text(
+          'Home iii',
+          style: TextStyle(fontSize: 30),
+        ),
       ),
     );
   }
