@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'theme/colors.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -15,17 +17,13 @@ class MyApp extends StatelessWidget {
       // Hide debug banner
       debugShowCheckedModeBanner: false,
       home: const BottomNavigation(),
-      // // #FCFDFD
-      // backgroundColor: Color(0xFFE5E5E5),
-      theme: _buildTheme(Brightness.light),
-    );
-  }
 
-  ThemeData _buildTheme(brightness) {
-    var baseTheme = ThemeData(brightness: brightness);
-
-    return baseTheme.copyWith(
-      textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        // Default font (Inter)
+        fontFamily: GoogleFonts.inter().fontFamily,
+      ),
     );
   }
 }
@@ -51,33 +49,45 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        // #3A3A37
-        indicatorColor: const Color(0xFF3A3A37),
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            icon: Icon(LucideIcons.home),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: MyColors.gray200,
+              width: 1.0,
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(LucideIcons.pizza),
-            label: 'Pizza',
-          ),
-          NavigationDestination(
-            icon: Icon(LucideIcons.shoppingBag),
-            label: 'Order',
-          ),
-          NavigationDestination(
-            icon: Icon(LucideIcons.user2),
-            label: 'You',
-          ),
-        ],
+        ),
+        child: NavigationBar(
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          indicatorColor: MyColors.button,
+          backgroundColor: MyColors.background,
+          elevation: 0,
+          selectedIndex: currentPageIndex,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          destinations: const <Widget>[
+            NavigationDestination(
+              icon: Icon(LucideIcons.home),
+              label: 'Home',
+            ),
+            NavigationDestination(
+              icon: Icon(LucideIcons.pizza),
+              label: 'Pizza',
+            ),
+            NavigationDestination(
+              icon: Icon(LucideIcons.shoppingBag),
+              label: 'Order',
+            ),
+            NavigationDestination(
+              icon: Icon(LucideIcons.user2),
+              label: 'You',
+            ),
+          ],
+        ),
       ),
       body: pages[currentPageIndex],
     );
@@ -91,11 +101,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: MyColors.background,
       body: Center(
         // Make font size bigger
         child: Text(
           'Home iii',
-          style: TextStyle(fontSize: 30),
+          style: TextStyle(fontSize: 100),
         ),
       ),
     );
