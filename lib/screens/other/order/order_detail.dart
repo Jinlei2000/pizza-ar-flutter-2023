@@ -1,4 +1,4 @@
-// home.dart
+// orer_detail.dart
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +10,8 @@ class HomePage extends StatelessWidget {
     return const Scaffold(
       backgroundColor: MyColors.background,
       body: Center(
-        // Make font size bigger
         child: Text(
-          'Home ii',
+          'Order Detail',
           style: TextStyle(fontSize: 100),
         ),
       ),
