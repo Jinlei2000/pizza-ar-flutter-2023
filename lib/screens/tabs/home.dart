@@ -7,20 +7,20 @@ class HomePage extends StatelessWidget {
   final void Function(int) navigateToTabIndex;
   const HomePage({
     Key? key,
-    required this.navigateToTabIndex, // Pass the new callback in the constructor
+    required this.navigateToTabIndex,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyColors.background,
-      body: body(),
-      floatingActionButton: floatingActionButton(),
+      body: _body(),
+      floatingActionButton: _floatingActionButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Container body() {
+  Container _body() {
     return Container(
       padding: const EdgeInsets.all(16),
       child: const Column(
@@ -48,10 +48,9 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Container floatingActionButton() {
+  Container _floatingActionButton() {
     return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
       child: Button(
         text: 'Order Now',
         onPressed: () {

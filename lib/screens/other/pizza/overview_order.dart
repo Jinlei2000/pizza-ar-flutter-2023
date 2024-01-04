@@ -1,8 +1,8 @@
 // overview_order.dart
 import 'package:flutter/material.dart';
 
-class OrderPage extends StatelessWidget {
-  const OrderPage({Key? key}) : super(key: key);
+class OverviewOrderPage extends StatelessWidget {
+  const OverviewOrderPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

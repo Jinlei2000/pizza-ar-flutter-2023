@@ -17,7 +17,7 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int currentPageIndex = 0;
+  int currentTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,21 +42,21 @@ class _BottomNavigationState extends State<BottomNavigation> {
         decoration: const BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: MyColors.gray200,
-              width: 1.0,
+              color: MyColors.gray300,
+              width: 1,
             ),
           ),
         ),
         child: NavigationBar(
           onDestinationSelected: (int index) {
             setState(() {
-              currentPageIndex = index;
+              currentTabIndex = index;
             });
           },
           indicatorColor: MyColors.button,
           backgroundColor: MyColors.background,
           elevation: 0,
-          selectedIndex: currentPageIndex,
+          selectedIndex: currentTabIndex,
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           destinations: List.generate(
             icons.length,
@@ -67,14 +67,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ),
         ),
       ),
-      body: pages[currentPageIndex],
+      body: pages[currentTabIndex],
     );
   }
 
   // Callback function to handle tab navigation (called from the child widget)
   void _navigateToTabIndex(int index) {
     setState(() {
-      currentPageIndex = index;
+      currentTabIndex = index;
     });
   }
 }

@@ -7,9 +7,7 @@ class OrderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('Order'),
-      ),
+      body: Center(child: Text('Order Page')),
     );
   }
 }
