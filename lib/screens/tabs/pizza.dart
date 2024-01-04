@@ -10,6 +10,7 @@ class PizzaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyColors.background,
       body: _body(),
       floatingActionButton: _floatingActionButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -57,6 +58,8 @@ class PizzaPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
+
+          const SizedBox(height: 80),
         ],
       ),
     );
