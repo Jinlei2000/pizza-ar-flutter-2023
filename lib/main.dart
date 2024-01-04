@@ -1,5 +1,6 @@
 // main.dart
 import 'package:bitz/components/bottom_navigation.dart';
+import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +16,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // Hide debug banner
       debugShowCheckedModeBanner: false,
-      home: const BottomNavigation(),
+      // home: const BottomNavigation(),
+
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const BottomNavigation(),
+        '/pizza/customize': (context) => const CustomizePizzaArPage(),
+      },
 
       theme: ThemeData(
         useMaterial3: true,

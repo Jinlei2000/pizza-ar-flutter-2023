@@ -11,7 +11,7 @@ class PizzaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _body(),
-      floatingActionButton: _floatingActionButton(),
+      floatingActionButton: _floatingActionButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
@@ -62,13 +62,14 @@ class PizzaPage extends StatelessWidget {
     );
   }
 
-  Container _floatingActionButton() {
+  Container _floatingActionButton(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
       child: Button(
         text: 'Let’s Start',
         onPressed: () {
           // Navigate to Customize Pizza AR Page
+          Navigator.pushNamed(context, '/pizza/customize');
         },
       ),
     );
