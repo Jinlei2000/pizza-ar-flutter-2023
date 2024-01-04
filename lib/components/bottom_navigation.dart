@@ -1,16 +1,15 @@
 // bottom_navigation.dart
 import 'package:flutter/material.dart';
 import '../utils/colors.dart';
-class BottomNavigation extends StatefulWidget {
-  final List<Widget> pages;
-  final List<IconData> icons;
-  final List<String> labels;
+import 'package:bitz/screens/tabs/home.dart';
+import 'package:bitz/screens/tabs/order.dart';
+import 'package:bitz/screens/tabs/pizza.dart';
+import 'package:bitz/screens/tabs/profile.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
+class BottomNavigation extends StatefulWidget {
   const BottomNavigation({
     Key? key,
-    required this.pages,
-    required this.icons,
-    required this.labels,
   }) : super(key: key);
 
   @override
@@ -22,6 +21,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HomePage(navigateToTabIndex: _navigateToTabIndex),
+      const PizzaPage(),
+      const OrderPage(),
+      const ProfilePage(),
+    ];
+
+    const List<IconData> icons = [
+      LucideIcons.home,
+      LucideIcons.pizza,
+      LucideIcons.shoppingBag,
+      LucideIcons.user2,
+    ];
+
+    const List<String> labels = ['Home', 'Pizza', 'Order', 'You'];
+
     return Scaffold(
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
@@ -44,15 +59,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
           selectedIndex: currentPageIndex,
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           destinations: List.generate(
-            widget.icons.length,
+            icons.length,
             (index) => NavigationDestination(
-              icon: Icon(widget.icons[index]),
-              label: widget.labels[index],
+              icon: Icon(icons[index]),
+              label: labels[index],
             ),
           ),
         ),
       ),
-      body: widget.pages[currentPageIndex],
+      body: pages[currentPageIndex],
     );
+  }
+
+  // Callback function to handle tab navigation (called from the child widget)
+  void _navigateToTabIndex(int index) {
+    setState(() {
+      currentPageIndex = index;
+    });
   }
 }

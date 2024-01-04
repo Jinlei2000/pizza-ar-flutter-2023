@@ -4,7 +4,11 @@ import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final void Function(int) navigateToTabIndex;
+  const HomePage({
+    Key? key,
+    required this.navigateToTabIndex, // Pass the new callback in the constructor
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +48,8 @@ class HomePage extends StatelessWidget {
         child: Button(
           text: 'Order Now',
           onPressed: () {
-            // navigate to the order page
-            Navigator.pushNamed(context, '/order');
+            // go to tab pizza (index 1)
+            navigateToTabIndex(1);
           },
         ),
       ),
