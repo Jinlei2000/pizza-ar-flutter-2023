@@ -1,21 +1,20 @@
 // home.dart
 import 'package:bitz/components/button.dart';
+import 'package:bitz/screens/tabs/pizza.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class HomePage extends StatelessWidget {
-  final void Function(int) navigateToTabIndex;
   const HomePage({
     Key? key,
-    required this.navigateToTabIndex,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColors.background,
       body: _body(),
-      floatingActionButton: _floatingActionButton(),
+      floatingActionButton: _floatingActionButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
@@ -48,14 +47,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Container _floatingActionButton() {
+  Container _floatingActionButton(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
       child: Button(
         text: 'Order Now',
         onPressed: () {
           // go to tab pizza (index 1)
-          navigateToTabIndex(1);
         },
       ),
     );

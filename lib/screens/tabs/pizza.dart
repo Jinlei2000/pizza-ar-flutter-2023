@@ -1,8 +1,10 @@
 // pizza.dart
 import 'package:bitz/components/button.dart';
+import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class PizzaPage extends StatelessWidget {
   const PizzaPage({Key? key}) : super(key: key);
@@ -10,7 +12,6 @@ class PizzaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColors.background,
       body: _body(),
       floatingActionButton: _floatingActionButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -72,7 +73,12 @@ class PizzaPage extends StatelessWidget {
         text: 'Let’s Start',
         onPressed: () {
           // Navigate to Customize Pizza AR Page
-          Navigator.pushNamed(context, '/pizza/customize');
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            screen: const CustomizePizzaArPage(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
         },
       ),
     );

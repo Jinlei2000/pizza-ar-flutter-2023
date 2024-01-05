@@ -1,5 +1,9 @@
 // bottom_navigation.dart
+import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
+import 'package:bitz/screens/other/pizza/overview_order.dart';
+import 'package:bitz/screens/other/pizza/payment.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../utils/colors.dart';
 import 'package:bitz/screens/tabs/home.dart';
 import 'package:bitz/screens/tabs/order.dart';
@@ -17,64 +21,75 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int currentTabIndex = 0;
+  final PersistentTabController _controller = PersistentTabController();
+
+  List<Widget> _buildScreens() => [
+        const HomePage(),
+        const PizzaPage(),
+        const OrderPage(),
+        const ProfilePage(),
+      ];
+
+  List<PersistentBottomNavBarItem> _navBarsItems() => [
+        PersistentBottomNavBarItem(
+          icon: const Icon(LucideIcons.home),
+          title: 'Home',
+          activeColorPrimary: MyColors.button,
+          inactiveColorPrimary: MyColors.gray500,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(LucideIcons.pizza),
+          title: 'Pizza',
+          activeColorPrimary: MyColors.button,
+          inactiveColorPrimary: MyColors.gray500,
+          // routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          //   initialRoute: '/pizza',
+          //   routes: {
+          //     '/pizza/customize': (context) => const CustomizePizzaArPage(),
+          //     '/pizza/overview-order': (context) => const OverviewOrderPage(),
+          //     '/pizza/payment': (context) => const PaymentPage(),
+          //   },
+          // ),
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(LucideIcons.shoppingBag),
+          title: 'Order',
+          activeColorPrimary: MyColors.button,
+          inactiveColorPrimary: MyColors.gray500,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(LucideIcons.user2),
+          title: 'You',
+          activeColorPrimary: MyColors.button,
+          inactiveColorPrimary: MyColors.gray500,
+        ),
+      ];
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [
-      HomePage(navigateToTabIndex: _navigateToTabIndex),
-      const PizzaPage(),
-      const OrderPage(),
-      const ProfilePage(),
-    ];
-
-    const List<IconData> icons = [
-      LucideIcons.home,
-      LucideIcons.pizza,
-      LucideIcons.shoppingBag,
-      LucideIcons.user2,
-    ];
-
-    const List<String> labels = ['Home', 'Pizza', 'Order', 'You'];
-
-    return Scaffold(
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: MyColors.gray300,
-              width: 1,
-            ),
-          ),
-        ),
-        child: NavigationBar(
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentTabIndex = index;
-            });
-          },
-          indicatorColor: MyColors.button,
-          backgroundColor: MyColors.background,
-          elevation: 0,
-          selectedIndex: currentTabIndex,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          destinations: List.generate(
-            icons.length,
-            (index) => NavigationDestination(
-              icon: Icon(icons[index]),
-              label: labels[index],
-            ),
-          ),
-        ),
+    return PersistentTabView(
+      context,
+      controller: _controller,
+      screens: _buildScreens(),
+      items: _navBarsItems(),
+      confineInSafeArea: true,
+      backgroundColor: MyColors.background,
+      handleAndroidBackButtonPress: true,
+      resizeToAvoidBottomInset: true,
+      stateManagement: true,
+      hideNavigationBarWhenKeyboardShows: true,
+      popAllScreensOnTapOfSelectedTab: true,
+      popActionScreens: PopActionScreensType.all,
+      itemAnimationProperties: const ItemAnimationProperties(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
       ),
-      body: pages[currentTabIndex],
+      screenTransitionAnimation: const ScreenTransitionAnimation(
+        animateTabTransition: true,
+        curve: Curves.ease,
+        duration: Duration(milliseconds: 200),
+      ),
+      navBarStyle: NavBarStyle.style1,
     );
-  }
-
-  // Callback function to handle tab navigation (called from the child widget)
-  void _navigateToTabIndex(int index) {
-    setState(() {
-      currentTabIndex = index;
-    });
   }
 }

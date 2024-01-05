@@ -6,8 +6,13 @@ class CustomizePizzaArPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Scaffold(
+      // add appbar with back button
+      appBar: AppBar(
+        leading: const BackButton(),
+      ),
+
+      body: const Center(
         child: Text('Customize Pizza AR'),
       ),
     );
