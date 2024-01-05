@@ -1,6 +1,8 @@
 // home.dart
 import 'package:bitz/components/button.dart';
+import 'package:bitz/models/tab_navigation_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -50,7 +52,12 @@ class HomePage extends StatelessWidget {
       child: Button(
         text: 'Order Now',
         onPressed: () {
-          // go to tab pizza (index 1)
+          // Navigate to the Pizza tab
+          // Use Provider to get the TabNavigationModel
+          final tabNavigationModel =
+              Provider.of<TabNavigationModel>(context, listen: false);
+          // Call the navigateToTab function from the TabNavigationModel
+          tabNavigationModel.navigateToTab(1);
         },
       ),
     );
