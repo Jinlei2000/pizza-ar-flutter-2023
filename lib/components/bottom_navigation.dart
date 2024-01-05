@@ -1,5 +1,8 @@
 // bottom_navigation.dart
+import 'package:bitz/models/tab_navigation_model.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import 'package:bitz/screens/tabs/home.dart';
 import 'package:bitz/screens/tabs/order.dart';
@@ -17,64 +20,104 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int currentTabIndex = 0;
+  List<Widget> _buildScreens() => [
+        const HomePage(),
+        const PizzaPage(),
+        const OrderPage(),
+        const ProfilePage(),
+      ];
+
+  List<PersistentBottomNavBarItem> _navBarsItems() => [
+        PersistentBottomNavBarItem(
+          icon: const Icon(LucideIcons.home),
+          title: 'Home',
+          activeColorPrimary: MyColors.bottomNavBarSelectedTab,
+          activeColorSecondary: MyColors.bottomNavBarSelectedText,
+          inactiveColorPrimary: MyColors.bottomNavBarUnselectedTab,
+          iconSize: 24,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(LucideIcons.pizza),
+          title: 'Pizza',
+          activeColorPrimary: MyColors.bottomNavBarSelectedTab,
+          activeColorSecondary: MyColors.bottomNavBarSelectedText,
+          inactiveColorPrimary: MyColors.bottomNavBarUnselectedTab,
+          iconSize: 24,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(LucideIcons.shoppingBag),
+          title: 'Order',
+          activeColorPrimary: MyColors.bottomNavBarSelectedTab,
+          activeColorSecondary: MyColors.bottomNavBarSelectedText,
+          inactiveColorPrimary: MyColors.bottomNavBarUnselectedTab,
+          iconSize: 24,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(LucideIcons.user2),
+          title: 'You',
+          activeColorPrimary: MyColors.bottomNavBarSelectedTab,
+          activeColorSecondary: MyColors.bottomNavBarSelectedText,
+          inactiveColorPrimary: MyColors.bottomNavBarUnselectedTab,
+          iconSize: 24,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ];
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [
-      HomePage(navigateToTabIndex: _navigateToTabIndex),
-      const PizzaPage(),
-      const OrderPage(),
-      const ProfilePage(),
-    ];
-
-    const List<IconData> icons = [
-      LucideIcons.home,
-      LucideIcons.pizza,
-      LucideIcons.shoppingBag,
-      LucideIcons.user2,
-    ];
-
-    const List<String> labels = ['Home', 'Pizza', 'Order', 'You'];
-
-    return Scaffold(
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: MyColors.gray300,
-              width: 1,
+    return ChangeNotifierProvider(
+      create: (_) => TabNavigationModel(),
+      child: Consumer<TabNavigationModel>(
+        builder: (context, tabNavigationModel, child) {
+          return PersistentTabView(
+            context,
+            controller: tabNavigationModel.controller,
+            screens: _buildScreens(),
+            items: _navBarsItems(),
+            confineInSafeArea: true,
+            handleAndroidBackButtonPress: true,
+            resizeToAvoidBottomInset: true,
+            stateManagement: true,
+            hideNavigationBarWhenKeyboardShows: true,
+            popAllScreensOnTapOfSelectedTab: true,
+            popActionScreens: PopActionScreensType.all,
+            backgroundColor: MyColors.bottomNavBar,
+            navBarHeight: 88,
+            decoration: const NavBarDecoration(
+              border: Border.fromBorderSide(
+                BorderSide(width: 1, color: MyColors.gray200),
+              ),
             ),
-          ),
-        ),
-        child: NavigationBar(
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentTabIndex = index;
-            });
-          },
-          indicatorColor: MyColors.button,
-          backgroundColor: MyColors.background,
-          elevation: 0,
-          selectedIndex: currentTabIndex,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          destinations: List.generate(
-            icons.length,
-            (index) => NavigationDestination(
-              icon: Icon(icons[index]),
-              label: labels[index],
+            padding: const NavBarPadding.only(
+                bottom: 20, top: 20, left: 16, right: 16),
+            itemAnimationProperties: const ItemAnimationProperties(
+              duration: Duration(milliseconds: 200),
+              curve: Curves.ease,
             ),
-          ),
-        ),
+            screenTransitionAnimation: const ScreenTransitionAnimation(
+              animateTabTransition: true,
+              curve: Curves.ease,
+              duration: Duration(milliseconds: 200),
+            ),
+            navBarStyle: NavBarStyle.style7,
+          );
+        },
       ),
-      body: pages[currentTabIndex],
     );
-  }
-
-  // Callback function to handle tab navigation (called from the child widget)
-  void _navigateToTabIndex(int index) {
-    setState(() {
-      currentTabIndex = index;
-    });
   }
 }
