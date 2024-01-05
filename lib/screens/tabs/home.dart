@@ -1,10 +1,6 @@
 // home.dart
-import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/components/button.dart';
-import 'package:bitz/screens/tabs/pizza.dart';
-import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
