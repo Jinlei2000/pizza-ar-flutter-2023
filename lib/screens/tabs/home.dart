@@ -1,4 +1,5 @@
 // home.dart
+import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/components/button.dart';
 import 'package:bitz/screens/tabs/pizza.dart';
 import 'package:bitz/utils/colors.dart';

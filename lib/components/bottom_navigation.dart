@@ -1,7 +1,4 @@
 // bottom_navigation.dart
-import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
-import 'package:bitz/screens/other/pizza/overview_order.dart';
-import 'package:bitz/screens/other/pizza/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../utils/colors.dart';
@@ -42,14 +39,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
           title: 'Pizza',
           activeColorPrimary: MyColors.button,
           inactiveColorPrimary: MyColors.gray500,
-          // routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          //   initialRoute: '/pizza',
-          //   routes: {
-          //     '/pizza/customize': (context) => const CustomizePizzaArPage(),
-          //     '/pizza/overview-order': (context) => const OverviewOrderPage(),
-          //     '/pizza/payment': (context) => const PaymentPage(),
-          //   },
-          // ),
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(LucideIcons.shoppingBag),
