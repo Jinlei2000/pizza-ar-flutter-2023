@@ -31,26 +31,50 @@ class _BottomNavigationState extends State<BottomNavigation> {
         PersistentBottomNavBarItem(
           icon: const Icon(LucideIcons.home),
           title: 'Home',
-          activeColorPrimary: MyColors.button,
-          inactiveColorPrimary: MyColors.gray500,
+          activeColorPrimary: MyColors.bottomNavBarSelectedTab,
+          activeColorSecondary: MyColors.bottomNavBarSelectedText,
+          inactiveColorPrimary: MyColors.bottomNavBarUnselectedTab,
+          iconSize: 24,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(LucideIcons.pizza),
           title: 'Pizza',
-          activeColorPrimary: MyColors.button,
-          inactiveColorPrimary: MyColors.gray500,
+          activeColorPrimary: MyColors.bottomNavBarSelectedTab,
+          activeColorSecondary: MyColors.bottomNavBarSelectedText,
+          inactiveColorPrimary: MyColors.bottomNavBarUnselectedTab,
+          iconSize: 24,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(LucideIcons.shoppingBag),
           title: 'Order',
-          activeColorPrimary: MyColors.button,
-          inactiveColorPrimary: MyColors.gray500,
+          activeColorPrimary: MyColors.bottomNavBarSelectedTab,
+          activeColorSecondary: MyColors.bottomNavBarSelectedText,
+          inactiveColorPrimary: MyColors.bottomNavBarUnselectedTab,
+          iconSize: 24,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(LucideIcons.user2),
           title: 'You',
-          activeColorPrimary: MyColors.button,
-          inactiveColorPrimary: MyColors.gray500,
+          activeColorPrimary: MyColors.bottomNavBarSelectedTab,
+          activeColorSecondary: MyColors.bottomNavBarSelectedText,
+          inactiveColorPrimary: MyColors.bottomNavBarUnselectedTab,
+          iconSize: 24,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ];
 
@@ -66,13 +90,21 @@ class _BottomNavigationState extends State<BottomNavigation> {
             screens: _buildScreens(),
             items: _navBarsItems(),
             confineInSafeArea: true,
-            backgroundColor: MyColors.background,
             handleAndroidBackButtonPress: true,
             resizeToAvoidBottomInset: true,
             stateManagement: true,
             hideNavigationBarWhenKeyboardShows: true,
             popAllScreensOnTapOfSelectedTab: true,
             popActionScreens: PopActionScreensType.all,
+            backgroundColor: MyColors.bottomNavBar,
+            navBarHeight: 88,
+            decoration: const NavBarDecoration(
+              border: Border.fromBorderSide(
+                BorderSide(width: 1, color: MyColors.gray200),
+              ),
+            ),
+            padding: const NavBarPadding.only(
+                bottom: 20, top: 20, left: 16, right: 16),
             itemAnimationProperties: const ItemAnimationProperties(
               duration: Duration(milliseconds: 200),
               curve: Curves.ease,
@@ -82,7 +114,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               curve: Curves.ease,
               duration: Duration(milliseconds: 200),
             ),
-            navBarStyle: NavBarStyle.style1,
+            navBarStyle: NavBarStyle.style7,
           );
         },
       ),

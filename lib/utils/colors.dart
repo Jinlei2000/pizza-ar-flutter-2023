@@ -21,5 +21,14 @@ class MyColors {
 
   // Background Colors
   static const Color background = gray50;
-  static const Color button = gray950;
+
+  // Button Colors
+  static const Color button = gray900;
+  static const Color buttonText = gray100;
+
+  // Bottom Navigation Bar Colors
+  static const Color bottomNavBar = gray50;
+  static const Color bottomNavBarSelectedTab = gray900;
+  static const Color bottomNavBarSelectedText = gray100;
+  static const Color bottomNavBarUnselectedTab = gray500;
 }
