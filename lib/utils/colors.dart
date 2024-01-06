@@ -44,4 +44,7 @@ class MyColors {
   static const Color cardBorder = gray200;
   static const Color cardSelectedDate = gray300;
   static const Color cardText = gray850;
+
+  // Border Colors
+  static const Color borderColor = gray200;
 }

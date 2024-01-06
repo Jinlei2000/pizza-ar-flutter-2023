@@ -12,7 +12,10 @@ class PizzaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _body(),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 112),
+        child: _body(),
+      ),
       floatingActionButton: _floatingActionButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
