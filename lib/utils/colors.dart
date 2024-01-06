@@ -31,4 +31,17 @@ class MyColors {
   static const Color bottomNavBarSelectedTab = gray900;
   static const Color bottomNavBarSelectedText = gray100;
   static const Color bottomNavBarUnselectedTab = gray500;
+
+  // Text Colors
+  static const Color textPrimary = gray900;
+  static const Color textSecondary = gray700;
+
+  // Tag Colors
+  static const Color tagText = gray100;
+
+  // Card Colors
+  static const Color cardBackground = Colors.white;
+  static const Color cardBorder = gray200;
+  static const Color cardSelectedDate = gray300;
+  static const Color cardText = gray850;
 }
