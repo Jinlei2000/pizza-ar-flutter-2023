@@ -10,7 +10,6 @@ import 'package:bitz/screens/tabs/pizza.dart';
 import 'package:bitz/screens/tabs/profile.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +28,17 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: _routes,
 
-      theme: _buildTheme(Brightness.light),
+      theme: _theme(),
+    );
+  }
+
+  ThemeData _theme() {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: const ColorScheme.light(background: MyColors.background),
+      // set Inter as the default font
+      fontFamily: 'Inter',
     );
   }
 
@@ -45,17 +54,5 @@ class MyApp extends StatelessWidget {
       '/pizza/payment': (context) => const PaymentPage(),
       '/order/detail': (context) => const OrderDetailPage(),
     };
-  }
-
-  ThemeData _buildTheme(brightness) {
-    var baseTheme = ThemeData(brightness: brightness);
-
-    return ThemeData(
-      useMaterial3: true,
-      brightness: brightness,
-      colorScheme: const ColorScheme.light(background: MyColors.background),
-      // set Inter as the default font
-      textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
-    );
   }
 }
