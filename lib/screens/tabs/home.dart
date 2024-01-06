@@ -6,6 +6,7 @@ import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -76,6 +77,73 @@ class HomePage extends StatelessWidget {
   }
 
   Container _body() {
+    List<Map<String, dynamic>> schedule = [
+      {
+        'day': 'Monday',
+        'hours': 'Closed',
+        'days': ['Monday']
+      },
+      {
+        'day': 'Tuesday - Wednesday',
+        'hours': '10:00 - 18:00',
+        'days': ['Tuesday', 'Wednesday']
+      },
+      {
+        'day': 'Thursday',
+        'hours': '10:00 - 20:00',
+        'days': ['Thursday']
+      },
+      {
+        'day': 'Friday - Sunday',
+        'hours': '10:00 - 18:00',
+        'days': ['Friday', 'Saturday', 'Sunday']
+      },
+    ];
+
+    bool isOpen = false;
+    DateTime currentDate = DateTime.now();
+
+    void setStoreStatus() {
+      for (var daySchedule in schedule) {
+        List<String> days = daySchedule['days'] ?? [];
+        String openingHours = daySchedule['hours'] ?? 'Closed';
+
+        // Check if today is one of the scheduled days
+        if (days.contains(DateFormat('EEEE').format(currentDate))) {
+          // Check if the store is open based on the opening hours
+          if (openingHours == 'Closed') {
+            isOpen = false;
+          } else {
+            // Check if the current time is within the opening hours
+            int currentTime = int.parse(DateFormat('kkmm').format(currentDate));
+            List<String> openingHoursSplit = openingHours.split(' - ');
+            int openingTime =
+                int.parse(openingHoursSplit[0].replaceAll(':', ''));
+            int closingTime =
+                int.parse(openingHoursSplit[1].replaceAll(':', ''));
+
+            isOpen = currentTime >= openingTime && currentTime <= closingTime;
+          }
+
+          break;
+        }
+      }
+    }
+
+    void checkStoreStatus() {
+      Timer.periodic(const Duration(minutes: 1), (Timer timer) {
+        // Perform the logic to check the store status here
+        // Update the 'isOpen' variable based on the current day and time
+
+        currentDate = DateTime.now();
+        setStoreStatus();
+      });
+    }
+
+    // Call this function to start the periodic checks
+    setStoreStatus();
+    checkStoreStatus();
+
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
       child: Column(
@@ -125,12 +193,12 @@ class HomePage extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: MyColors.red,
+                      color: isOpen ? Colors.green : MyColors.red,
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Text(
-                      'Closed',
-                      style: TextStyle(
+                    child: Text(
+                      isOpen ? 'Open' : 'Closed',
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: MyColors.tagText,
@@ -140,7 +208,10 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              _cardWithDays(),
+              _cardWithDays(
+                schedule: schedule,
+                currentDate: currentDate,
+              ),
             ],
           ),
         ],
@@ -148,32 +219,9 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Container _cardWithDays() {
-    DateTime currentDate = DateTime.now();
-
-    List<Map<String, dynamic>> schedule = [
-      {
-        'day': 'Monday',
-        'hours': 'Closed',
-        'days': ['Monday']
-      },
-      {
-        'day': 'Tuesday - Wednesday',
-        'hours': '10:00 - 18:00',
-        'days': ['Tuesday', 'Wednesday']
-      },
-      {
-        'day': 'Thursday',
-        'hours': '10:00 - 20:00',
-        'days': ['Thursday']
-      },
-      {
-        'day': 'Friday - Sunday',
-        'hours': '10:00 - 18:00',
-        'days': ['Friday', 'Saturday', 'Sunday']
-      },
-    ];
-
+  Container _cardWithDays(
+      {required List<Map<String, dynamic>> schedule,
+      required DateTime currentDate}) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
