@@ -89,7 +89,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             controller: tabNavigationModel.controller,
             screens: _buildScreens(),
             items: _navBarsItems(),
-            confineInSafeArea: true,
+            confineInSafeArea: false,
             handleAndroidBackButtonPress: true,
             resizeToAvoidBottomInset: true,
             stateManagement: true,
@@ -104,7 +104,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               ),
             ),
             padding: const NavBarPadding.only(
-                bottom: 20, top: 20, left: 16, right: 16),
+                bottom: 28, top: 12, left: 16, right: 16),
             itemAnimationProperties: const ItemAnimationProperties(
               duration: Duration(milliseconds: 200),
               curve: Curves.ease,

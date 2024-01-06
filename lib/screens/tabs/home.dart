@@ -40,7 +40,6 @@ class HomePage extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          SizedBox(height: 40),
         ],
       ),
     );
