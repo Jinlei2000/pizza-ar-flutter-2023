@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
               },
               child: const AvatarImage(
                 size: 48,
-                imageUrl: 'https://i.pravatar.cc/300',
+                imageUrl: 'https://i.pravatar.cc/300?img=52',
               ),
             ),
           ],
