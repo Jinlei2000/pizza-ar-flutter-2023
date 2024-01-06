@@ -5,6 +5,7 @@ import 'package:bitz/models/tab_navigation_model.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -148,6 +149,31 @@ class HomePage extends StatelessWidget {
   }
 
   Container _cardWithDays() {
+    DateTime currentDate = DateTime.now();
+
+    List<Map<String, dynamic>> schedule = [
+      {
+        'day': 'Monday',
+        'hours': 'Closed',
+        'days': ['Monday']
+      },
+      {
+        'day': 'Tuesday - Wednesday',
+        'hours': '10:00 - 18:00',
+        'days': ['Tuesday', 'Wednesday']
+      },
+      {
+        'day': 'Thursday',
+        'hours': '10:00 - 20:00',
+        'days': ['Thursday']
+      },
+      {
+        'day': 'Friday - Sunday',
+        'hours': '10:00 - 18:00',
+        'days': ['Friday', 'Saturday', 'Sunday']
+      },
+    ];
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -156,10 +182,14 @@ class HomePage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _dayContainer('Monday', 'Closed', isActive: true),
-          _dayContainer('Tuesday - Wednesday', '10:00 - 18:00'),
-          _dayContainer('Thursday', '10:00 - 20:00'),
-          _dayContainer('Friday - Sunday', '10:00 - 18:00'),
+          for (var daySchedule in schedule)
+            _dayContainer(
+              daySchedule['day'] ?? 'Unknown',
+              daySchedule['hours'] ?? 'Closed',
+              isActive: daySchedule['days']
+                      ?.contains(DateFormat('EEEE').format(currentDate)) ??
+                  false,
+            ),
         ],
       ),
     );
