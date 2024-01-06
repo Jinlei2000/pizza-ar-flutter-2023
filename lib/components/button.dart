@@ -5,11 +5,13 @@ import '../utils/colors.dart';
 class Button extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final Color? color;
 
   const Button({
     Key? key,
     required this.text,
     required this.onPressed,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class Button extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: MyColors.button,
+          backgroundColor: color ?? MyColors.button,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),

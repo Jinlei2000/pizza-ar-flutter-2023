@@ -17,7 +17,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
-      body: _body(),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 112),
+        child: _body(),
+      ),
       floatingActionButton: _floatingActionButton(context),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
@@ -67,7 +70,7 @@ class HomePage extends StatelessWidget {
               },
               child: const AvatarImage(
                 size: 48,
-                imageUrl: 'https://i.pravatar.cc/300',
+                imageUrl: 'https://i.pravatar.cc/300?img=52',
               ),
             ),
           ],
