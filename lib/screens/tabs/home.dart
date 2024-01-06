@@ -131,7 +131,7 @@ class HomePage extends StatelessWidget {
     }
 
     void checkStoreStatus() {
-      Timer.periodic(const Duration(minutes: 1), (Timer timer) {
+      Timer.periodic(const Duration(minutes: 5), (Timer timer) {
         // Perform the logic to check the store status here
         // Update the 'isOpen' variable based on the current day and time
 
