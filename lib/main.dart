@@ -27,24 +27,35 @@ class MyApp extends StatelessWidget {
 
       home: const BottomNavigation(),
       initialRoute: '/',
-      routes: {
-        '/home': (context) => const HomePage(),
-        '/order': (context) => const OrderPage(),
-        '/pizza': (context) => const PizzaPage(),
-        '/profile': (context) => const ProfilePage(),
-        '/pizza/customize': (context) => const CustomizePizzaArPage(),
-        '/pizza/overview-order': (context) => const OverviewOrderPage(),
-        '/pizza/payment': (context) => const PaymentPage(),
-        '/order/detail': (context) => const OrderDetailPage(),
-      },
-      
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-        // Default font (Inter)
-        fontFamily: GoogleFonts.inter().fontFamily,
-        colorScheme: const ColorScheme.light(background: MyColors.background),
-      ),
+      routes: _routes,
+
+      theme: _buildTheme(Brightness.light),
+    );
+  }
+
+  // All routes in the app
+  Map<String, WidgetBuilder> get _routes {
+    return {
+      '/home': (context) => const HomePage(),
+      '/order': (context) => const OrderPage(),
+      '/pizza': (context) => const PizzaPage(),
+      '/profile': (context) => const ProfilePage(),
+      '/pizza/customize': (context) => const CustomizePizzaArPage(),
+      '/pizza/overview-order': (context) => const OverviewOrderPage(),
+      '/pizza/payment': (context) => const PaymentPage(),
+      '/order/detail': (context) => const OrderDetailPage(),
+    };
+  }
+
+  ThemeData _buildTheme(brightness) {
+    var baseTheme = ThemeData(brightness: brightness);
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: brightness,
+      colorScheme: const ColorScheme.light(background: MyColors.background),
+      // set Inter as the default font
+      textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
     );
   }
 }

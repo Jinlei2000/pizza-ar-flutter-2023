@@ -2,6 +2,7 @@
 import 'package:bitz/components/button.dart';
 import 'package:bitz/models/tab_navigation_model.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,19 +23,19 @@ class HomePage extends StatelessWidget {
   Container _body() {
     return Container(
       padding: const EdgeInsets.all(16),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           Text(
             'Welcome to Bitz',
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             'Order your favorite pizza',
             style: TextStyle(
               fontSize: 16,
