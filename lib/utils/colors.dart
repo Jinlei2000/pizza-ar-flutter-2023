@@ -31,4 +31,8 @@ class MyColors {
   static const Color bottomNavBarSelectedTab = gray900;
   static const Color bottomNavBarSelectedText = gray100;
   static const Color bottomNavBarUnselectedTab = gray500;
+
+  // Text Colors
+  static const Color textPrimary = gray900;
+  static const Color textSecondary = gray700;
 }
