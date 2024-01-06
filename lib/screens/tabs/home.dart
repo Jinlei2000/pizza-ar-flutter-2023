@@ -14,7 +14,8 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: _body(),
       floatingActionButton: _floatingActionButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 
@@ -47,7 +48,7 @@ class HomePage extends StatelessWidget {
 
   Container _floatingActionButton(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+      margin: const EdgeInsets.only(bottom: 24, left: 16, right: 16),
       child: Button(
         text: 'Order Now',
         onPressed: () {

@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         '/pizza/payment': (context) => const PaymentPage(),
         '/order/detail': (context) => const OrderDetailPage(),
       },
-
+      
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,

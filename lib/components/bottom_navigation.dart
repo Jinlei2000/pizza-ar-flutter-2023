@@ -89,7 +89,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             controller: tabNavigationModel.controller,
             screens: _buildScreens(),
             items: _navBarsItems(),
-            confineInSafeArea: false,
+            confineInSafeArea: true,
             handleAndroidBackButtonPress: true,
             resizeToAvoidBottomInset: true,
             stateManagement: true,
@@ -97,14 +97,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
             popAllScreensOnTapOfSelectedTab: true,
             popActionScreens: PopActionScreensType.all,
             backgroundColor: MyColors.bottomNavBar,
-            navBarHeight: 88,
+            navBarHeight: 56,
             decoration: const NavBarDecoration(
               border: Border.fromBorderSide(
                 BorderSide(width: 1, color: MyColors.gray200),
               ),
             ),
             padding: const NavBarPadding.only(
-                bottom: 28, top: 12, left: 16, right: 16),
+                bottom: 0, top: 0, left: 16, right: 16),
             itemAnimationProperties: const ItemAnimationProperties(
               duration: Duration(milliseconds: 200),
               curve: Curves.ease,
