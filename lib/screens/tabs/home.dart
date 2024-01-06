@@ -76,23 +76,118 @@ class HomePage extends StatelessWidget {
 
   Container _body() {
     return Container(
-      padding: const EdgeInsets.all(16),
-      child: const Column(
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 40),
+          // Location
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Location',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                height: 155,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/map.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          // Openings Hours
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    'Openings Hours',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: MyColors.red,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Text(
+                      'Closed',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: MyColors.tagText,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              _cardWithDays(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _cardWithDays() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: MyColors.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          _dayContainer('Monday', 'Closed', isActive: true),
+          _dayContainer('Tuesday - Wednesday', '10:00 - 18:00'),
+          _dayContainer('Thursday', '10:00 - 20:00'),
+          _dayContainer('Friday - Sunday', '10:00 - 18:00'),
+        ],
+      ),
+    );
+  }
+
+  Container _dayContainer(String day, String status, {bool isActive = false}) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isActive ? MyColors.cardSelectedDate : MyColors.cardBackground,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
           Text(
-            'Welcome to Bitz',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w800,
+            day,
+            style: const TextStyle(
+              fontSize: 16,
+              color: MyColors.cardText,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          SizedBox(height: 8),
           Text(
-            'Order your favorite pizza',
-            style: TextStyle(
+            status,
+            style: const TextStyle(
               fontSize: 16,
+              color: MyColors.cardText,
               fontWeight: FontWeight.w400,
             ),
           ),
