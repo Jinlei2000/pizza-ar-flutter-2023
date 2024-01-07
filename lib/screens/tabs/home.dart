@@ -169,6 +169,10 @@ class HomePage extends StatelessWidget {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: MyColors.cardBorder,
+                    width: 0.5,
+                  ),
                   image: const DecorationImage(
                     image: AssetImage('assets/images/map.png'),
                     fit: BoxFit.cover,
@@ -230,6 +234,10 @@ class HomePage extends StatelessWidget {
       decoration: BoxDecoration(
         color: MyColors.cardBackground,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: MyColors.cardBorder,
+          width: 0.5,
+        ),
       ),
       child: Column(
         children: [
