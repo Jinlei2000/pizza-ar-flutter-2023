@@ -14,17 +14,18 @@ class PizzaPage extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 112),
-        child: _body(),
+        child: _body(context),
       ),
       floatingActionButton: _floatingActionButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Container _body() {
+  Container _body(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       alignment: Alignment.center,
+      height: MediaQuery.of(context).size.height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

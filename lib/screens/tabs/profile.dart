@@ -72,7 +72,7 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: MyColors.borderColor,
-                    width: 1,
+                    width: 0.5,
                   ),
                 ),
                 child: ListView.builder(
@@ -91,7 +91,7 @@ class ProfilePage extends StatelessWidget {
                               ? BorderSide.none
                               : const BorderSide(
                                   color: MyColors.borderColor,
-                                  width: 1,
+                                  width: 0.5,
                                 ),
                         ),
                       ),

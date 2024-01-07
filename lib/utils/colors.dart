@@ -20,14 +20,14 @@ class MyColors {
   static const Color gray950 = Color(0xFF1F1F1E); // 1F1F1E
 
   // Background Colors
-  static const Color background = gray50;
+  static const Color background = gray100;
 
   // Button Colors
   static const Color button = gray900;
   static const Color buttonText = gray100;
 
   // Bottom Navigation Bar Colors
-  static const Color bottomNavBar = gray50;
+  static const Color bottomNavBar = gray100;
   static const Color bottomNavBarSelectedTab = gray900;
   static const Color bottomNavBarSelectedText = gray100;
   static const Color bottomNavBarUnselectedTab = gray500;
@@ -47,4 +47,7 @@ class MyColors {
 
   // Border Colors
   static const Color borderColor = gray200;
+
+  // AppBar Colors
+  static const Color appBarBackButton = gray50;
 }

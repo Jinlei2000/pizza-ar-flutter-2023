@@ -100,7 +100,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             navBarHeight: 56,
             decoration: const NavBarDecoration(
               border: Border.fromBorderSide(
-                BorderSide(width: 1, color: MyColors.gray200),
+                BorderSide(width: 0.5, color: MyColors.gray200),
               ),
             ),
             padding: const NavBarPadding.only(
