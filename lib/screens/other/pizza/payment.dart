@@ -25,7 +25,9 @@ class _PaymentPageState extends State<PaymentPage> {
           // TODO: Delete the current item & go back to the home screen
         },
       ),
-      body: _body(),
+      body: SingleChildScrollView(
+        child: _body(),
+      ),
     );
   }
 
@@ -39,6 +41,8 @@ class _PaymentPageState extends State<PaymentPage> {
         children: [
           // Payment method
           _paymentMethod(),
+
+          const SizedBox(height: 32),
 
           // Order summary & button to confirm the order
           _orderSummary(),
