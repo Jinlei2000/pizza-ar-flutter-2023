@@ -19,16 +19,10 @@ class CustomSafeArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: MyColors.background,
-      child: AnnotatedRegion(
-        value: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-        child: SafeArea(
-          top: top,
-          bottom: bottom,
-          child: child,
-        ),
+      child: SafeArea(
+        top: top,
+        bottom: bottom,
+        child: child,
       ),
     );
   }
