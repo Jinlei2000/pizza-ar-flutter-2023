@@ -52,6 +52,7 @@ class _PaymentPageState extends State<PaymentPage> {
           _paymentMethod(),
 
           const SizedBox(height: 32),
+          const Spacer(),
 
           // Order summary & button to confirm the order
           _orderSummary(),
