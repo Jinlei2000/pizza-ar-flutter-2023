@@ -1,6 +1,7 @@
 // home.dart
 import 'package:bitz/components/avatar_image.dart';
 import 'package:bitz/components/button.dart';
+import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/models/tab_navigation_model.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(context),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 112),
-        child: _body(),
+      body: MyCustomScrollBar(
+        bottomPadding: 112,
+        child: Column(
+          children: [
+            _appBar(context),
+            _body(),
+          ],
+        ),
       ),
       floatingActionButton: _floatingActionButton(context),
       floatingActionButtonLocation:

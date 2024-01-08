@@ -1,4 +1,5 @@
 // main.dart
+import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/screens/other/order/order_detail.dart';
 import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';
@@ -24,8 +25,7 @@ class MyApp extends StatelessWidget {
       // Hide debug banner
       debugShowCheckedModeBanner: false,
 
-      // home: const BottomNavigation(),
-      home: const PaymentPage(),
+      home: const BottomNavigation(),
       initialRoute: '/',
       routes: _routes,
 
