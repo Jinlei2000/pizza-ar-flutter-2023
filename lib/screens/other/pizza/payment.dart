@@ -28,7 +28,7 @@ class _PaymentPageState extends State<PaymentPage> {
           },
         ),
         body: CustomScrollView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           slivers: [
             SliverFillRemaining(
               hasScrollBody: false,
