@@ -18,20 +18,23 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          title: 'Payment',
-          onDeleteTap: () {
-            // TODO: Delete the current item & go back to the home screen
-          },
-        ),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: _body(),
-            ),
-          ],
+    return Container(
+      color: MyColors.background,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: CustomAppBar(
+            title: 'Payment',
+            onDeleteTap: () {
+              // TODO: Delete the current item & go back to the home screen
+            },
+          ),
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: _body(),
+              ),
+            ],
+          ),
         ),
       ),
     );
