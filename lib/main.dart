@@ -1,5 +1,4 @@
 // main.dart
-import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/screens/other/order/order_detail.dart';
 import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';

@@ -1,7 +1,6 @@
 // custom_safe_area.dart
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CustomSafeArea extends StatelessWidget {
   const CustomSafeArea({
