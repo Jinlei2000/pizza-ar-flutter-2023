@@ -1,6 +1,7 @@
 // payment.dart
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
+import 'package:bitz/components/custom_view.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -25,8 +26,8 @@ class _PaymentPageState extends State<PaymentPage> {
           // TODO: Delete the current item & go back to the home screen
         },
       ),
-      body: SingleChildScrollView(
-        child: _body(),
+      body: CustomView(
+        body: _body(),
       ),
     );
   }

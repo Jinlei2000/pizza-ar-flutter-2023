@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
       // Hide debug banner
       debugShowCheckedModeBanner: false,
 
-      home: const SafeArea(child: const BottomNavigation()),
-      // home: const PaymentPage(),
+      // home: const BottomNavigation(),
+      home: const PaymentPage(),
       initialRoute: '/',
       routes: _routes,
 
