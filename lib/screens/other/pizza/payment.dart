@@ -2,6 +2,7 @@
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
+import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -27,14 +28,8 @@ class _PaymentPageState extends State<PaymentPage> {
             // TODO: Delete the current item & go back to the home screen
           },
         ),
-        body: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: _body(),
-            ),
-          ],
+        body: MyCustomScrollBar(
+          child: _body(),
         ),
       ),
     );
