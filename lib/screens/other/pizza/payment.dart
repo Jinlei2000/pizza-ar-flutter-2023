@@ -1,7 +1,6 @@
 // payment.dart
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
-import 'package:bitz/components/custom_view.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -19,15 +18,21 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Payment',
-        onDeleteTap: () {
-          // TODO: Delete the current item & go back to the home screen
-        },
-      ),
-      body: CustomView(
-        body: _body(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: CustomAppBar(
+          title: 'Payment',
+          onDeleteTap: () {
+            // TODO: Delete the current item & go back to the home screen
+          },
+        ),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: _body(),
+            ),
+          ],
+        ),
       ),
     );
   }
