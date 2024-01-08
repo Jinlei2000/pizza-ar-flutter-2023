@@ -28,8 +28,10 @@ class _PaymentPageState extends State<PaymentPage> {
           },
         ),
         body: CustomScrollView(
+          physics: NeverScrollableScrollPhysics(),
           slivers: [
-            SliverToBoxAdapter(
+            SliverFillRemaining(
+              hasScrollBody: false,
               child: _body(),
             ),
           ],
@@ -40,17 +42,15 @@ class _PaymentPageState extends State<PaymentPage> {
 
   Widget _body() {
     return Container(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-      height: MediaQuery.of(context).size.height - 56,
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Payment method
           _paymentMethod(),
 
           const SizedBox(height: 32),
-          const Spacer(),
+          const Spacer(flex: 2),
 
           // Order summary & button to confirm the order
           _orderSummary(),
@@ -118,7 +118,6 @@ class _PaymentPageState extends State<PaymentPage> {
             // TODO: Place the order & go back to the home screen
           },
         ),
-        const SizedBox(height: 32),
       ],
     );
   }
