@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
       // set Inter as the default font
       fontFamily: 'Inter',
       appBarTheme: const AppBarTheme(
-          // systemOverlayStyle: SystemUiOverlayStyle.dark,
-          ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
     );
   }
 
