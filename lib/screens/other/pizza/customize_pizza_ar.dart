@@ -159,8 +159,23 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     );
   }
 
+  // Add object with plane anchor detected at the beginning
+  // when tapping object will be moved to the new position
   void onARKitViewCreated(ARKitController arkitController) {
     this.arkitController = arkitController;
+
+    // Add coaching overlay for horizontal planes
+    arkitController.addCoachingOverlay(CoachingOverlayGoal.horizontalPlane);
+
+    // Set up the initial placement when a plane anchor is detected
+    this.arkitController.onAddNodeForAnchor = (ARKitAnchor anchor) {
+      // print("Anchor detected: $anchor");
+      if (anchor is ARKitPlaneAnchor) {
+        _addInitialObject(anchor);
+      }
+    };
+
+    // Allow changing position on tap
     this.arkitController.onARTap = (ar) {
       final point = ar.firstWhereOrNull(
         (o) => o.type == ARKitHitTestResultType.featurePoint,
@@ -169,7 +184,17 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         _onARTapHandler(point);
       }
     };
-    arkitController.addCoachingOverlay(CoachingOverlayGoal.horizontalPlane);
+  }
+
+  void _addInitialObject(ARKitPlaneAnchor anchor) {
+    // print("Adding initial object at position: ${anchor.center}");
+
+    if (node != null) {
+      arkitController.remove(node!.name);
+    }
+
+    node = _getNodeFromFlutterAsset(anchor.center);
+    arkitController.add(node!, parentNodeName: anchor.nodeName);
   }
 
   void _onARTapHandler(ARKitTestResult point) {
@@ -179,14 +204,18 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       point.worldTransform.getColumn(3).z,
     );
 
-    print("Tap at position: $position");
+    // print("Tap at position: $position");
 
-    final node = _getNodeFromFlutterAsset(position);
-    arkitController.add(node);
+    if (node != null) {
+      // Move the existing node to the new tap position
+      arkitController.remove(node!.name);
+    }
+
+    node = _getNodeFromFlutterAsset(position);
+    arkitController.add(node!);
   }
 
   ARKitGltfNode _getNodeFromFlutterAsset(vector.Vector3 position) {
-    print("Loading node from Flutter Asset");
     return ARKitGltfNode(
       assetType: AssetType.flutterAsset,
       // Box model from
@@ -195,38 +224,4 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       position: position,
     );
   }
-
-  // void onARKitViewCreated(ARKitController arkitController) {
-  //   this.arkitController = arkitController;
-  //   // Add coaching overlay for horizontal planes
-  //   arkitController.addCoachingOverlay(CoachingOverlayGoal.horizontalPlane);
-  //   arkitController.onAddNodeForAnchor = _handleAddAnchor;
-  // }
-
-  // void _handleAddAnchor(ARKitAnchor anchor) {
-  //   print("Anchor detected: $anchor");
-  //   if (anchor is ARKitPlaneAnchor) {
-  //     _addPlane(arkitController, anchor);
-  //   }
-  // }
-
-  // void _addPlane(ARKitController controller, ARKitPlaneAnchor anchor) {
-  //   print("Adding plane at position: ${anchor.center}");
-  //   if (node != null) {
-  //     controller.remove(node!.name);
-  //   }
-
-  //   node = ARKitGltfNode(
-  //     assetType: AssetType.flutterAsset,
-  //     // Box model from
-  //     url: 'assets/models/Box.gltf',
-  //     scale: vector.Vector3.all(0.1),
-  //     position: vector.Vector3(
-  //       anchor.center.x,
-  //       anchor.center.y,
-  //       anchor.center.z - 0.5,
-  //     ),
-  //   );
-  //   controller.add(node!, parentNodeName: anchor.nodeName);
-  // }
 }
