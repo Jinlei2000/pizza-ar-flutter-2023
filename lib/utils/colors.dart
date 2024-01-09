@@ -50,4 +50,5 @@ class MyColors {
 
   // AppBar Colors
   static const Color appBarBackButton = gray50;
+  static Color appBarBlur = gray900.withOpacity(0.2);
 }

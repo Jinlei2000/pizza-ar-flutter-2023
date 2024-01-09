@@ -29,10 +29,10 @@ class PizzaPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height: 80),
           // Pizza Maker Illustration
           SvgPicture.asset(
             'assets/illustrations/pizza_maker.svg',

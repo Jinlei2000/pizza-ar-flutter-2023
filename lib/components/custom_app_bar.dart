@@ -4,11 +4,13 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool transparent;
   final Function()? onDeleteTap;
 
   const CustomAppBar({
     Key? key,
     required this.title,
+    this.transparent = false,
     this.onDeleteTap,
   }) : super(key: key);
 
@@ -19,39 +21,43 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       forceMaterialTransparency: true,
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
-      flexibleSpace: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Row(
-          children: [
-            // Back button
-            _buildIconButton(
-              icon: LucideIcons.arrowLeft,
-              onTap: () => {
-                // Go back to the previous screen
-                Navigator.pop(context),
-              },
-            ),
-
-            // Title
-            const SizedBox(width: 16),
-            Text(
-              title,
-              style: const TextStyle(
-                color: MyColors.gray950,
-                fontWeight: FontWeight.w500,
-                fontSize: 25,
-              ),
-            ),
-
-            // Delete button
-            const Spacer(),
-            if (onDeleteTap != null)
+      flexibleSpace: SafeArea(
+        top: true,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              // Back button
               _buildIconButton(
-                icon: LucideIcons.trash2,
-                onTap: onDeleteTap!,
+                icon: LucideIcons.arrowLeft,
+                onTap: () => {
+                  // Go back to the previous screen
+                  Navigator.pop(context),
+                },
               ),
-          ],
+
+              // Title
+              const SizedBox(width: 16),
+              Text(
+                title,
+                style: TextStyle(
+                  color: transparent ? Colors.white : MyColors.textPrimary,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 25,
+                ),
+              ),
+
+              // Delete button
+              const Spacer(),
+              if (onDeleteTap != null)
+                _buildIconButton(
+                  icon: LucideIcons.trash2,
+                  onTap: onDeleteTap!,
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -61,7 +67,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: MyColors.appBarBackButton,
+        color: transparent ? MyColors.appBarBlur : MyColors.appBarBackButton,
         borderRadius: BorderRadius.circular(100),
         border: Border.all(
           color: MyColors.borderColor,

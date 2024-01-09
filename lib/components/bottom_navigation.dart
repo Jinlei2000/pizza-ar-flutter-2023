@@ -1,5 +1,8 @@
 // bottom_navigation.dart
 import 'package:bitz/models/tab_navigation_model.dart';
+import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
+import 'package:bitz/screens/other/pizza/overview_order.dart';
+import 'package:bitz/screens/other/pizza/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
