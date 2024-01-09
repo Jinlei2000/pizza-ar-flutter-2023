@@ -12,6 +12,7 @@ class CustomizePizzaArPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomSafeArea(
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: const CustomAppBar(
           title: 'Size',
         ),
@@ -20,33 +21,24 @@ class CustomizePizzaArPage extends StatelessWidget {
             Expanded(
               child: ARKitSceneView(onARKitViewCreated: onARKitViewCreated),
             ),
-            _buildButtons(context),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text('Back'),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text('Next'),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildButtons(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              // Handle button press
-            },
-            child: const Text('Button 1'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Handle button press
-            },
-            child: const Text('Button 2'),
-          ),
-        ],
       ),
     );
   }
