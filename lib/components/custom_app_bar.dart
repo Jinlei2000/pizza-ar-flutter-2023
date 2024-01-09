@@ -67,18 +67,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: transparent ? MyColors.appBarBlur : MyColors.appBarBackButton,
-        borderRadius: BorderRadius.circular(100),
+        color: transparent ? MyColors.blur : MyColors.appBarBackButton,
         border: Border.all(
           color: MyColors.borderColor,
           width: 0.5,
         ),
+        borderRadius: BorderRadius.circular(100),
       ),
       child: GestureDetector(
         onTap: onTap,
         child: Icon(
           icon,
-          color: MyColors.gray950,
+          color: transparent ? Colors.white : MyColors.gray950,
           size: 24,
         ),
       ),

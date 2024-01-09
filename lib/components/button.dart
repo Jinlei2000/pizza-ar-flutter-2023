@@ -16,8 +16,7 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
+    return SizedBox(      width: double.infinity,
       height: 56,
       child: TextButton(
         onPressed: onPressed,

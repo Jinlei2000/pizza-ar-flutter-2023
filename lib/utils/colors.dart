@@ -50,5 +50,15 @@ class MyColors {
 
   // AppBar Colors
   static const Color appBarBackButton = gray50;
-  static Color appBarBlur = gray900.withOpacity(0.2);
+  static Color appBarBlur = blur;
+
+  // Blur Colors
+  static Color blur = gray900.withOpacity(0.5);
+
+  // Pizza Item Colors
+  static Color pizzaItem = blur;
+  static Color pizzaItemSelected = green.withOpacity(0.50);
+  static Color pizzaItemBorder = green;
+  static Color pizzaItemText = gray100.withOpacity(0.75);
+  static Color pizzaItemTextSelected = gray100;
 }
