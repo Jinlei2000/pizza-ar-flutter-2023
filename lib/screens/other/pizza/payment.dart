@@ -1,6 +1,8 @@
 // payment.dart
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
+import 'package:bitz/components/custom_safe_area.dart';
+import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -18,31 +20,32 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Payment',
-        onDeleteTap: () {
-          // TODO: Delete the current item & go back to the home screen
-        },
-      ),
-      body: SingleChildScrollView(
-        child: _body(),
+    return CustomSafeArea(
+      child: Scaffold(
+        appBar: CustomAppBar(
+          title: 'Payment',
+          onDeleteTap: () {
+            // TODO: Delete the current item & go back to the home screen
+          },
+        ),
+        body: MyCustomScrollBar(
+          child: _body(),
+        ),
       ),
     );
   }
 
   Widget _body() {
     return Container(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-      height: MediaQuery.of(context).size.height - 56,
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Payment method
           _paymentMethod(),
 
           const SizedBox(height: 32),
+          const Spacer(flex: 2),
 
           // Order summary & button to confirm the order
           _orderSummary(),
@@ -110,7 +113,6 @@ class _PaymentPageState extends State<PaymentPage> {
             // TODO: Place the order & go back to the home screen
           },
         ),
-        const SizedBox(height: 32),
       ],
     );
   }

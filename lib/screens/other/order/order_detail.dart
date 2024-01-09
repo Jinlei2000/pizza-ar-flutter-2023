@@ -1,6 +1,5 @@
 // order_detail.dart
 import 'package:bitz/components/custom_app_bar.dart';
-import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailPage extends StatelessWidget {

@@ -1,4 +1,5 @@
 // order.dart
+import 'package:bitz/components/custom_safe_area.dart';
 import 'package:flutter/material.dart';
 
 class OrderPage extends StatelessWidget {
@@ -18,8 +19,10 @@ class OrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Order Page')),
+    return const CustomSafeArea(
+      child: Scaffold(
+        body: Center(child: Text('Order Page')),
+      ),
     );
   }
 }

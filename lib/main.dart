@@ -10,6 +10,7 @@ import 'package:bitz/screens/tabs/pizza.dart';
 import 'package:bitz/screens/tabs/profile.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,8 +25,7 @@ class MyApp extends StatelessWidget {
       // Hide debug banner
       debugShowCheckedModeBanner: false,
 
-      // home: const BottomNavigation(),
-      home: const PaymentPage(),
+      home: const BottomNavigation(),
       initialRoute: '/',
       routes: _routes,
 
@@ -40,6 +40,9 @@ class MyApp extends StatelessWidget {
       colorScheme: const ColorScheme.light(background: MyColors.background),
       // set Inter as the default font
       fontFamily: 'Inter',
+      appBarTheme: const AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
     );
   }
 
