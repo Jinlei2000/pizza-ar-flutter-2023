@@ -1,5 +1,7 @@
 // pizza.dart
 import 'package:bitz/components/button.dart';
+import 'package:bitz/components/custom_safe_area.dart';
+import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +13,15 @@ class PizzaPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 112),
-        child: _body(context),
+    return CustomSafeArea(
+      child: Scaffold(
+        body: MyCustomScrollBar(
+          bottomPadding: 112,
+          child: _body(context),
+        ),
+        floatingActionButton: _floatingActionButton(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButton: _floatingActionButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -25,10 +29,10 @@ class PizzaPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height: 80),
           // Pizza Maker Illustration
           SvgPicture.asset(
             'assets/illustrations/pizza_maker.svg',

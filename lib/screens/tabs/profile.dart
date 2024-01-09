@@ -1,6 +1,8 @@
 // profile.dart
 import 'package:bitz/components/avatar_image.dart';
 import 'package:bitz/components/button.dart';
+import 'package:bitz/components/custom_safe_area.dart';
+import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -10,8 +12,12 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(child: _body()),
+    return CustomSafeArea(
+      child: Scaffold(
+        body: MyCustomScrollBar(
+          child: _body(),
+        ),
+      ),
     );
   }
 
@@ -33,9 +39,10 @@ class ProfilePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Profile image and name
-          const SizedBox(
+          Container(
             width: double.infinity,
-            child: Column(
+            color: Colors.transparent,
+            child: const Column(
               children: [
                 AvatarImage(
                     size: 136, imageUrl: 'https://i.pravatar.cc/300?img=52'),
@@ -75,52 +82,12 @@ class ProfilePage extends StatelessWidget {
                     width: 0.5,
                   ),
                 ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: accountItems.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: index == accountItems.length - 1
-                              ? BorderSide.none
-                              : const BorderSide(
-                                  color: MyColors.borderColor,
-                                  width: 0.5,
-                                ),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            accountItems[index]['icon'],
-                            size: 24,
-                            color: MyColors.textPrimary,
-                          ),
-                          const SizedBox(width: 16),
-                          Text(
-                            accountItems[index]['title'],
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: MyColors.textPrimary,
-                            ),
-                          ),
-                          const Spacer(),
-                          const Icon(
-                            LucideIcons.chevronRight,
-                            color: MyColors.textSecondary,
-                            size: 24,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                child: Column(
+                  children: [
+                    _profileItem(0, accountItems),
+                    _profileItem(1, accountItems),
+                    _profileItem(2, accountItems),
+                  ],
                 ),
               ),
             ],
@@ -146,60 +113,19 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: MyColors.borderColor,
-                    width: 1,
+                    width: 0.5,
                   ),
                 ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: personalizationItems.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: index == personalizationItems.length - 1
-                              ? BorderSide.none
-                              : const BorderSide(
-                                  color: MyColors.borderColor,
-                                  width: 1,
-                                ),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            personalizationItems[index]['icon'],
-                            size: 24,
-                            color: MyColors.textPrimary,
-                          ),
-                          const SizedBox(width: 16),
-                          Text(
-                            personalizationItems[index]['title'],
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: MyColors.textPrimary,
-                            ),
-                          ),
-                          const Spacer(),
-                          const Icon(
-                            LucideIcons.chevronRight,
-                            color: MyColors.textSecondary,
-                            size: 24,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                child: Column(
+                  children: [
+                    _profileItem(0, personalizationItems),
+                    _profileItem(1, personalizationItems),
+                  ],
                 ),
               ),
             ],
           ),
-          // Logout
+          // // Logout
           const SizedBox(height: 32),
           Container(
             margin: const EdgeInsets.only(bottom: 24),
@@ -208,6 +134,49 @@ class ProfilePage extends StatelessWidget {
               color: MyColors.red,
               onPressed: () {},
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _profileItem(int index, List<Map<String, dynamic>> items) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 16,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: index == items.length - 1
+              ? BorderSide.none
+              : const BorderSide(
+                  color: MyColors.borderColor,
+                  width: 0.5,
+                ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            items[index]['icon'],
+            size: 24,
+            color: MyColors.textPrimary,
+          ),
+          const SizedBox(width: 16),
+          Text(
+            items[index]['title'],
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: MyColors.textPrimary,
+            ),
+          ),
+          const Spacer(),
+          const Icon(
+            LucideIcons.chevronRight,
+            color: MyColors.textSecondary,
+            size: 24,
           ),
         ],
       ),
