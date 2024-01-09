@@ -39,6 +39,7 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   provider: ^6.1.1
   intl: ^0.19.0
+  arkit_plugin: ^1.0.7
 
 dev_dependencies:
   flutter_test:
