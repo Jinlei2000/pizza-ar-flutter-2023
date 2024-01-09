@@ -1,7 +1,8 @@
 // customize_pizza_ar.dart
+import 'package:bitz/components/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:arkit_plugin/arkit_plugin.dart';
-import 'package:vector_math/vector_math_64.dart';
+import 'package:vector_math/vector_math_64.dart' as vector_math;
 
 class CustomizePizzaArPage extends StatelessWidget {
   const CustomizePizzaArPage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class CustomizePizzaArPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
+      appBar: const CustomAppBar(
+        title: 'Size',
       ),
       body: Column(
         children: [
@@ -25,6 +26,7 @@ class CustomizePizzaArPage extends StatelessWidget {
 
   Widget _buildButtons(BuildContext context) {
     return Container(
+      color: Colors.transparent,
       padding: const EdgeInsets.all(16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -49,7 +51,7 @@ class CustomizePizzaArPage extends StatelessWidget {
   void onARKitViewCreated(ARKitController arkitController) {
     final node = ARKitNode(
       geometry: ARKitSphere(radius: 0.1),
-      position: Vector3(0, 0, -0.5),
+      position: vector_math.Vector3(0, 0, -0.5),
     );
     arkitController.add(node);
   }
