@@ -1,5 +1,6 @@
 // customize_pizza_ar.dart
 import 'package:bitz/components/custom_app_bar.dart';
+import 'package:bitz/components/custom_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:arkit_plugin/arkit_plugin.dart';
 import 'package:vector_math/vector_math_64.dart' as vector_math;
@@ -9,17 +10,19 @@ class CustomizePizzaArPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Size',
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ARKitSceneView(onARKitViewCreated: onARKitViewCreated),
-          ),
-          _buildButtons(context),
-        ],
+    return CustomSafeArea(
+      child: Scaffold(
+        appBar: const CustomAppBar(
+          title: 'Size',
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: ARKitSceneView(onARKitViewCreated: onARKitViewCreated),
+            ),
+            _buildButtons(context),
+          ],
+        ),
       ),
     );
   }
