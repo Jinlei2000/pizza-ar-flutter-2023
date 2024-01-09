@@ -1,6 +1,7 @@
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/utils/colors.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:arkit_plugin/arkit_plugin.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
@@ -17,7 +18,13 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   // ARKit
   late ARKitController arkitController;
-  ARKitReferenceNode? node;
+  ARKitGltfNode? node;
+
+  @override
+  void dispose() {
+    arkitController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +39,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           // ARKitSceneView
           ARKitSceneView(
             showFeaturePoints: true,
+            enableTapRecognizer: true,
             planeDetection: ARPlaneDetection.horizontal,
             onARKitViewCreated: onARKitViewCreated,
           ),
@@ -72,29 +80,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         ],
       ),
     );
-  }
-
-  void onARKitViewCreated(ARKitController arkitController) {
-    this.arkitController = arkitController;
-    arkitController.addCoachingOverlay(CoachingOverlayGoal.horizontalPlane);
-    arkitController.onAddNodeForAnchor = _handleAddAnchor;
-  }
-
-  void _handleAddAnchor(ARKitAnchor anchor) {
-    if (anchor is ARKitPlaneAnchor) {
-      _addPlane(arkitController, anchor);
-    }
-  }
-
-  void _addPlane(ARKitController controller, ARKitPlaneAnchor anchor) {
-    if (node != null) {
-      controller.remove(node!.name);
-    }
-    node = ARKitReferenceNode(
-      url: 'models.scnassets/dash.dae',
-      scale: vector.Vector3.all(0.3),
-    );
-    controller.add(node!, parentNodeName: anchor.nodeName);
   }
 
   Widget _buildSizeButton(String size) {
@@ -173,4 +158,75 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       ],
     );
   }
+
+  void onARKitViewCreated(ARKitController arkitController) {
+    this.arkitController = arkitController;
+    this.arkitController.onARTap = (ar) {
+      final point = ar.firstWhereOrNull(
+        (o) => o.type == ARKitHitTestResultType.featurePoint,
+      );
+      if (point != null) {
+        _onARTapHandler(point);
+      }
+    };
+    arkitController.addCoachingOverlay(CoachingOverlayGoal.horizontalPlane);
+  }
+
+  void _onARTapHandler(ARKitTestResult point) {
+    final position = vector.Vector3(
+      point.worldTransform.getColumn(3).x,
+      point.worldTransform.getColumn(3).y,
+      point.worldTransform.getColumn(3).z,
+    );
+
+    print("Tap at position: $position");
+
+    final node = _getNodeFromFlutterAsset(position);
+    arkitController.add(node);
+  }
+
+  ARKitGltfNode _getNodeFromFlutterAsset(vector.Vector3 position) {
+    print("Loading node from Flutter Asset");
+    return ARKitGltfNode(
+      assetType: AssetType.flutterAsset,
+      // Box model from
+      url: 'assets/models/Box.gltf',
+      scale: vector.Vector3.all(0.1),
+      position: position,
+    );
+  }
+
+  // void onARKitViewCreated(ARKitController arkitController) {
+  //   this.arkitController = arkitController;
+  //   // Add coaching overlay for horizontal planes
+  //   arkitController.addCoachingOverlay(CoachingOverlayGoal.horizontalPlane);
+  //   arkitController.onAddNodeForAnchor = _handleAddAnchor;
+  // }
+
+  // void _handleAddAnchor(ARKitAnchor anchor) {
+  //   print("Anchor detected: $anchor");
+  //   if (anchor is ARKitPlaneAnchor) {
+  //     _addPlane(arkitController, anchor);
+  //   }
+  // }
+
+  // void _addPlane(ARKitController controller, ARKitPlaneAnchor anchor) {
+  //   print("Adding plane at position: ${anchor.center}");
+  //   if (node != null) {
+  //     controller.remove(node!.name);
+  //   }
+
+  //   node = ARKitGltfNode(
+  //     assetType: AssetType.flutterAsset,
+  //     // Box model from
+  //     url: 'assets/models/Box.gltf',
+  //     scale: vector.Vector3.all(0.1),
+  //     position: vector.Vector3(
+  //       anchor.center.x,
+  //       anchor.center.y,
+  //       anchor.center.z - 0.5,
+  //     ),
+  //   );
+  //   controller.add(node!, parentNodeName: anchor.nodeName);
+  // }
 }
