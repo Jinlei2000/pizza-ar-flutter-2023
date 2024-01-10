@@ -41,6 +41,7 @@ dependencies:
   intl: ^0.19.0
   arkit_plugin: ^1.0.7
   vector_math: ^2.1.4
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
     - assets/images/
     - assets/illustrations/
     - assets/fonts/
+    - assets/models/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

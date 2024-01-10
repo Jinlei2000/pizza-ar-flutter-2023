@@ -6,10 +6,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool transparent;
   final Function()? onDeleteTap;
+  final Function()? onBackTap;
 
   const CustomAppBar({
     Key? key,
     required this.title,
+    this.onBackTap,
     this.transparent = false,
     this.onDeleteTap,
   }) : super(key: key);
@@ -32,7 +34,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               // Back button
               _buildIconButton(
                 icon: LucideIcons.arrowLeft,
-                onTap: () => {
+                onTap: onBackTap ?? () => {
                   // Go back to the previous screen
                   Navigator.pop(context),
                 },
