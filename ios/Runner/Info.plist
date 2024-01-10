@@ -3,7 +3,8 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Transform pizza customization into an interactive adventure using augmented reality technology.</string>
+	<string>Camera permission is required for AR</string>
+	
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

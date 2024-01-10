@@ -1,9 +1,11 @@
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
+import 'package:bitz/screens/other/pizza/overview_order.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:arkit_plugin/arkit_plugin.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class CustomizePizzaArPage extends StatefulWidget {
@@ -15,6 +17,23 @@ class CustomizePizzaArPage extends StatefulWidget {
 
 class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   String selectedSize = "S";
+  double totalPrice = 5;
+  int pageIndex = 0;
+
+  // Pages
+  final List<Map<String, dynamic>> pages = [
+    {'index': 0, 'title': 'Size'},
+    {'index': 1, 'title': 'Sauce'},
+    {'index': 2, 'title': 'Cheese'},
+    {'index': 3, 'title': 'Toppings'},
+  ];
+
+  // Pizza Sizes
+  final List<Map<String, dynamic>> pizzaSizes = [
+    {'size': 'S', 'price': 5, 'scale': 0.3},
+    {'size': 'M', 'price': 10, 'scale': 0.4},
+    {'size': 'L', 'price': 15, 'scale': 0.6},
+  ];
 
   // ARKit
   late ARKitController arkitController;
@@ -30,15 +49,16 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         transparent: true,
-        title: 'Size',
+        title: pages[pageIndex]['title'],
+        onBackTap: () => _handleBackButton(),
       ),
       body: Stack(
         children: [
           // ARKitSceneView
           ARKitSceneView(
-            showFeaturePoints: true,
+            // showFeaturePoints: true,
             enableTapRecognizer: true,
             planeDetection: ARPlaneDetection.horizontal,
             onARKitViewCreated: onARKitViewCreated,
@@ -54,23 +74,29 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Pizza Sizes
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSizeButton('S'),
-                      const SizedBox(width: 16),
-                      _buildSizeButton('M'),
-                      const SizedBox(width: 16),
-                      _buildSizeButton('L'),
-                    ],
-                  ),
+                  if (pageIndex == 0) _buildPizzaSize(),
+
+                  // Price & Next Button
                   const SizedBox(height: 24),
-                  // Price & Next Sauce
                   _buildPriceAndNextButton(
-                    '€ 9.99',
-                    'Next Sauce',
+                    '€ $totalPrice',
+                    'Next',
                     () {
-                      // TODO: Navigate to next sauce
+                      if (pageIndex == 3) {
+                        // Navigate to Overview Order Page
+                        PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          screen: const OverviewOrderPage(),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
+                        );
+                      } else {
+                        // Go to next page
+                        setState(() {
+                          pageIndex++;
+                        });
+                      }
                     },
                   ),
                 ],
@@ -82,40 +108,70 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     );
   }
 
-  Widget _buildSizeButton(String size) {
-    bool isSelected = selectedSize == size;
+  // Handle Back Button
+  void _handleBackButton() {
+    if (pageIndex > 0) {
+      setState(() {
+        if (pageIndex == 1) {
+          // TODO: remove sauce
+        } else if (pageIndex == 2) {
+          // TODO: remove cheese
+        } else if (pageIndex == 3) {
+          // TODO: remove toppings
+        }
+        pageIndex--;
+      });
+    } else {
+      // Go back to the previous screen
+      Navigator.pop(context);
+    }
+  }
 
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          if (!isSelected) {
-            selectedSize = size;
-          }
-        });
-      },
-      child: Container(
-        height: 56,
-        width: 56,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: isSelected ? MyColors.pizzaItemSelected : MyColors.pizzaItem,
-          border: Border.all(
-            color: isSelected ? MyColors.pizzaItemBorder : MyColors.borderColor,
-            width: 0.5,
+  // Select Pizza Size
+  Widget _buildPizzaSize() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: pizzaSizes.map((size) {
+        bool isSelected = selectedSize == size['size'];
+
+        return GestureDetector(
+          onTap: () {
+            if (!isSelected) {
+              setState(() {
+                selectedSize = size['size'].toString();
+                _updatePizzaSizeAndPrice();
+              });
+            }
+          },
+          child: Container(
+            height: 56,
+            width: 56,
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color:
+                  isSelected ? MyColors.pizzaItemSelected : MyColors.pizzaItem,
+              border: Border.all(
+                color: isSelected
+                    ? MyColors.pizzaItemBorder
+                    : MyColors.borderColor,
+                width: 0.5,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              size['size'].toString(),
+              style: TextStyle(
+                color: isSelected
+                    ? MyColors.pizzaItemTextSelected
+                    : MyColors.pizzaItemText,
+                fontSize: 22,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
           ),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          size,
-          style: TextStyle(
-            color: isSelected
-                ? MyColors.pizzaItemTextSelected
-                : MyColors.pizzaItemText,
-            fontSize: 22,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
+        );
+      }).toList(),
     );
   }
 
@@ -149,7 +205,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         // Next Button
         Expanded(
           child: Button(
-            text: 'Next Sauce',
+            text: nextButtonTitle,
             onPressed: () {
               nextButtonOnPressed();
             },
@@ -157,6 +213,29 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         ),
       ],
     );
+  }
+
+  // Update Size & Price
+  void _updatePizzaSizeAndPrice() {
+    final pizzaSize = pizzaSizes.firstWhere(
+      (size) => size['size'] == selectedSize,
+      orElse: () => pizzaSizes[0],
+    );
+
+    final double scaleValue = pizzaSize['scale'];
+
+    node?.scale = vector.Vector3.all(scaleValue);
+
+    if (node != null) {
+      arkitController
+        ..remove(node!.name)
+        ..add(node!);
+    }
+
+    // Update total price
+    setState(() {
+      totalPrice = pizzaSize['price'].toDouble();
+    });
   }
 
   // Add object with plane anchor detected at the beginning
@@ -169,7 +248,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
     // Set up the initial placement when a plane anchor is detected
     this.arkitController.onAddNodeForAnchor = (ARKitAnchor anchor) {
-      // print("Anchor detected: $anchor");
       if (anchor is ARKitPlaneAnchor) {
         _addInitialObject(anchor);
       }
@@ -216,11 +294,25 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   }
 
   ARKitGltfNode _getNodeFromFlutterAsset(vector.Vector3 position) {
+    // remove coach overlay
+    arkitController.removeCoachingOverlay();
+
+    final double scaleValue = (pizzaSizes.firstWhere(
+      (size) => size['size'] == selectedSize,
+      orElse: () => pizzaSizes[0],
+    ))['scale'];
+
+    // Add the pizza dough with the updated scale
     return ARKitGltfNode(
+      light: ARKitLight(
+        type: ARKitLightType.ambient,
+        color: Colors.white,
+        intensity: 500,
+      ),
+      name: 'dough',
       assetType: AssetType.flutterAsset,
-      // Box model from
-      url: 'assets/models/Box.gltf',
-      scale: vector.Vector3.all(0.1),
+      url: 'assets/models/Dough.glb',
+      scale: vector.Vector3.all(scaleValue),
       position: position,
     );
   }
