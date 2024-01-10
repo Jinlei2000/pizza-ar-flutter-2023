@@ -61,4 +61,9 @@ class MyColors {
   static Color pizzaItemBorder = green;
   static Color pizzaItemText = gray100.withOpacity(0.75);
   static Color pizzaItemTextSelected = gray100;
+
+  // Pizza Sauce Colors
+  static const Color tomatoSauce = Color(0xFFB21807);
+  static const Color bbqSauce = Color(0xFF551D19);
+  static const Color creamSauce = Color(0xFFFCFAF2);
 }

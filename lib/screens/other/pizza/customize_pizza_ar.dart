@@ -35,6 +35,74 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     {'size': 'L', 'price': 15, 'scale': 0.6},
   ];
 
+  // Pizza Sauces
+  final List<Map<String, dynamic>> pizzaSauces = [
+    {'name': 'Tomato', 'price': 0.5, 'color': MyColors.tomatoSauce},
+    {'name': 'Bbq', 'price': 0.5, 'color': MyColors.bbqSauce},
+    {'name': 'Cream', 'price': 0.5, 'color': MyColors.creamSauce},
+  ];
+
+  // Pizza Cheeses
+  final List<Map<String, dynamic>> pizzaCheeses = [
+    {
+      'name': 'Mozzarella',
+      'price': 0.5,
+      'path': 'assets/images/ingredients/mozzarella.png'
+    },
+    {
+      'name': 'Cheddar',
+      'price': 0.5,
+      'path': 'assets/images/ingredients/cheddar.png'
+    },
+    {
+      'name': 'Emmental',
+      'price': 0.5,
+      'path': 'assets/images/ingredients/emmental.png'
+    },
+  ];
+
+  // Pizza Toppings
+  final List<Map<String, dynamic>> pizzaToppings = [
+    // Vegetables
+    {
+      'name': 'Tomatoes',
+      'price': 1,
+      'path': 'assets/images/ingredients/tomato.png'
+    },
+    {
+      'name': 'Pepper',
+      'price': 1,
+      'path': 'assets/images/ingredients/pepper.png'
+    },
+    {
+      'name': 'Onion',
+      'price': 1,
+      'path': 'assets/images/ingredients/onion.png'
+    },
+    {
+      'name': 'Mushroom',
+      'price': 1,
+      'path': 'assets/images/ingredients/mushroom.png'
+    },
+    {
+      'name': 'Olive',
+      'price': 1,
+      'path': 'assets/images/ingredients/olive.png'
+    },
+    // Meat
+    {
+      'name': 'Pepperoni',
+      'price': 2,
+      'path': 'assets/images/ingredients/pepperoni.png'
+    },
+    {'name': 'Ham', 'price': 2, 'path': 'assets/images/ingredients/ham.png'},
+    {
+      'name': 'Chicken',
+      'price': 2,
+      'path': 'assets/images/ingredients/chicken.png'
+    },
+  ];
+
   // ARKit
   late ARKitController arkitController;
   ARKitGltfNode? node;
