@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
       // Hide debug banner
       debugShowCheckedModeBanner: false,
 
-      // home: const BottomNavigation(),
-      home: const CustomizePizzaArPage(),
+      home: const BottomNavigation(),
+      // home: const CustomizePizzaArPage(),
       initialRoute: '/',
       routes: _routes,
 
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  // All routes in the app
+  // All routes in the apps
   Map<String, WidgetBuilder> get _routes {
     return {
       '/home': (context) => const HomePage(),
