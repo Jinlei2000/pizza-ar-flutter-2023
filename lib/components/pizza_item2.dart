@@ -31,7 +31,7 @@ class PizzaItem2 extends StatelessWidget {
       height: 56,
       width: 56,
       margin: const EdgeInsets.only(right: 16),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         color: isSelected ? MyColors.pizzaItemSelected : MyColors.pizzaItem,
@@ -41,7 +41,13 @@ class PizzaItem2 extends StatelessWidget {
         ),
       ),
       alignment: Alignment.center,
-      child: Image.asset(path),
+      child: Image(
+        image: AssetImage(
+          path,
+        ),
+        height: 48,
+        width: 48,
+      ),
     );
   }
 

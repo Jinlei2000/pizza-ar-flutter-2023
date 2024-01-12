@@ -82,7 +82,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     {
       'name': 'Emmental',
       'price': 0.5,
-      'path': 'assets/images/ingredients/emmental.png'
+      'path': 'assets/images/ingredients/elemental.png'
     },
   ];
 
@@ -471,6 +471,25 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     // Add the pizza dough
     doughNode = _loadDough(anchor.center);
     arkitController.add(doughNode!, parentNodeName: anchor.nodeName);
+
+    if (pageIndex > 0) {
+      if (sauceNode != null) {
+        arkitController.remove(sauceNode!.name);
+      }
+      if (selectedSauce != "") {
+        sauceNode = _loadSauce(anchor.center);
+        arkitController.add(sauceNode!, parentNodeName: anchor.nodeName);
+      }
+    } else if (pageIndex > 1) {
+      if (cheeseNode != null) {
+        arkitController.remove(cheeseNode!.name);
+      }
+
+      if (selectedCheese != "") {
+        cheeseNode = _loadCheese(anchor.center);
+        arkitController.add(cheeseNode!, parentNodeName: anchor.nodeName);
+      }
+    }
   }
 
   void _onARTapHandler(ARKitTestResult point) {
@@ -488,16 +507,19 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       if (sauceNode != null) {
         arkitController.remove(sauceNode!.name);
       }
-
-      sauceNode = _loadSauce(current['tapPosition']);
-      arkitController.add(sauceNode!);
+      if (selectedSauce != "") {
+        sauceNode = _loadSauce(current['tapPosition']);
+        arkitController.add(sauceNode!);
+      }
     } else if (pageIndex > 1) {
       if (cheeseNode != null) {
         arkitController.remove(cheeseNode!.name);
       }
 
-      cheeseNode = _loadCheese(current['tapPosition']);
-      arkitController.add(cheeseNode!);
+      if (selectedCheese != "") {
+        cheeseNode = _loadCheese(current['tapPosition']);
+        arkitController.add(cheeseNode!);
+      }
     }
   }
 
