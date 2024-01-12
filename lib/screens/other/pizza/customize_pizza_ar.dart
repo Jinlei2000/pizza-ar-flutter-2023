@@ -7,6 +7,7 @@ import 'package:bitz/utils/colors.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:arkit_plugin/arkit_plugin.dart';
+import 'package:flutter/services.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
@@ -72,17 +73,20 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     {
       'name': 'Mozzarella',
       'price': 0.5,
-      'path': 'assets/images/ingredients/mozzarella.png'
+      'imagePath': 'assets/images/ingredients/mozzarella.png',
+      'path': 'assets/models/mozzarella.glb'
     },
     {
       'name': 'Cheddar',
       'price': 0.5,
-      'path': 'assets/images/ingredients/cheddar.png'
+      'imagePath': 'assets/images/ingredients/cheddar.png',
+      'path': 'assets/models/cheddar.glb'
     },
     {
       'name': 'Emmental',
       'price': 0.5,
-      'path': 'assets/images/ingredients/elemental.png'
+      'imagePath': 'assets/images/ingredients/emmental.png',
+      'path': 'assets/models/emmental.glb'
     },
   ];
 
@@ -223,7 +227,10 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           currentPrices['sauce'] = 0;
           arkitController.remove(sauceNode!.name);
         } else if (pageIndex == 2) {
-          // TODO: remove cheese
+          // remove cheese and reset price
+          selectedCheese = "";
+          currentPrices['cheese'] = 0;
+          arkitController.remove(cheeseNode!.name);
         } else if (pageIndex == 3) {
           // TODO: remove toppings
         }
@@ -327,7 +334,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           },
           child: PizzaItem2(
             isSelected: isSelected,
-            path: cheese['path'].toString(),
+            path: cheese['imagePath'].toString(),
             name: cheese['name'].toString(),
           ),
         );
@@ -338,6 +345,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   // Select Pizza Toppings
   Widget _buildPizzaToppings() {
     return const Row(
+      // TODO: add toppings
       children: [],
     );
   }
@@ -427,7 +435,31 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   }
 
   // Update Cheese & Price
-  void _updateCheeseAndPrice() {}
+  void _updateCheeseAndPrice() {
+    final pizzaCheese = pizzaCheeses.firstWhere(
+      (cheese) => cheese['name'] == selectedCheese,
+      orElse: () => pizzaCheeses[0],
+    );
+
+    // Add cheese or Update cheese
+    if (cheeseNode != null) {
+      arkitController.remove(cheeseNode!.name);
+    }
+
+    if (current['anchor'] != null) {
+      cheeseNode = _loadCheese(current['anchor'].center);
+      arkitController.add(cheeseNode!,
+          parentNodeName: current['anchor'].nodeName);
+    } else {
+      cheeseNode = _loadCheese(current['tapPosition']);
+      arkitController.add(cheeseNode!);
+    }
+
+    // Update total price
+    setState(() {
+      currentPrices['cheese'] = pizzaCheese['price'].toDouble();
+    });
+  }
 
   // Add object with plane anchor detected at the beginning
   // when tapping object will be moved to the new position
@@ -527,6 +559,9 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     // remove coach overlay
     arkitController.removeCoachingOverlay();
 
+    // check path
+    rootBundle.load('assets/models/dough.glb');
+
     // Add the pizza dough with the updated scale
     return ARKitGltfNode(
       light: ARKitLight(
@@ -547,6 +582,9 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       (sauce) => sauce['name'] == selectedSauce,
       orElse: () => pizzaSauces[0],
     ))['path'];
+
+    // check path
+    rootBundle.load(saucePath);
 
     // Add the pizza sauce
     return ARKitGltfNode(
@@ -569,9 +607,12 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   ARKitGltfNode _loadCheese(vector.Vector3 position) {
     final String cheesePath = (pizzaCheeses.firstWhere(
-      (cheese) => cheese['name'] == selectedSauce,
+      (cheese) => cheese['name'] == selectedCheese,
       orElse: () => pizzaCheeses[0],
     ))['path'];
+
+    // check path
+    rootBundle.load(cheesePath);
 
     // Add the pizza cheese
     return ARKitGltfNode(
@@ -586,7 +627,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       scale: vector.Vector3.all(selectedScaleValue),
       position: vector.Vector3(
         position.x,
-        position.y + 0.0005,
+        position.y + 0.0002,
         position.z,
       ),
     );
