@@ -1,7 +1,6 @@
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/pizza_item.dart';
-import 'package:bitz/components/pizza_item2.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:collection/collection.dart';
@@ -161,7 +160,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         children: [
           // ARKitSceneView
           ARKitSceneView(
-            // showFeaturePoints: true,
             enableTapRecognizer: true,
             planeDetection: ARPlaneDetection.horizontal,
             onARKitViewCreated: onARKitViewCreated,
@@ -308,8 +306,8 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           },
           child: PizzaItem(
             isSelected: isSelected,
-            sauceName: sauce['name'].toString(),
-            sauceColor: sauce['color'] as Color,
+            name: sauce['name'].toString(),
+            color: sauce['color'] as Color,
           ),
         );
       }).toList(),
@@ -332,9 +330,9 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
               });
             }
           },
-          child: PizzaItem2(
+          child: PizzaItem(
             isSelected: isSelected,
-            path: cheese['imagePath'].toString(),
+            imagePath: cheese['imagePath'].toString(),
             name: cheese['name'].toString(),
           ),
         );
@@ -567,7 +565,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       light: ARKitLight(
         type: ARKitLightType.ambient,
         color: Colors.white,
-        intensity: 500,
+        intensity: 1000,
       ),
       name: 'dough',
       assetType: AssetType.flutterAsset,
@@ -588,11 +586,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
     // Add the pizza sauce
     return ARKitGltfNode(
-      light: ARKitLight(
-        type: ARKitLightType.ambient,
-        color: Colors.white,
-        intensity: 500,
-      ),
       name: 'sauce',
       assetType: AssetType.flutterAsset,
       url: saucePath,
@@ -616,11 +609,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
     // Add the pizza cheese
     return ARKitGltfNode(
-      light: ARKitLight(
-        type: ARKitLightType.ambient,
-        color: Colors.white,
-        intensity: 500,
-      ),
       name: 'cheese',
       assetType: AssetType.flutterAsset,
       url: cheesePath,
