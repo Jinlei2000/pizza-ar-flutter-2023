@@ -463,6 +463,11 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     });
   }
 
+  // Update Toppings & Price
+  void _updateToppingsAndPrice() {
+    
+  }
+
   // Add object with plane anchor detected at the beginning
   // when tapping object will be moved to the new position
   void onARKitViewCreated(ARKitController arkitController) {
@@ -496,7 +501,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   // Update nodes when tapping or moving
   void _updateNodes(bool isTapping) {
-    print('update nodes $pageIndex');
     if (!isTapping) {
       // Tapping
       // Add the pizza dough
