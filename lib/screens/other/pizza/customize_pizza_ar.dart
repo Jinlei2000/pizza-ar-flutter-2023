@@ -22,6 +22,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   double selectedScaleValue = 0.4;
   String selectedSauce = "";
   String selectedCheese = "";
+  List<String> selectedToppings = [];
   Map<String, double> currentPrices = {
     'size': 5,
     'sauce': 0,
@@ -230,6 +231,9 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           currentPrices['cheese'] = 0;
           arkitController.remove(cheeseNode!.name);
         } else if (pageIndex == 3) {
+          // remove toppings and reset price
+          selectedToppings = [];
+          currentPrices['toppings'] = 0;
           // TODO: remove toppings
         }
         pageIndex--;
@@ -463,92 +467,95 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   // when tapping object will be moved to the new position
   void onARKitViewCreated(ARKitController arkitController) {
     this.arkitController = arkitController;
-
-    // Add coaching overlay for horizontal planes
     arkitController.addCoachingOverlay(CoachingOverlayGoal.horizontalPlane);
-
-    // Set up the initial placement when a plane anchor is detected
-    this.arkitController.onAddNodeForAnchor = (ARKitAnchor anchor) {
-      if (anchor is ARKitPlaneAnchor) {
-        current['anchor'] = anchor;
-        current['tapPosition'] = null;
-        _addInitialObject(anchor);
-      }
-    };
-
-    // Allow changing position on tap
-    this.arkitController.onARTap = (ar) {
-      final point = ar.firstWhereOrNull(
-        (o) => o.type == ARKitHitTestResultType.featurePoint,
-      );
-      if (point != null) {
-        current['anchor'] = null;
-        current['tapPosition'] = vector.Vector3(
-          point.worldTransform.getColumn(3).x,
-          point.worldTransform.getColumn(3).y,
-          point.worldTransform.getColumn(3).z,
-        );
-        _onARTapHandler(point);
-      }
-    };
+    arkitController.onAddNodeForAnchor = handleInitialObjectPlacement;
+    arkitController.onARTap = handleARTap;
   }
 
-  void _addInitialObject(ARKitPlaneAnchor anchor) {
-    // print("Adding initial object at position: ${anchor.center}");
-
-    arkitController.remove('dough');
-
-    // Add the pizza dough
-    doughNode = _loadDough(anchor.center);
-    arkitController.add(doughNode!, parentNodeName: anchor.nodeName);
-
-    if (pageIndex > 0) {
-      if (sauceNode != null) {
-        arkitController.remove(sauceNode!.name);
-      }
-      if (selectedSauce != "") {
-        sauceNode = _loadSauce(anchor.center);
-        arkitController.add(sauceNode!, parentNodeName: anchor.nodeName);
-      }
-    } else if (pageIndex > 1) {
-      if (cheeseNode != null) {
-        arkitController.remove(cheeseNode!.name);
-      }
-
-      if (selectedCheese != "") {
-        cheeseNode = _loadCheese(anchor.center);
-        arkitController.add(cheeseNode!, parentNodeName: anchor.nodeName);
-      }
+  // Add object with plane anchor detected at the beginning
+  void handleInitialObjectPlacement(ARKitAnchor anchor) {
+    if (anchor is ARKitPlaneAnchor) {
+      current['anchor'] = anchor;
+      current['tapPosition'] = null;
+      _updateNodes(false);
     }
   }
 
-  void _onARTapHandler(ARKitTestResult point) {
-    // print("Tap at position: $currentTapPosition");
+  // Move object to the new position when tapping
+  void handleARTap(List<ARKitTestResult> arResults) {
+    final point = arResults.firstWhereOrNull(
+      (o) => o.type == ARKitHitTestResultType.featurePoint,
+    );
 
-    if (doughNode != null) {
-      // Move the existing doughNode to the new tap position
-      arkitController.remove(doughNode!.name);
+    if (point != null) {
+      current['anchor'] = null;
+      current['tapPosition'] = point.worldTransform.getTranslation();
+      _updateNodes(true);
     }
+  }
 
-    doughNode = _loadDough(current['tapPosition']);
-    arkitController.add(doughNode!);
+  // Update nodes when tapping or moving
+  void _updateNodes(bool isTapping) {
+    print('update nodes $pageIndex');
+    if (!isTapping) {
+      // Tapping
+      // Add the pizza dough
+      arkitController.remove('dough');
+      doughNode = _loadDough(current['anchor'].center);
+      arkitController.add(doughNode!,
+          parentNodeName: current['anchor'].nodeName);
 
-    if (pageIndex > 0) {
-      if (sauceNode != null) {
-        arkitController.remove(sauceNode!.name);
+      // Sauce
+      if (pageIndex > 0) {
+        if (sauceNode != null) {
+          arkitController.remove(sauceNode!.name);
+        }
+        if (selectedSauce != "") {
+          sauceNode = _loadSauce(current['anchor'].center);
+          arkitController.add(sauceNode!,
+              parentNodeName: current['anchor'].nodeName);
+        }
       }
-      if (selectedSauce != "") {
-        sauceNode = _loadSauce(current['tapPosition']);
-        arkitController.add(sauceNode!);
-      }
-    } else if (pageIndex > 1) {
-      if (cheeseNode != null) {
-        arkitController.remove(cheeseNode!.name);
-      }
+      // Cheese
+      if (pageIndex > 1) {
+        if (cheeseNode != null) {
+          arkitController.remove(cheeseNode!.name);
+        }
 
-      if (selectedCheese != "") {
-        cheeseNode = _loadCheese(current['tapPosition']);
-        arkitController.add(cheeseNode!);
+        if (selectedCheese != "") {
+          cheeseNode = _loadCheese(current['anchor'].center);
+          arkitController.add(cheeseNode!,
+              parentNodeName: current['anchor'].nodeName);
+        }
+      }
+    } else {
+      // Plane detected
+      if (doughNode != null) {
+        arkitController.remove(doughNode!.name);
+      }
+      doughNode = _loadDough(current['tapPosition']);
+      arkitController.add(doughNode!);
+
+      // Sauce
+      if (pageIndex > 0) {
+        if (sauceNode != null) {
+          arkitController.remove(sauceNode!.name);
+        }
+        if (selectedSauce != "") {
+          sauceNode = _loadSauce(current['tapPosition']);
+          arkitController.add(sauceNode!);
+        }
+      }
+      // Cheese
+      if (pageIndex > 1) {
+        if (cheeseNode != null) {
+          arkitController.remove(cheeseNode!.name);
+        }
+
+        if (selectedCheese != "") {
+          cheeseNode = _loadCheese(current['tapPosition']);
+          arkitController.add(cheeseNode!);
+        }
       }
     }
   }
