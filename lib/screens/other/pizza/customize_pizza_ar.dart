@@ -172,46 +172,55 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           // Bottom Actions
           Positioned(
             bottom: 0,
-            left: 16,
-            right: 16,
-            child: SafeArea(
-              bottom: true,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Pizza Sizes
-                  if (pageIndex == 0) _buildPizzaSize(),
-                  // Pizza Sauces
-                  if (pageIndex == 1) _buildPizzaSauces(),
-                  // Pizza Cheeses
-                  if (pageIndex == 2) _buildPizzaCheeses(),
-                  // Pizza Toppings
-                  if (pageIndex == 3) _buildPizzaToppings(),
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.only(
+                top: 24,
+                left: 16,
+                right: 16,
+              ),
+              color: Colors.transparent,
+              child: SafeArea(
+                top: false,
+                bottom: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Pizza Sizes
+                    if (pageIndex == 0) _buildPizzaSize(),
+                    // Pizza Sauces
+                    if (pageIndex == 1) _buildPizzaSauces(),
+                    // Pizza Cheeses
+                    if (pageIndex == 2) _buildPizzaCheeses(),
+                    // Pizza Toppings
+                    if (pageIndex == 3) _buildPizzaToppings(),
 
-                  // Price & Next Button
-                  const SizedBox(height: 24),
-                  _buildPriceAndNextButton(
-                    '€ ${currentPrices.values.reduce((a, b) => a + b)}',
-                    'Next',
-                    () {
-                      if (pageIndex == 3) {
-                        // Navigate to Overview Order Page
-                        PersistentNavBarNavigator.pushNewScreen(
-                          context,
-                          screen: const OverviewOrderPage(),
-                          withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
-                        );
-                      } else {
-                        // Go to next page
-                        setState(() {
-                          pageIndex++;
-                        });
-                      }
-                    },
-                  ),
-                ],
+                    // Price & Next Button
+                    const SizedBox(height: 24),
+                    _buildPriceAndNextButton(
+                      '€ ${currentPrices.values.reduce((a, b) => a + b)}',
+                      'Next',
+                      () {
+                        if (pageIndex == 3) {
+                          // Navigate to Overview Order Page
+                          PersistentNavBarNavigator.pushNewScreen(
+                            context,
+                            screen: const OverviewOrderPage(),
+                            withNavBar: false,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          );
+                        } else {
+                          // Go to next page
+                          setState(() {
+                            pageIndex++;
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           )
