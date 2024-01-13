@@ -7,6 +7,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:arkit_plugin/arkit_plugin.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
@@ -30,6 +31,9 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     'toppings': 0
   };
   int pageIndex = 0;
+  bool isSwitched = false;
+  int _tabTextIndexSelected = 0;
+  final List<String> _toggleList = ["Vegetable", "Meat"];
 
   // Pages
   final List<Map<String, dynamic>> pages = [
@@ -90,9 +94,8 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     },
   ];
 
-  // Pizza Toppings
-  final List<Map<String, dynamic>> pizzaToppings = [
-    // Vegetables
+  // Pizza Toppings (Vegetable & Meat)
+  final List<Map<String, dynamic>> pizzaVegetable = [
     {
       'name': 'Tomatoes',
       'price': 1,
@@ -118,7 +121,8 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       'price': 1,
       'path': 'assets/images/ingredients/olive.png'
     },
-    // Meat
+  ];
+  final List<Map<String, dynamic>> pizzaMeat = [
     {
       'name': 'Pepperoni',
       'price': 2,
@@ -346,9 +350,32 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   // Select Pizza Toppings
   Widget _buildPizzaToppings() {
-    return const Row(
-      // TODO: add toppings
-      children: [],
+    return FlutterToggleTab(
+      width: 50,
+      borderRadius: 30,
+      height: 35,
+      isShadowEnable: false,
+      selectedIndex: _tabTextIndexSelected,
+      selectedBackgroundColors: [MyColors.toggleUnselected],
+      unSelectedBackgroundColors: [MyColors.toggleUnselected],
+      marginSelected: const EdgeInsets.all(2),
+      selectedTextStyle: const TextStyle(
+        color: MyColors.toggleSelectedText,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+      unSelectedTextStyle: TextStyle(
+        color: MyColors.toggleUnselectedText,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+      labels: _toggleList,
+      selectedLabelIndex: (index) {
+        setState(() {
+          _tabTextIndexSelected = index;
+        });
+      },
+      isScroll: false,
     );
   }
 
@@ -464,9 +491,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   }
 
   // Update Toppings & Price
-  void _updateToppingsAndPrice() {
-    
-  }
+  void _updateToppingsAndPrice() {}
 
   // Add object with plane anchor detected at the beginning
   // when tapping object will be moved to the new position
@@ -576,7 +601,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       light: ARKitLight(
         type: ARKitLightType.ambient,
         color: Colors.white,
-        intensity: 1000,
+        intensity: 500,
       ),
       name: 'dough',
       assetType: AssetType.flutterAsset,

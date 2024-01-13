@@ -67,4 +67,10 @@ class MyColors {
   static const Color tomatoSauce = Color(0xFFB21807);
   static const Color bbqSauce = Color(0xFF551D19);
   static const Color creamSauce = Color(0xFFFCFAF2);
+
+  // Toggle Colors
+  static Color toggleSelected = gray900.withOpacity(0.7);
+  static Color toggleUnselected = blur;
+  static const Color toggleSelectedText = gray100;
+  static Color toggleUnselectedText = toggleSelectedText.withOpacity(0.75);
 }
