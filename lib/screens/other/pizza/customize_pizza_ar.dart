@@ -414,6 +414,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   // Select Pizza Toppings
   Widget _buildPizzaToppings() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Toggle
         FlutterToggleTab(
@@ -446,7 +447,67 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
         // Toppings
         const SizedBox(height: 16),
-        // TODO: Add toppings
+        // Vegetable
+        if (_tabTextIndexSelected == 0)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: pizzaVegetable.map((topping) {
+                bool isSelected = selectedToppings.contains(topping['name']);
+
+                return GestureDetector(
+                  onTap: () {
+                    if (!isSelected) {
+                      setState(() {
+                        selectedToppings.add(topping['name'].toString());
+                      });
+                    } else {
+                      setState(() {
+                        selectedToppings.remove(topping['name'].toString());
+                      });
+                    }
+                    // TODO: make updateToppingsAndPrice
+                    _updateToppingsAndPrice();
+                  },
+                  child: PizzaItem(
+                    isSelected: isSelected,
+                    imagePath: topping['path'].toString(),
+                    name: topping['name'].toString(),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        // Meat
+        if (_tabTextIndexSelected == 1)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: pizzaMeat.map((topping) {
+              bool isSelected = selectedToppings.contains(topping['name']);
+
+              return GestureDetector(
+                onTap: () {
+                  if (!isSelected) {
+                    setState(() {
+                      selectedToppings.add(topping['name'].toString());
+                    });
+                  } else {
+                    setState(() {
+                      selectedToppings.remove(topping['name'].toString());
+                    });
+                  }
+                  // TODO: make updateToppingsAndPrice
+                  _updateToppingsAndPrice();
+                },
+                child: PizzaItem(
+                  isSelected: isSelected,
+                  imagePath: topping['path'].toString(),
+                  name: topping['name'].toString(),
+                ),
+              );
+            }).toList(),
+          ),
       ],
     );
   }
