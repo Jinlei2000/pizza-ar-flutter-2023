@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:arkit_plugin/arkit_plugin.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
@@ -34,6 +35,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   bool isSwitched = false;
   int _tabTextIndexSelected = 0;
   final List<String> _toggleList = ["Vegetable", "Meat"];
+  bool showPopup = true;
 
   // Pages
   final List<Map<String, dynamic>> pages = [
@@ -169,6 +171,58 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
             planeDetection: ARPlaneDetection.horizontal,
             onARKitViewCreated: onARKitViewCreated,
           ),
+          // Popup
+          if (pageIndex == 0 && showPopup)
+            Positioned(
+              top: 0,
+              left: 16,
+              child: SafeArea(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    bottom: 16,
+                    left: 16,
+                    right: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: MyColors.blur,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 136,
+                        child: Text(
+                          'Tap to place the pizza on the table',
+                          style: TextStyle(
+                            color: MyColors.buttonText,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      // close button
+                      const SizedBox(width: 16),
+                      GestureDetector(
+                        onTap: () {
+                          // close popup
+                          setState(() {
+                            showPopup = false;
+                          });
+                        },
+                        child: const Icon(
+                          LucideIcons.x,
+                          color: MyColors.buttonText,
+                          size: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
           // Bottom Actions
           Positioned(
             bottom: 0,
@@ -359,35 +413,45 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   // Select Pizza Toppings
   Widget _buildPizzaToppings() {
-    return FlutterToggleTab(
-      width: 50,
-      borderRadius: 30,
-      height: 35,
-      isShadowEnable: false,
-      selectedIndex: _tabTextIndexSelected,
-      selectedBackgroundColors: [MyColors.toggleUnselected],
-      unSelectedBackgroundColors: [MyColors.toggleUnselected],
-      marginSelected: const EdgeInsets.all(2),
-      selectedTextStyle: const TextStyle(
-        color: MyColors.toggleSelectedText,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      unSelectedTextStyle: TextStyle(
-        color: MyColors.toggleUnselectedText,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      labels: _toggleList,
-      selectedLabelIndex: (index) {
-        setState(() {
-          _tabTextIndexSelected = index;
-        });
-      },
-      isScroll: false,
+    return Column(
+      children: [
+        // Toggle
+        FlutterToggleTab(
+          width: 50,
+          borderRadius: 30,
+          height: 35,
+          isShadowEnable: false,
+          selectedIndex: _tabTextIndexSelected,
+          selectedBackgroundColors: [MyColors.toggleUnselected],
+          unSelectedBackgroundColors: [MyColors.toggleUnselected],
+          marginSelected: const EdgeInsets.all(2),
+          selectedTextStyle: const TextStyle(
+            color: MyColors.toggleSelectedText,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          unSelectedTextStyle: TextStyle(
+            color: MyColors.toggleUnselectedText,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          labels: _toggleList,
+          selectedLabelIndex: (index) {
+            setState(() {
+              _tabTextIndexSelected = index;
+            });
+          },
+          isScroll: false,
+        ),
+
+        // Toppings
+        const SizedBox(height: 16),
+        // TODO: Add toppings
+      ],
     );
   }
 
+  // Price & Next Button
   Widget _buildPriceAndNextButton(
     String price,
     String nextButtonTitle,
