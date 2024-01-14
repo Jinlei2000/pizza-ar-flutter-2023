@@ -337,10 +337,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         return GestureDetector(
           onTap: () {
             if (!isSelected) {
-              setState(() {
-                selectedSize = size['size'].toString();
-                _updatePizzaSizeAndPrice();
-              });
+              _updatePizzaSize(size);
             }
           },
           child: Container(
@@ -385,10 +382,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         return GestureDetector(
           onTap: () {
             if (!isSelected) {
-              setState(() {
-                selectedSauce = sauce['name'].toString();
-                _updateSauceAndPrice();
-              });
+              _updateSauce(sauce);
             }
           },
           child: PizzaItem(
@@ -411,10 +405,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         return GestureDetector(
           onTap: () {
             if (!isSelected) {
-              setState(() {
-                selectedCheese = cheese['name'].toString();
-                _updateCheeseAndPrice();
-              });
+              _updateCheese(cheese);
             }
           },
           child: PizzaItem(
@@ -474,21 +465,11 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
                 return GestureDetector(
                   onTap: () {
-                    if (!isSelected) {
-                      setState(() {
-                        selectedToppings.add(topping['name'].toString());
-                      });
-                    } else {
-                      setState(() {
-                        selectedToppings.remove(topping['name'].toString());
-                      });
-                    }
-                    // TODO: make updateToppingsAndPrice
-                    _updateToppingsAndPrice();
+                    _updateToppings(topping, isSelected);
                   },
                   child: PizzaItem(
                     isSelected: isSelected,
-                    imagePath: topping['path'].toString(),
+                    imagePath: topping['imagePath'].toString(),
                     name: topping['name'].toString(),
                   ),
                 );
@@ -504,21 +485,11 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
               return GestureDetector(
                 onTap: () {
-                  if (!isSelected) {
-                    setState(() {
-                      selectedToppings.add(topping['name'].toString());
-                    });
-                  } else {
-                    setState(() {
-                      selectedToppings.remove(topping['name'].toString());
-                    });
-                  }
-                  // TODO: make updateToppingsAndPrice
-                  _updateToppingsAndPrice();
+                  _updateToppings(topping, isSelected);
                 },
                 child: PizzaItem(
                   isSelected: isSelected,
-                  imagePath: topping['path'].toString(),
+                  imagePath: topping['imagePath'].toString(),
                   name: topping['name'].toString(),
                 ),
               );
@@ -569,35 +540,35 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     );
   }
 
-  // Update Size & Price
-  void _updatePizzaSizeAndPrice() {
-    final pizzaSize = pizzaSizes.firstWhere(
-      (size) => size['size'] == selectedSize,
-      orElse: () => pizzaSizes[0],
-    );
+  // Update Size
+  void _updatePizzaSize(item) {
+    setState(() {
+      // Update selected size
+      selectedSize = item['size'].toString();
+      // Update total price
+      currentPrices['size'] = item['price'].toDouble();
+    });
 
     // Update scale of the dough
-    selectedScaleValue = pizzaSize['scale'];
+    selectedScaleValue = item['scale'];
     doughNode!.scale = vector.Vector3.all(selectedScaleValue);
-
-    // Update total price
-    setState(() {
-      currentPrices['size'] = pizzaSize['price'].toDouble();
-    });
   }
 
-  // Update Sauce & Price
-  void _updateSauceAndPrice() {
-    final pizzaSauce = pizzaSauces.firstWhere(
-      (sauce) => sauce['name'] == selectedSauce,
-      orElse: () => pizzaSauces[0],
-    );
+  // Update Sauce
+  void _updateSauce(item) {
+    setState(() {
+      // Update selected sauce
+      selectedSauce = item['name'].toString();
+      // Update total price
+      currentPrices['sauce'] = item['price'].toDouble();
+    });
 
-    // Add sauce or Update sauce
+    // Remove sauce if exists
     if (sauceNode != null) {
       arkitController.remove(sauceNode!.name);
     }
 
+    // Add sauce on plane anchor or tap position
     if (current['anchor'] != null) {
       sauceNode = _loadSauce(current['anchor'].center);
       arkitController.add(sauceNode!,
@@ -606,25 +577,23 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       sauceNode = _loadSauce(current['tapPosition']);
       arkitController.add(sauceNode!);
     }
-
-    // Update total price
-    setState(() {
-      currentPrices['sauce'] = pizzaSauce['price'].toDouble();
-    });
   }
 
-  // Update Cheese & Price
-  void _updateCheeseAndPrice() {
-    final pizzaCheese = pizzaCheeses.firstWhere(
-      (cheese) => cheese['name'] == selectedCheese,
-      orElse: () => pizzaCheeses[0],
-    );
+  // Update Cheese
+  void _updateCheese(item) {
+    setState(() {
+      // Update selected cheese
+      selectedCheese = item['name'].toString();
+      // Update total price
+      currentPrices['cheese'] = item['price'].toDouble();
+    });
 
-    // Add cheese or Update cheese
+    // Remove cheese if exists
     if (cheeseNode != null) {
       arkitController.remove(cheeseNode!.name);
     }
 
+    // Add cheese on plane anchor or tap position
     if (current['anchor'] != null) {
       cheeseNode = _loadCheese(current['anchor'].center);
       arkitController.add(cheeseNode!,
@@ -633,15 +602,30 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       cheeseNode = _loadCheese(current['tapPosition']);
       arkitController.add(cheeseNode!);
     }
-
-    // Update total price
-    setState(() {
-      currentPrices['cheese'] = pizzaCheese['price'].toDouble();
-    });
   }
 
-  // Update Toppings & Price
-  void _updateToppingsAndPrice() {}
+  // Update Toppings
+  void _updateToppings(item, bool isSelected) {
+    // Select or deselect topping and update total price
+    if (!isSelected) {
+      setState(() {
+        selectedToppings.add(item['name'].toString());
+        currentPrices['toppings'] = currentPrices['toppings']! + item['price'];
+      });
+    } else {
+      setState(() {
+        selectedToppings.remove(item['name'].toString());
+        currentPrices['toppings'] = currentPrices['toppings']! - item['price'];
+      });
+    }
+
+    // // Remove toppings if exists
+    // if (toppingsNodes.isNotEmpty) {
+    //   for (var topping in toppingsNodes) {
+    //     arkitController.remove(topping.name);
+    //   }
+    // }
+  }
 
   // Add object with plane anchor detected at the beginning
   // when tapping object will be moved to the new position
