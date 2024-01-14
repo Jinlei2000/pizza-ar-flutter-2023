@@ -101,40 +101,52 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     {
       'name': 'Tomatoes',
       'price': 1,
-      'path': 'assets/images/ingredients/tomato.png'
+      'imagePath': 'assets/images/ingredients/tomato.png',
+      'path': 'assets/models/tomato.glb'
     },
     {
       'name': 'Pepper',
       'price': 1,
-      'path': 'assets/images/ingredients/pepper.png'
+      'imagePath': 'assets/images/ingredients/pepper.png',
+      'path': 'assets/models/pepper.glb'
     },
     {
       'name': 'Onion',
       'price': 1,
-      'path': 'assets/images/ingredients/onion.png'
+      'imagePath': 'assets/images/ingredients/onion.png',
+      'path': 'assets/models/onion.glb'
     },
     {
       'name': 'Mushroom',
       'price': 1,
-      'path': 'assets/images/ingredients/mushroom.png'
+      'imagePath': 'assets/images/ingredients/mushroom.png',
+      'path': 'assets/models/mushroom.glb'
     },
     {
       'name': 'Olive',
       'price': 1,
-      'path': 'assets/images/ingredients/olive.png'
+      'imagePath': 'assets/images/ingredients/olive.png',
+      'path': 'assets/models/olive.glb'
     },
   ];
   final List<Map<String, dynamic>> pizzaMeat = [
     {
       'name': 'Pepperoni',
       'price': 2,
-      'path': 'assets/images/ingredients/pepperoni.png'
+      'imagePath': 'assets/images/ingredients/pepperoni.png',
+      'path': 'assets/models/pepperoni.glb'
     },
-    {'name': 'Ham', 'price': 2, 'path': 'assets/images/ingredients/ham.png'},
+    {
+      'name': 'Ham',
+      'price': 2,
+      'imagePath': 'assets/images/ingredients/ham.png',
+      'path': 'assets/models/ham.glb'
+    },
     {
       'name': 'Chicken',
       'price': 2,
-      'path': 'assets/images/ingredients/chicken.png'
+      'imagePath': 'assets/images/ingredients/chicken.png',
+      'path': 'assets/models/chicken.glb'
     },
   ];
 
