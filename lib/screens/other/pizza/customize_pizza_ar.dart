@@ -337,7 +337,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         return GestureDetector(
           onTap: () {
             if (!isSelected) {
-              _updatePizzaSize(size);
+              _updateSize(size);
             }
           },
           child: Container(
@@ -541,7 +541,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   }
 
   // Update Size
-  void _updatePizzaSize(item) {
+  void _updateSize(item) {
     setState(() {
       // Update selected size
       selectedSize = item['size'].toString();
@@ -727,7 +727,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     // remove coach overlay
     arkitController.removeCoachingOverlay();
 
-    // check path
+    // Check path
     rootBundle.load('assets/models/dough.glb');
 
     // Add the pizza dough with the updated scale
@@ -751,7 +751,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       orElse: () => pizzaSauces[0],
     ))['path'];
 
-    // check path
+    // Check path
     rootBundle.load(saucePath);
 
     // Add the pizza sauce
@@ -774,7 +774,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       orElse: () => pizzaCheeses[0],
     ))['path'];
 
-    // check path
+    // Check path
     rootBundle.load(cheesePath);
 
     // Add the pizza cheese
@@ -786,6 +786,30 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       position: vector.Vector3(
         position.x,
         position.y + 0.0002,
+        position.z,
+      ),
+    );
+  }
+
+  ARKitGltfNode _loadTopping(vector.Vector3 position) {
+    final String path = (pizzaVegetable.firstWhere(
+      (topping) => topping['name'] == selectedToppings[0],
+      orElse: () => pizzaVegetable[0],
+    ))['path'];
+
+    // Check path
+    rootBundle.load(path);
+
+    // Add the pizza topping
+    return ARKitGltfNode(
+      name: 'topping',
+      assetType: AssetType.flutterAsset,
+      url: path,
+      scale: vector.Vector3.all(selectedScaleValue),
+      position: vector.Vector3(
+        position.x,
+        // TODO: dynamic y position for toppings
+        position.y + 0.0003,
         position.z,
       ),
     );
