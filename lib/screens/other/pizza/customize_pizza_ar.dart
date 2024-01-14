@@ -791,7 +791,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     );
   }
 
-  ARKitGltfNode _loadTopping(vector.Vector3 position) {
+  ARKitGltfNode _loadTopping(vector.Vector3 position, double yPosition) {
     final String path = (pizzaVegetable.firstWhere(
       (topping) => topping['name'] == selectedToppings[0],
       orElse: () => pizzaVegetable[0],
@@ -809,7 +809,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       position: vector.Vector3(
         position.x,
         // TODO: dynamic y position for toppings
-        position.y + 0.0003,
+        position.y + 0.0003 + yPosition,
         position.z,
       ),
     );
