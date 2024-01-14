@@ -159,6 +159,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   ARKitGltfNode? doughNode;
   ARKitGltfNode? sauceNode;
   ARKitGltfNode? cheeseNode;
+  List<ARKitGltfNode> toppingsNodes = [];
 
   @override
   void dispose() {
@@ -303,17 +304,20 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           // remove sauce and reset price
           selectedSauce = "";
           currentPrices['sauce'] = 0;
-          arkitController.remove(sauceNode!.name);
+          if (sauceNode != null) arkitController.remove(sauceNode!.name);
         } else if (pageIndex == 2) {
           // remove cheese and reset price
           selectedCheese = "";
           currentPrices['cheese'] = 0;
-          arkitController.remove(cheeseNode!.name);
+          if (cheeseNode != null) arkitController.remove(cheeseNode!.name);
         } else if (pageIndex == 3) {
           // remove toppings and reset price
           selectedToppings = [];
           currentPrices['toppings'] = 0;
           // TODO: remove toppings
+          for (var topping in toppingsNodes) {
+            arkitController.remove(topping.name);
+          }
         }
         pageIndex--;
       });
