@@ -7,6 +7,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:arkit_plugin/arkit_plugin.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
@@ -18,11 +20,13 @@ class CustomizePizzaArPage extends StatefulWidget {
 }
 
 class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
-  String selectedSize = "S";
-  double selectedScaleValue = 0.4;
-  String selectedSauce = "";
-  String selectedCheese = "";
-  List<String> selectedToppings = [];
+  Map<String, dynamic> selected = {
+    'size': {'size': 'S', 'price': 5, 'scale': 0.4},
+    'sauce': null,
+    'cheese': null,
+    'toppings': null,
+    'scale': 0.4,
+  };
   Map<String, double> currentPrices = {
     'size': 5,
     'sauce': 0,
@@ -30,6 +34,10 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     'toppings': 0
   };
   int pageIndex = 0;
+  int _tabTextIndexSelected = 0;
+  bool toggleToppings = false;
+  final List<String> _toggleList = ["Vegetable", "Meat"];
+  bool showPopup = true;
 
   // Pages
   final List<Map<String, dynamic>> pages = [
@@ -90,45 +98,57 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     },
   ];
 
-  // Pizza Toppings
-  final List<Map<String, dynamic>> pizzaToppings = [
-    // Vegetables
+  // Pizza Toppings (Vegetable & Meat)
+  final List<Map<String, dynamic>> pizzaVegetable = [
     {
       'name': 'Tomatoes',
       'price': 1,
-      'path': 'assets/images/ingredients/tomato.png'
+      'imagePath': 'assets/images/ingredients/tomato.png',
+      'path': 'assets/models/tomato.glb'
     },
     {
       'name': 'Pepper',
       'price': 1,
-      'path': 'assets/images/ingredients/pepper.png'
+      'imagePath': 'assets/images/ingredients/pepper.png',
+      'path': 'assets/models/pepper.glb'
     },
     {
       'name': 'Onion',
       'price': 1,
-      'path': 'assets/images/ingredients/onion.png'
+      'imagePath': 'assets/images/ingredients/onion.png',
+      'path': 'assets/models/onion.glb'
     },
     {
       'name': 'Mushroom',
       'price': 1,
-      'path': 'assets/images/ingredients/mushroom.png'
+      'imagePath': 'assets/images/ingredients/mushroom.png',
+      'path': 'assets/models/mushroom.glb'
     },
     {
       'name': 'Olive',
       'price': 1,
-      'path': 'assets/images/ingredients/olive.png'
+      'imagePath': 'assets/images/ingredients/olive.png',
+      'path': 'assets/models/olive.glb'
     },
-    // Meat
+  ];
+  final List<Map<String, dynamic>> pizzaMeat = [
     {
       'name': 'Pepperoni',
       'price': 2,
-      'path': 'assets/images/ingredients/pepperoni.png'
+      'imagePath': 'assets/images/ingredients/pepperoni.png',
+      'path': 'assets/models/pepperoni.glb'
     },
-    {'name': 'Ham', 'price': 2, 'path': 'assets/images/ingredients/ham.png'},
+    {
+      'name': 'Ham',
+      'price': 2,
+      'imagePath': 'assets/images/ingredients/ham.png',
+      'path': 'assets/models/ham.glb'
+    },
     {
       'name': 'Chicken',
       'price': 2,
-      'path': 'assets/images/ingredients/chicken.png'
+      'imagePath': 'assets/images/ingredients/chicken.png',
+      'path': 'assets/models/chicken.glb'
     },
   ];
 
@@ -141,6 +161,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   ARKitGltfNode? doughNode;
   ARKitGltfNode? sauceNode;
   ARKitGltfNode? cheeseNode;
+  List<ARKitGltfNode> toppingsNodes = [];
 
   @override
   void dispose() {
@@ -165,49 +186,110 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
             planeDetection: ARPlaneDetection.horizontal,
             onARKitViewCreated: onARKitViewCreated,
           ),
+          // Popup
+          if (pageIndex == 0 && showPopup)
+            Positioned(
+              top: 0,
+              left: 16,
+              child: SafeArea(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    bottom: 16,
+                    left: 16,
+                    right: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: MyColors.blur,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 136,
+                        child: Text(
+                          'Tap to place the pizza on the table',
+                          style: TextStyle(
+                            color: MyColors.buttonText,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      // close button
+                      const SizedBox(width: 16),
+                      GestureDetector(
+                        onTap: () {
+                          // close popup
+                          setState(() {
+                            showPopup = false;
+                          });
+                        },
+                        child: const Icon(
+                          LucideIcons.x,
+                          color: MyColors.buttonText,
+                          size: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
           // Bottom Actions
           Positioned(
             bottom: 0,
-            left: 16,
-            right: 16,
-            child: SafeArea(
-              bottom: true,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Pizza Sizes
-                  if (pageIndex == 0) _buildPizzaSize(),
-                  // Pizza Sauces
-                  if (pageIndex == 1) _buildPizzaSauces(),
-                  // Pizza Cheeses
-                  if (pageIndex == 2) _buildPizzaCheeses(),
-                  // Pizza Toppings
-                  if (pageIndex == 3) _buildPizzaToppings(),
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.only(
+                top: 24,
+                left: 16,
+                right: 16,
+              ),
+              color: Colors.transparent,
+              child: SafeArea(
+                top: false,
+                bottom: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Pizza Sizes
+                    if (pageIndex == 0) _buildPizzaSize(),
+                    // Pizza Sauces
+                    if (pageIndex == 1) _buildPizzaSauces(),
+                    // Pizza Cheeses
+                    if (pageIndex == 2) _buildPizzaCheeses(),
+                    // Pizza Toppings
+                    if (pageIndex == 3) _buildPizzaToppings(),
 
-                  // Price & Next Button
-                  const SizedBox(height: 24),
-                  _buildPriceAndNextButton(
-                    '€ ${currentPrices.values.reduce((a, b) => a + b)}',
-                    'Next',
-                    () {
-                      if (pageIndex == 3) {
-                        // Navigate to Overview Order Page
-                        PersistentNavBarNavigator.pushNewScreen(
-                          context,
-                          screen: const OverviewOrderPage(),
-                          withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
-                        );
-                      } else {
-                        // Go to next page
-                        setState(() {
-                          pageIndex++;
-                        });
-                      }
-                    },
-                  ),
-                ],
+                    // Price & Next Button
+                    const SizedBox(height: 24),
+                    _buildPriceAndNextButton(
+                      '€ ${currentPrices.values.reduce((a, b) => a + b)}',
+                      'Next',
+                      () {
+                        if (pageIndex == 3) {
+                          // Navigate to Overview Order Page
+                          PersistentNavBarNavigator.pushNewScreen(
+                            context,
+                            screen: const OverviewOrderPage(),
+                            withNavBar: false,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          );
+                        } else {
+                          // Go to next page
+                          setState(() {
+                            pageIndex++;
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           )
@@ -222,19 +304,21 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       setState(() {
         if (pageIndex == 1) {
           // remove sauce and reset price
-          selectedSauce = "";
+          selected['sauce'] = null;
           currentPrices['sauce'] = 0;
-          arkitController.remove(sauceNode!.name);
+          if (sauceNode != null) arkitController.remove(sauceNode!.name);
         } else if (pageIndex == 2) {
           // remove cheese and reset price
-          selectedCheese = "";
+          selected['cheese'] = null;
           currentPrices['cheese'] = 0;
-          arkitController.remove(cheeseNode!.name);
+          if (cheeseNode != null) arkitController.remove(cheeseNode!.name);
         } else if (pageIndex == 3) {
           // remove toppings and reset price
-          selectedToppings = [];
+          selected['toppings'] = null;
           currentPrices['toppings'] = 0;
-          // TODO: remove toppings
+          for (var topping in toppingsNodes) {
+            arkitController.remove(topping.name);
+          }
         }
         pageIndex--;
       });
@@ -249,15 +333,12 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: pizzaSizes.map((size) {
-        bool isSelected = selectedSize == size['size'];
+        bool isSelected = selected['size']['size'] == size['size'];
 
         return GestureDetector(
           onTap: () {
             if (!isSelected) {
-              setState(() {
-                selectedSize = size['size'].toString();
-                _updatePizzaSizeAndPrice();
-              });
+              _updateSize(size);
             }
           },
           child: Container(
@@ -297,15 +378,12 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: pizzaSauces.map((sauce) {
-        bool isSelected = selectedSauce == sauce['name'];
+        bool isSelected = selected['sauce']?['name'] == sauce['name'];
 
         return GestureDetector(
           onTap: () {
             if (!isSelected) {
-              setState(() {
-                selectedSauce = sauce['name'].toString();
-                _updateSauceAndPrice();
-              });
+              _updateSauce(sauce);
             }
           },
           child: PizzaItem(
@@ -323,15 +401,12 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: pizzaCheeses.map((cheese) {
-        bool isSelected = selectedCheese == cheese['name'];
+        bool isSelected = selected['cheese']?['name'] == cheese['name'];
 
         return GestureDetector(
           onTap: () {
             if (!isSelected) {
-              setState(() {
-                selectedCheese = cheese['name'].toString();
-                _updateCheeseAndPrice();
-              });
+              _updateCheese(cheese);
             }
           },
           child: PizzaItem(
@@ -346,12 +421,88 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   // Select Pizza Toppings
   Widget _buildPizzaToppings() {
-    return const Row(
-      // TODO: add toppings
-      children: [],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Toggle
+        FlutterToggleTab(
+          width: 50,
+          borderRadius: 30,
+          height: 35,
+          isShadowEnable: false,
+          selectedIndex: _tabTextIndexSelected,
+          selectedBackgroundColors: [MyColors.toggleUnselected],
+          unSelectedBackgroundColors: [MyColors.toggleUnselected],
+          marginSelected: const EdgeInsets.all(2),
+          selectedTextStyle: const TextStyle(
+            color: MyColors.toggleSelectedText,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          unSelectedTextStyle: TextStyle(
+            color: MyColors.toggleUnselectedText,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          labels: _toggleList,
+          selectedLabelIndex: (index) {
+            setState(() {
+              _tabTextIndexSelected = index;
+            });
+          },
+          isScroll: false,
+        ),
+
+        // Toppings
+        const SizedBox(height: 16),
+        // Vegetable
+        if (_tabTextIndexSelected == 0)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: pizzaVegetable.map((topping) {
+                bool isSelected =
+                    selected['toppings']?.contains(topping['name']) ?? false;
+
+                return GestureDetector(
+                  onTap: () {
+                    _updateToppings(topping, isSelected);
+                  },
+                  child: PizzaItem(
+                    isSelected: isSelected,
+                    imagePath: topping['imagePath'].toString(),
+                    name: topping['name'].toString(),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        // Meat
+        if (_tabTextIndexSelected == 1)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: pizzaMeat.map((topping) {
+              bool isSelected =
+                  selected['toppings']?.contains(topping['name']) ?? false;
+
+              return GestureDetector(
+                onTap: () {
+                  _updateToppings(topping, isSelected);
+                },
+                child: PizzaItem(
+                  isSelected: isSelected,
+                  imagePath: topping['imagePath'].toString(),
+                  name: topping['name'].toString(),
+                ),
+              );
+            }).toList(),
+          ),
+      ],
     );
   }
 
+  // Price & Next Button
   Widget _buildPriceAndNextButton(
     String price,
     String nextButtonTitle,
@@ -392,75 +543,126 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     );
   }
 
-  // Update Size & Price
-  void _updatePizzaSizeAndPrice() {
-    final pizzaSize = pizzaSizes.firstWhere(
-      (size) => size['size'] == selectedSize,
-      orElse: () => pizzaSizes[0],
-    );
+  // Update Size
+  void _updateSize(item) {
+    setState(() {
+      // Update selected size
+      selected['size'] = item;
+      // Update total price
+      currentPrices['size'] = item['price'].toDouble();
+    });
 
     // Update scale of the dough
-    selectedScaleValue = pizzaSize['scale'];
-    doughNode!.scale = vector.Vector3.all(selectedScaleValue);
-
-    // Update total price
-    setState(() {
-      currentPrices['size'] = pizzaSize['price'].toDouble();
-    });
+    selected['scale'] = item['scale'];
+    doughNode!.scale = vector.Vector3.all(selected['scale']);
   }
 
-  // Update Sauce & Price
-  void _updateSauceAndPrice() {
-    final pizzaSauce = pizzaSauces.firstWhere(
-      (sauce) => sauce['name'] == selectedSauce,
-      orElse: () => pizzaSauces[0],
-    );
+  // Update Sauce
+  void _updateSauce(item) {
+    setState(() {
+      // Update selected sauce
+      // selectedSauce = item['name'].toString();
+      selected['sauce'] = item;
+      // Update total price
+      currentPrices['sauce'] = item['price'].toDouble();
+    });
 
-    // Add sauce or Update sauce
+    // Remove sauce if exists
     if (sauceNode != null) {
       arkitController.remove(sauceNode!.name);
     }
 
+    // Add sauce on plane anchor or tap position
     if (current['anchor'] != null) {
-      sauceNode = _loadSauce(current['anchor'].center);
+      sauceNode = _loadSauce(current['anchor'].center, item['path']);
       arkitController.add(sauceNode!,
           parentNodeName: current['anchor'].nodeName);
     } else {
-      sauceNode = _loadSauce(current['tapPosition']);
+      sauceNode = _loadSauce(current['tapPosition'], item['path']);
       arkitController.add(sauceNode!);
     }
-
-    // Update total price
-    setState(() {
-      currentPrices['sauce'] = pizzaSauce['price'].toDouble();
-    });
   }
 
-  // Update Cheese & Price
-  void _updateCheeseAndPrice() {
-    final pizzaCheese = pizzaCheeses.firstWhere(
-      (cheese) => cheese['name'] == selectedCheese,
-      orElse: () => pizzaCheeses[0],
-    );
+  // Update Cheese
+  void _updateCheese(item) {
+    setState(() {
+      // Update selected cheese
+      // selectedCheese = item['name'].toString();
+      selected['cheese'] = item;
+      // Update total price
+      currentPrices['cheese'] = item['price'].toDouble();
+    });
 
-    // Add cheese or Update cheese
+    // Remove cheese if exists
     if (cheeseNode != null) {
       arkitController.remove(cheeseNode!.name);
     }
 
+    // Add cheese on plane anchor or tap position
     if (current['anchor'] != null) {
-      cheeseNode = _loadCheese(current['anchor'].center);
+      cheeseNode = _loadCheese(current['anchor'].center, item['path']);
       arkitController.add(cheeseNode!,
           parentNodeName: current['anchor'].nodeName);
     } else {
-      cheeseNode = _loadCheese(current['tapPosition']);
+      cheeseNode = _loadCheese(current['tapPosition'], item['path']);
       arkitController.add(cheeseNode!);
     }
+  }
 
-    // Update total price
-    setState(() {
-      currentPrices['cheese'] = pizzaCheese['price'].toDouble();
-    });
+  // Update Toppings
+  void _updateToppings(item, bool isSelected) {
+    if (selected['toppings'] == null) {
+      selected['toppings'] = [];
+    }
+
+    // Select or deselect topping and update total price
+    if (!isSelected) {
+      setState(() {
+        selected['toppings'].add(item['name'].toString());
+        currentPrices['toppings'] = currentPrices['toppings']! + item['price'];
+      });
+    } else {
+      setState(() {
+        selected['toppings'].remove(item['name'].toString());
+        currentPrices['toppings'] = currentPrices['toppings']! - item['price'];
+      });
+    }
+
+    // Remove toppings if exists
+    if (toppingsNodes.isNotEmpty) {
+      for (var topping in toppingsNodes) {
+        arkitController.remove(topping.name);
+      }
+      toppingsNodes.clear();
+    }
+
+    // Add toppings on plane anchor or tap position
+    if (current['anchor'] != null) {
+      for (var i = 0; i < selected['toppings']!.length; i++) {
+        final item = [...pizzaVegetable, ...pizzaMeat].firstWhere(
+          (topping) => topping['name'] == selected['toppings']![i],
+        );
+        toppingsNodes.add(_loadTopping(
+          current['anchor'].center,
+          item['path'],
+          i * 0.0001,
+        ));
+        arkitController.add(toppingsNodes[i],
+            parentNodeName: current['anchor'].nodeName);
+      }
+    } else {
+      for (var i = 0; i < selected['toppings']!.length; i++) {
+        final item = [...pizzaVegetable, ...pizzaMeat].firstWhere(
+          (topping) => topping['name'] == selected['toppings']![i],
+        );
+        toppingsNodes.add(_loadTopping(
+          current['tapPosition'],
+          item['path'],
+          i * 0.0001,
+        ));
+        arkitController.add(toppingsNodes[i]);
+      }
+    }
   }
 
   // Add object with plane anchor detected at the beginning
@@ -496,107 +698,125 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   // Update nodes when tapping or moving
   void _updateNodes(bool isTapping) {
-    print('update nodes $pageIndex');
-    if (!isTapping) {
-      // Tapping
-      // Add the pizza dough
-      arkitController.remove('dough');
-      doughNode = _loadDough(current['anchor'].center);
-      arkitController.add(doughNode!,
-          parentNodeName: current['anchor'].nodeName);
+    void addNode(dynamic node, String parentNodeName) {
+      arkitController.add(node, parentNodeName: parentNodeName);
+    }
 
-      // Sauce
-      if (pageIndex > 0) {
-        if (sauceNode != null) {
-          arkitController.remove(sauceNode!.name);
-        }
-        if (selectedSauce != "") {
-          sauceNode = _loadSauce(current['anchor'].center);
-          arkitController.add(sauceNode!,
-              parentNodeName: current['anchor'].nodeName);
-        }
-      }
-      // Cheese
-      if (pageIndex > 1) {
-        if (cheeseNode != null) {
-          arkitController.remove(cheeseNode!.name);
-        }
+    void removeNode(String nodeName) {
+      arkitController.remove(nodeName);
+    }
 
-        if (selectedCheese != "") {
-          cheeseNode = _loadCheese(current['anchor'].center);
-          arkitController.add(cheeseNode!,
-              parentNodeName: current['anchor'].nodeName);
-        }
-      }
-    } else {
-      // Plane detected
-      if (doughNode != null) {
-        arkitController.remove(doughNode!.name);
-      }
-      doughNode = _loadDough(current['tapPosition']);
-      arkitController.add(doughNode!);
+    void addDoughNode(vector.Vector3 position, String parentNodeName) {
+      removeNode(doughNode?.name ?? '');
+      doughNode = _loadDough(position, 'assets/models/dough.glb');
+      addNode(doughNode!, parentNodeName);
+    }
 
-      // Sauce
-      if (pageIndex > 0) {
-        if (sauceNode != null) {
-          arkitController.remove(sauceNode!.name);
-        }
-        if (selectedSauce != "") {
-          sauceNode = _loadSauce(current['tapPosition']);
-          arkitController.add(sauceNode!);
-        }
+    void addSauceNode(
+        vector.Vector3 position, String sauceName, String parentNodeName) {
+      removeNode(sauceNode?.name ?? '');
+      if (selected['sauce'] != null) {
+        sauceNode = _loadSauce(
+            position,
+            pizzaSauces.firstWhere(
+                (sauce) => sauce['name'] == selected['sauce']['name'])['path']);
+        addNode(sauceNode!, parentNodeName);
       }
-      // Cheese
-      if (pageIndex > 1) {
-        if (cheeseNode != null) {
-          arkitController.remove(cheeseNode!.name);
-        }
+    }
 
-        if (selectedCheese != "") {
-          cheeseNode = _loadCheese(current['tapPosition']);
-          arkitController.add(cheeseNode!);
+    void addCheeseNode(
+        vector.Vector3 position, String cheeseName, String parentNodeName) {
+      removeNode(cheeseNode?.name ?? '');
+      if (selected['cheese'] != null) {
+        cheeseNode = _loadCheese(
+            position,
+            pizzaCheeses.firstWhere((cheese) =>
+                cheese['name'] == selected['cheese']['name'])['path']);
+        addNode(cheeseNode!, parentNodeName);
+      }
+    }
+
+    void addToppingsNodes(vector.Vector3 position, String parentNodeName) {
+      if (toppingsNodes.isNotEmpty) {
+        for (var topping in toppingsNodes) {
+          removeNode(topping.name);
+        }
+        toppingsNodes.clear();
+      }
+
+      if (selected['toppings'] != null) {
+        for (var i = 0; i < selected['toppings']!.length; i++) {
+          final item = [...pizzaVegetable, ...pizzaMeat].firstWhere(
+            (topping) => topping['name'] == selected['toppings']![i],
+          );
+          toppingsNodes.add(_loadTopping(
+            position,
+            item['path'],
+            i * 0.0001,
+          ));
+          addNode(toppingsNodes[i], parentNodeName);
         }
       }
     }
+
+    // Update nodes
+    void updateNodes(vector.Vector3 position, String parentNodeName) {
+      addDoughNode(position, parentNodeName);
+
+      if (pageIndex > 0) {
+        addSauceNode(position, selected['sauce']['name'], parentNodeName);
+      }
+      if (pageIndex > 1) {
+        addCheeseNode(position, selected['cheese']['name'], parentNodeName);
+      }
+      if (pageIndex > 2) {
+        addToppingsNodes(position, parentNodeName);
+      }
+    }
+
+    if (!isTapping) {
+      // Tapping
+      updateNodes(current['anchor'].center, current['anchor'].nodeName);
+    } else {
+      // Plane detected
+      updateNodes(current['tapPosition'], '');
+    }
   }
 
-  ARKitGltfNode _loadDough(vector.Vector3 position) {
+  ARKitGltfNode _loadDough(vector.Vector3 position, String url) {
     // remove coach overlay
     arkitController.removeCoachingOverlay();
 
-    // check path
-    rootBundle.load('assets/models/dough.glb');
+    // Check path
+    rootBundle.load(url);
 
     // Add the pizza dough with the updated scale
     return ARKitGltfNode(
-      light: ARKitLight(
-        type: ARKitLightType.ambient,
-        color: Colors.white,
-        intensity: 1000,
-      ),
+      // light: ARKitLight(
+      //   type: ARKitLightType.ambient,
+      //   color: Colors.white,
+      //   intensity: 500,
+      // ),
       name: 'dough',
       assetType: AssetType.flutterAsset,
-      url: 'assets/models/dough.glb',
-      scale: vector.Vector3.all(selectedScaleValue),
+      url: url,
+      // scale: vector.Vector3.all(selectedScaleValue),
+      scale: vector.Vector3.all(selected['scale']),
       position: position,
     );
   }
 
-  ARKitGltfNode _loadSauce(vector.Vector3 position) {
-    final String saucePath = (pizzaSauces.firstWhere(
-      (sauce) => sauce['name'] == selectedSauce,
-      orElse: () => pizzaSauces[0],
-    ))['path'];
-
-    // check path
-    rootBundle.load(saucePath);
+  ARKitGltfNode _loadSauce(vector.Vector3 position, String url) {
+    // Check path
+    rootBundle.load(url);
 
     // Add the pizza sauce
     return ARKitGltfNode(
       name: 'sauce',
       assetType: AssetType.flutterAsset,
-      url: saucePath,
-      scale: vector.Vector3.all(selectedScaleValue),
+      url: url,
+      // scale: vector.Vector3.all(selectedScaleValue),
+      scale: vector.Vector3.all(selected['scale']),
       position: vector.Vector3(
         position.x,
         position.y + 0.0001,
@@ -605,24 +825,39 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     );
   }
 
-  ARKitGltfNode _loadCheese(vector.Vector3 position) {
-    final String cheesePath = (pizzaCheeses.firstWhere(
-      (cheese) => cheese['name'] == selectedCheese,
-      orElse: () => pizzaCheeses[0],
-    ))['path'];
-
-    // check path
-    rootBundle.load(cheesePath);
+  ARKitGltfNode _loadCheese(vector.Vector3 position, String url) {
+    // Check path
+    rootBundle.load(url);
 
     // Add the pizza cheese
     return ARKitGltfNode(
       name: 'cheese',
       assetType: AssetType.flutterAsset,
-      url: cheesePath,
-      scale: vector.Vector3.all(selectedScaleValue),
+      url: url,
+      // scale: vector.Vector3.all(selectedScaleValue),
+      scale: vector.Vector3.all(selected['scale']),
       position: vector.Vector3(
         position.x,
         position.y + 0.0002,
+        position.z,
+      ),
+    );
+  }
+
+  ARKitGltfNode _loadTopping(vector.Vector3 position, String url, yPosition) {
+    // Check path
+    rootBundle.load(url);
+
+    // Add the pizza topping
+    return ARKitGltfNode(
+      name: 'topping',
+      assetType: AssetType.flutterAsset,
+      url: url,
+      // scale: vector.Vector3.all(selectedScaleValue),
+      scale: vector.Vector3.all(selected['scale']),
+      position: vector.Vector3(
+        position.x,
+        position.y + 0.0003 + yPosition + 0.0001,
         position.z,
       ),
     );
