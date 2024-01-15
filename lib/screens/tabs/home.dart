@@ -3,7 +3,7 @@ import 'package:bitz/components/avatar_image.dart';
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
-import 'package:bitz/models/tab_navigation_model.dart';
+import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
