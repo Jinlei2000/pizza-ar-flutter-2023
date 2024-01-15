@@ -698,126 +698,88 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   // Update nodes when tapping or moving
   void _updateNodes(bool isTapping) {
+    void addNode(dynamic node, String parentNodeName) {
+      arkitController.add(node, parentNodeName: parentNodeName);
+    }
+
+    void removeNode(String nodeName) {
+      arkitController.remove(nodeName);
+    }
+
+    void addDoughNode(vector.Vector3 position, String parentNodeName) {
+      removeNode(doughNode?.name ?? '');
+      doughNode = _loadDough(position, 'assets/models/dough.glb');
+      addNode(doughNode!, parentNodeName);
+    }
+
+    void addSauceNode(
+        vector.Vector3 position, String sauceName, String parentNodeName) {
+      removeNode(sauceNode?.name ?? '');
+      if (selected['sauce'] != null) {
+        sauceNode = _loadSauce(
+            position,
+            pizzaSauces.firstWhere(
+                (sauce) => sauce['name'] == selected['sauce']['name'])['path']);
+        addNode(sauceNode!, parentNodeName);
+      }
+    }
+
+    void addCheeseNode(
+        vector.Vector3 position, String cheeseName, String parentNodeName) {
+      removeNode(cheeseNode?.name ?? '');
+      if (selected['cheese'] != null) {
+        cheeseNode = _loadCheese(
+            position,
+            pizzaCheeses.firstWhere((cheese) =>
+                cheese['name'] == selected['cheese']['name'])['path']);
+        addNode(cheeseNode!, parentNodeName);
+      }
+    }
+
+    void addToppingsNodes(vector.Vector3 position, String parentNodeName) {
+      if (toppingsNodes.isNotEmpty) {
+        for (var topping in toppingsNodes) {
+          removeNode(topping.name);
+        }
+        toppingsNodes.clear();
+      }
+
+      if (selected['toppings'] != null) {
+        for (var i = 0; i < selected['toppings']!.length; i++) {
+          final item = [...pizzaVegetable, ...pizzaMeat].firstWhere(
+            (topping) => topping['name'] == selected['toppings']![i],
+          );
+          toppingsNodes.add(_loadTopping(
+            position,
+            item['path'],
+            i * 0.0001,
+          ));
+          addNode(toppingsNodes[i], parentNodeName);
+        }
+      }
+    }
+
+    // Update nodes
+    void updateNodes(vector.Vector3 position, String parentNodeName) {
+      addDoughNode(position, parentNodeName);
+
+      if (pageIndex > 0) {
+        addSauceNode(position, selected['sauce']['name'], parentNodeName);
+      }
+      if (pageIndex > 1) {
+        addCheeseNode(position, selected['cheese']['name'], parentNodeName);
+      }
+      if (pageIndex > 2) {
+        addToppingsNodes(position, parentNodeName);
+      }
+    }
+
     if (!isTapping) {
       // Tapping
-      // Add the pizza dough
-      arkitController.remove('dough');
-      doughNode =
-          _loadDough(current['anchor'].center, 'assets/models/dough.glb');
-      arkitController.add(doughNode!,
-          parentNodeName: current['anchor'].nodeName);
-
-      // Sauce
-      if (pageIndex > 0) {
-        if (sauceNode != null) {
-          arkitController.remove(sauceNode!.name);
-        }
-        if (selected['sauce'] != null) {
-          sauceNode = _loadSauce(
-              current['anchor'].center,
-              pizzaSauces.firstWhere((sauce) =>
-                  sauce['name'] == selected['sauce']['name'])['path']);
-          arkitController.add(sauceNode!,
-              parentNodeName: current['anchor'].nodeName);
-        }
-      }
-      // Cheese
-      if (pageIndex > 1) {
-        if (cheeseNode != null) {
-          arkitController.remove(cheeseNode!.name);
-        }
-
-        if (selected['cheese'] != null) {
-          cheeseNode = _loadCheese(
-              current['anchor'].center,
-              pizzaCheeses.firstWhere((cheese) =>
-                  cheese['name'] == selected['cheese']['name'])['path']);
-          arkitController.add(cheeseNode!,
-              parentNodeName: current['anchor'].nodeName);
-        }
-      }
-      // Toppings
-      if (pageIndex > 2) {
-        if (toppingsNodes.isNotEmpty) {
-          for (var topping in toppingsNodes) {
-            arkitController.remove(topping.name);
-          }
-          toppingsNodes.clear();
-        }
-
-        if (selected['toppings'] != null) {
-          for (var i = 0; i < selected['toppings']!.length; i++) {
-            final item = [...pizzaVegetable, ...pizzaMeat].firstWhere(
-              (topping) => topping['name'] == selected['toppings']![i],
-            );
-            toppingsNodes.add(_loadTopping(
-              current['anchor'].center,
-              item['path'],
-              i * 0.0001,
-            ));
-            arkitController.add(toppingsNodes[i],
-                parentNodeName: current['anchor'].nodeName);
-          }
-        }
-      }
+      updateNodes(current['anchor'].center, current['anchor'].nodeName);
     } else {
       // Plane detected
-      if (doughNode != null) {
-        arkitController.remove(doughNode!.name);
-      }
-      doughNode = _loadDough(current['tapPosition'], 'assets/models/dough.glb');
-      arkitController.add(doughNode!);
-
-      // Sauce
-      if (pageIndex > 0) {
-        if (sauceNode != null) {
-          arkitController.remove(sauceNode!.name);
-        }
-        if (selected['sauce'] != null) {
-          sauceNode = _loadSauce(
-              current['tapPosition'],
-              pizzaSauces.firstWhere((sauce) =>
-                  sauce['name'] == selected['sauce']['name'])['path']);
-          arkitController.add(sauceNode!);
-        }
-      }
-      // Cheese
-      if (pageIndex > 1) {
-        if (cheeseNode != null) {
-          arkitController.remove(cheeseNode!.name);
-        }
-
-        if (selected['cheese'] != null) {
-          cheeseNode = _loadCheese(
-              current['tapPosition'],
-              pizzaCheeses.firstWhere((cheese) =>
-                  cheese['name'] == selected['cheese']['name'])['path']);
-          arkitController.add(cheeseNode!);
-        }
-      }
-      // Toppings
-      if (pageIndex > 2) {
-        if (toppingsNodes.isNotEmpty) {
-          for (var topping in toppingsNodes) {
-            arkitController.remove(topping.name);
-          }
-          toppingsNodes.clear();
-        }
-
-        if (selected['toppings'] != null) {
-          for (var i = 0; i < selected['toppings']!.length; i++) {
-            final item = [...pizzaVegetable, ...pizzaMeat].firstWhere(
-              (topping) => topping['name'] == selected['toppings']![i],
-            );
-            toppingsNodes.add(_loadTopping(
-              current['tapPosition'],
-              item['path'],
-              i * 0.0001,
-            ));
-            arkitController.add(toppingsNodes[i]);
-          }
-        }
-      }
+      updateNodes(current['tapPosition'], '');
     }
   }
 
