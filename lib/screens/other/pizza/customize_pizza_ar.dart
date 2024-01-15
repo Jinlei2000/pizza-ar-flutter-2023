@@ -561,7 +561,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   void _updateSauce(item) {
     setState(() {
       // Update selected sauce
-      // selectedSauce = item['name'].toString();
       selected['sauce'] = item;
       // Update total price
       currentPrices['sauce'] = item['price'].toDouble();
@@ -587,7 +586,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   void _updateCheese(item) {
     setState(() {
       // Update selected cheese
-      // selectedCheese = item['name'].toString();
       selected['cheese'] = item;
       // Update total price
       currentPrices['cheese'] = item['price'].toDouble();
@@ -672,6 +670,15 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     arkitController.addCoachingOverlay(CoachingOverlayGoal.horizontalPlane);
     arkitController.onAddNodeForAnchor = handleInitialObjectPlacement;
     arkitController.onARTap = handleARTap;
+
+    // add light
+    arkitController.add(ARKitNode(
+      light: ARKitLight(
+        type: ARKitLightType.ambient,
+        color: Colors.white,
+        intensity: 750,
+      ),
+    ));
   }
 
   // Add object with plane anchor detected at the beginning
@@ -792,15 +799,9 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
     // Add the pizza dough with the updated scale
     return ARKitGltfNode(
-      // light: ARKitLight(
-      //   type: ARKitLightType.ambient,
-      //   color: Colors.white,
-      //   intensity: 500,
-      // ),
       name: 'dough',
       assetType: AssetType.flutterAsset,
       url: url,
-      // scale: vector.Vector3.all(selectedScaleValue),
       scale: vector.Vector3.all(selected['scale']),
       position: position,
     );
@@ -815,7 +816,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       name: 'sauce',
       assetType: AssetType.flutterAsset,
       url: url,
-      // scale: vector.Vector3.all(selectedScaleValue),
       scale: vector.Vector3.all(selected['scale']),
       position: vector.Vector3(
         position.x,
@@ -834,7 +834,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       name: 'cheese',
       assetType: AssetType.flutterAsset,
       url: url,
-      // scale: vector.Vector3.all(selectedScaleValue),
       scale: vector.Vector3.all(selected['scale']),
       position: vector.Vector3(
         position.x,
@@ -853,7 +852,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       name: 'topping',
       assetType: AssetType.flutterAsset,
       url: url,
-      // scale: vector.Vector3.all(selectedScaleValue),
       scale: vector.Vector3.all(selected['scale']),
       position: vector.Vector3(
         position.x,
