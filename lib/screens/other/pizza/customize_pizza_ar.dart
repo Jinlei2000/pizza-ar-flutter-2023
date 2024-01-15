@@ -34,8 +34,8 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     'toppings': 0
   };
   int pageIndex = 0;
-  bool isSwitched = false;
   int _tabTextIndexSelected = 0;
+  bool toggleToppings = false;
   final List<String> _toggleList = ["Vegetable", "Meat"];
   bool showPopup = true;
 
@@ -712,14 +712,11 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         if (sauceNode != null) {
           arkitController.remove(sauceNode!.name);
         }
-        // if (selectedSauce != "") {
         if (selected['sauce'] != null) {
           sauceNode = _loadSauce(
               current['anchor'].center,
-              pizzaSauces.firstWhere(
-                      // (sauce) => sauce['name'] == selectedSauce)['path']);
-                      (sauce) => sauce['name'] == selected['sauce']['name'])[
-                  'path']);
+              pizzaSauces.firstWhere((sauce) =>
+                  sauce['name'] == selected['sauce']['name'])['path']);
           arkitController.add(sauceNode!,
               parentNodeName: current['anchor'].nodeName);
         }
@@ -730,16 +727,37 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           arkitController.remove(cheeseNode!.name);
         }
 
-        // if (selectedCheese != "") {
         if (selected['cheese'] != null) {
           cheeseNode = _loadCheese(
               current['anchor'].center,
-              pizzaCheeses.firstWhere(
-                      // (cheese) => cheese['name'] == selectedCheese)['path']);
-                      (cheese) => cheese['name'] == selected['cheese']['name'])[
-                  'path']);
+              pizzaCheeses.firstWhere((cheese) =>
+                  cheese['name'] == selected['cheese']['name'])['path']);
           arkitController.add(cheeseNode!,
               parentNodeName: current['anchor'].nodeName);
+        }
+      }
+      // Toppings
+      if (pageIndex > 2) {
+        if (toppingsNodes.isNotEmpty) {
+          for (var topping in toppingsNodes) {
+            arkitController.remove(topping.name);
+          }
+          toppingsNodes.clear();
+        }
+
+        if (selected['toppings'] != null) {
+          for (var i = 0; i < selected['toppings']!.length; i++) {
+            final item = [...pizzaVegetable, ...pizzaMeat].firstWhere(
+              (topping) => topping['name'] == selected['toppings']![i],
+            );
+            toppingsNodes.add(_loadTopping(
+              current['anchor'].center,
+              item['path'],
+              i * 0.0001,
+            ));
+            arkitController.add(toppingsNodes[i],
+                parentNodeName: current['anchor'].nodeName);
+          }
         }
       }
     } else {
@@ -755,11 +773,11 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         if (sauceNode != null) {
           arkitController.remove(sauceNode!.name);
         }
-        // if (selectedSauce != "") {
         if (selected['sauce'] != null) {
-          sauceNode = _loadSauce(current['tapPosition'], pizzaSauces.firstWhere(
-              // (sauce) => sauce['name'] == selectedSauce)['path']);
-              (sauce) => sauce['name'] == selected['sauce']['name'])['path']);
+          sauceNode = _loadSauce(
+              current['tapPosition'],
+              pizzaSauces.firstWhere((sauce) =>
+                  sauce['name'] == selected['sauce']['name'])['path']);
           arkitController.add(sauceNode!);
         }
       }
@@ -769,15 +787,35 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           arkitController.remove(cheeseNode!.name);
         }
 
-        // if (selectedCheese != "") {
         if (selected['cheese'] != null) {
           cheeseNode = _loadCheese(
               current['tapPosition'],
-              pizzaCheeses.firstWhere(
-                      // (cheese) => cheese['name'] == selectedCheese)['path']);
-                      (cheese) => cheese['name'] == selected['cheese']['name'])[
-                  'path']);
+              pizzaCheeses.firstWhere((cheese) =>
+                  cheese['name'] == selected['cheese']['name'])['path']);
           arkitController.add(cheeseNode!);
+        }
+      }
+      // Toppings
+      if (pageIndex > 2) {
+        if (toppingsNodes.isNotEmpty) {
+          for (var topping in toppingsNodes) {
+            arkitController.remove(topping.name);
+          }
+          toppingsNodes.clear();
+        }
+
+        if (selected['toppings'] != null) {
+          for (var i = 0; i < selected['toppings']!.length; i++) {
+            final item = [...pizzaVegetable, ...pizzaMeat].firstWhere(
+              (topping) => topping['name'] == selected['toppings']![i],
+            );
+            toppingsNodes.add(_loadTopping(
+              current['tapPosition'],
+              item['path'],
+              i * 0.0001,
+            ));
+            arkitController.add(toppingsNodes[i]);
+          }
         }
       }
     }
