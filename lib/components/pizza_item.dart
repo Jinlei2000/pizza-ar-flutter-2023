@@ -23,18 +23,15 @@ class PizzaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          color != null
-              ? _buildCircleWithColor(isSelected, color!)
-              : _buildCircleWithImage(isSelected, imagePath!),
-          const SizedBox(height: 4),
-          _buildLabel(isSelected, name),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        color != null
+            ? _buildCircleWithColor(isSelected, color!)
+            : _buildCircleWithImage(isSelected, imagePath!),
+        const SizedBox(height: 4),
+        _buildLabel(isSelected, name),
+      ],
     );
   }
 

@@ -7,6 +7,7 @@ class PizzaOrder {
   final List<dynamic>? toppings;
   int quantity;
   double totalPrice;
+  double price;
 
   PizzaOrder({
     required this.id,
@@ -16,5 +17,6 @@ class PizzaOrder {
     required this.toppings,
     required this.quantity,
     required this.totalPrice,
+    required this.price,
   });
 }

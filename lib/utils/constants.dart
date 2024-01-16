@@ -4,9 +4,9 @@ import 'package:bitz/utils/colors.dart';
 class Pizza {
   // Pizza Sizes
   static const List<Map<String, dynamic>> sizes = [
-    {'size': 'S', 'price': 5, 'scale': 0.4},
-    {'size': 'M', 'price': 10, 'scale': 0.6},
-    {'size': 'L', 'price': 15, 'scale': 0.8},
+    {'size': 'S', 'name': 'Small', 'price': 5, 'scale': 0.4},
+    {'size': 'M', 'name': 'Medium', 'price': 10, 'scale': 0.6},
+    {'size': 'L', 'name': 'Large', 'price': 15, 'scale': 0.8},
   ];
 
   // Pizza Sauces

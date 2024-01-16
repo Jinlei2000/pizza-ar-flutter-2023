@@ -5,7 +5,7 @@ import '../types/pizza_order.dart';
 class PizzaOrderModel extends ChangeNotifier {
   final List<PizzaOrder> _selectedPizzas = [];
 
-  List<PizzaOrder> get selectedPizza => _selectedPizzas;
+  List<PizzaOrder> get selectedPizzas => _selectedPizzas;
 
   void addPizza(PizzaOrder pizza) {
     _selectedPizzas.add(pizza);
@@ -29,7 +29,7 @@ class PizzaOrderModel extends ChangeNotifier {
     pizzaToUpdate.quantity = quantity;
 
     // Update total price
-    pizzaToUpdate.totalPrice = pizzaToUpdate.totalPrice * quantity;
+    pizzaToUpdate.totalPrice = pizzaToUpdate.price * quantity;
 
     // If the quantity is 0, remove the pizza from the list
     if (quantity == 0) {
@@ -46,7 +46,7 @@ class PizzaOrderModel extends ChangeNotifier {
   double get totalPrice {
     double total = 0;
     for (var pizza in _selectedPizzas) {
-      total += pizza.totalPrice * pizza.quantity;
+      total += pizza.totalPrice;
     }
     return total;
   }
