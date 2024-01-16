@@ -1,5 +1,6 @@
 // main.dart
 import 'package:bitz/components/bottom_navigation.dart';
+import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/screens/other/order/order_detail.dart';
 import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';
@@ -11,9 +12,15 @@ import 'package:bitz/screens/tabs/profile.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => PizzaOrderModel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -25,10 +32,9 @@ class MyApp extends StatelessWidget {
       // Hide debug banner
       debugShowCheckedModeBanner: false,
 
-      home: const BottomNavigation(),
-      // home: const CustomizePizzaArPage(),
+      // home: const BottomNavigation(),
+      home: const OverviewOrderPage(),
       initialRoute: '/',
-      routes: _routes,
 
       theme: _theme(),
     );
@@ -45,19 +51,5 @@ class MyApp extends StatelessWidget {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
     );
-  }
-
-  // All routes in the apps
-  Map<String, WidgetBuilder> get _routes {
-    return {
-      '/home': (context) => const HomePage(),
-      '/order': (context) => const OrderPage(),
-      '/pizza': (context) => const PizzaPage(),
-      '/profile': (context) => const ProfilePage(),
-      '/pizza/customize': (context) => const CustomizePizzaArPage(),
-      '/pizza/overview-order': (context) => const OverviewOrderPage(),
-      '/pizza/payment': (context) => const PaymentPage(),
-      '/order/detail': (context) => const OrderDetailPage(),
-    };
   }
 }
