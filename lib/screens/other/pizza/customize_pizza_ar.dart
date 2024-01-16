@@ -25,14 +25,14 @@ class CustomizePizzaArPage extends StatefulWidget {
 
 class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   Map<String, dynamic> selected = {
-    'size': {'size': 'S', 'price': 5, 'scale': 0.4},
+    'size': Pizza.sizes[0],
     'sauce': null,
     'cheese': null,
     'toppings': null,
-    'scale': 0.4,
+    'scale': Pizza.sizes[0]['scale'],
   };
   Map<String, double> currentPrices = {
-    'size': 5,
+    'size': Pizza.sizes[0]['price'].toDouble(),
     'sauce': 0,
     'cheese': 0,
     'toppings': 0
