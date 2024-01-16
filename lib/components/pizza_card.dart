@@ -113,7 +113,7 @@ class PizzaCard extends StatelessWidget {
                       child: const Icon(
                         LucideIcons.minus,
                         size: 20,
-                        color: Colors.red, // Use red color
+                        color: Colors.red,
                       ),
                     ),
                   ),
@@ -148,7 +148,7 @@ class PizzaCard extends StatelessWidget {
                       child: const Icon(
                         LucideIcons.plus,
                         size: 20,
-                        color: Colors.green, // Use green color
+                        color: Colors.green,
                       ),
                     ),
                   ),
