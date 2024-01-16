@@ -1,5 +1,4 @@
 import 'package:bitz/components/bottom_actions.dart';
-import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/pizza_item.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
@@ -185,6 +184,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
                             cheese: selected['cheese'],
                             toppings: selected['toppings'],
                             quantity: 1,
+                            price: currentPrices.values.reduce((a, b) => a + b),
                             totalPrice:
                                 currentPrices.values.reduce((a, b) => a + b),
                           ));

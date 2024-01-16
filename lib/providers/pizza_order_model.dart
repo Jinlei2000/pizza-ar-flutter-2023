@@ -29,7 +29,7 @@ class PizzaOrderModel extends ChangeNotifier {
     pizzaToUpdate.quantity = quantity;
 
     // Update total price
-    pizzaToUpdate.totalPrice = pizzaToUpdate.totalPrice * quantity;
+    pizzaToUpdate.totalPrice = pizzaToUpdate.price * quantity;
 
     // If the quantity is 0, remove the pizza from the list
     if (quantity == 0) {
@@ -46,7 +46,7 @@ class PizzaOrderModel extends ChangeNotifier {
   double get totalPrice {
     double total = 0;
     for (var pizza in _selectedPizzas) {
-      total += pizza.totalPrice * pizza.quantity;
+      total += pizza.totalPrice;
     }
     return total;
   }
