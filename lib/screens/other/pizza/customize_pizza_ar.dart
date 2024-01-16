@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class CustomizePizzaArPage extends StatefulWidget {
@@ -171,13 +172,15 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
                       () {
                         if (pageIndex == 3) {
                           // Add pizza to the order list (Provider)
-                          PizzaOrderModel pizzaOrder = PizzaOrderModel();
+                          final pizzaOrder = Provider.of<PizzaOrderModel>(
+                              context,
+                              listen: false);
 
                           pizzaOrder.addPizza(PizzaOrder(
                             id: pizzaOrder.count + 1,
-                            size: selected['size']['size'],
-                            sauce: selected['sauce']?['name'],
-                            cheese: selected['cheese']?['name'],
+                            size: selected['size'],
+                            sauce: selected['sauce'],
+                            cheese: selected['cheese'],
                             toppings: selected['toppings'],
                             quantity: 1,
                             totalPrice:
@@ -235,6 +238,11 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
         pageIndex--;
       });
     } else {
+      // remove all pizza in the order list (Provider)
+      final pizzaOrderModel =
+          Provider.of<PizzaOrderModel>(context, listen: false);
+      pizzaOrderModel.removeAllPizzas();
+
       // Go back to the previous screen
       Navigator.pop(context);
     }

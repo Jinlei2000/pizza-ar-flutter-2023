@@ -17,7 +17,7 @@ class PizzaOrderModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clearAllSelectedPizzas() {
+  void removeAllPizzas() {
     _selectedPizzas.clear();
     notifyListeners();
   }
@@ -43,7 +43,7 @@ class PizzaOrderModel extends ChangeNotifier {
     return _selectedPizzas.length;
   }
 
-  double get totalAmount {
+  double get totalPrice {
     double total = 0;
     for (var pizza in _selectedPizzas) {
       total += pizza.totalPrice * pizza.quantity;

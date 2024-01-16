@@ -2,9 +2,9 @@
 class PizzaOrder {
   final int id;
   final Map<String, dynamic> size;
-  final Map<String, dynamic> sauce;
-  final Map<String, dynamic> cheese;
-  final List<Map<String, dynamic>> toppings;
+  final Map<String, dynamic>? sauce;
+  final Map<String, dynamic>? cheese;
+  final List<dynamic>? toppings;
   int quantity;
   double totalPrice;
 
