@@ -1,14 +1,6 @@
 // main.dart
-import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
-import 'package:bitz/screens/other/order/order_detail.dart';
-import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';
-import 'package:bitz/screens/other/pizza/payment.dart';
-import 'package:bitz/screens/tabs/home.dart';
-import 'package:bitz/screens/tabs/order.dart';
-import 'package:bitz/screens/tabs/pizza.dart';
-import 'package:bitz/screens/tabs/profile.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

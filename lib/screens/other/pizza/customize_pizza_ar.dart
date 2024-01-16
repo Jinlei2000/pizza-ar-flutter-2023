@@ -1,3 +1,4 @@
+import 'package:bitz/components/bottom_actions.dart';
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/pizza_item.dart';
@@ -166,10 +167,11 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
                     // Price & Next Button
                     const SizedBox(height: 24),
-                    _buildPriceAndNextButton(
-                      '€ ${currentPrices.values.reduce((a, b) => a + b)}',
-                      'Next',
-                      () {
+                    BottomActions(
+                      price:
+                          '€ ${currentPrices.values.reduce((a, b) => a + b)}',
+                      nextButtonTitle: 'Next',
+                      nextButtonOnPressed: () {
                         if (pageIndex == 3) {
                           // Add pizza to the order list (Provider)
                           final pizzaOrder = Provider.of<PizzaOrderModel>(
@@ -202,7 +204,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
                           });
                         }
                       },
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -418,47 +420,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
               );
             }).toList(),
           ),
-      ],
-    );
-  }
-
-  // Price & Next Button
-  Widget _buildPriceAndNextButton(
-    String price,
-    String nextButtonTitle,
-    Function() nextButtonOnPressed,
-  ) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // Price
-        Expanded(
-            child: Container(
-          height: 56,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            color: MyColors.blur,
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            price,
-            style: const TextStyle(
-              color: MyColors.buttonText,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        )),
-        const SizedBox(width: 16),
-        // Next Button
-        Expanded(
-          child: Button(
-            text: nextButtonTitle,
-            onPressed: () {
-              nextButtonOnPressed();
-            },
-          ),
-        ),
       ],
     );
   }

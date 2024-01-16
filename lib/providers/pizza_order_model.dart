@@ -5,7 +5,7 @@ import '../types/pizza_order.dart';
 class PizzaOrderModel extends ChangeNotifier {
   final List<PizzaOrder> _selectedPizzas = [];
 
-  List<PizzaOrder> get selectedPizza => _selectedPizzas;
+  List<PizzaOrder> get selectedPizzas => _selectedPizzas;
 
   void addPizza(PizzaOrder pizza) {
     _selectedPizzas.add(pizza);

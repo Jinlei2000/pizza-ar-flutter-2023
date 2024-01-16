@@ -7,10 +7,12 @@ class CustomSafeArea extends StatelessWidget {
     Key? key,
     required this.child,
     this.top = true,
+    this.bottom = false,
   }) : super(key: key);
 
   final Widget child;
   final bool top;
+  final bool bottom;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class CustomSafeArea extends StatelessWidget {
       color: MyColors.background,
       child: SafeArea(
         top: top,
-        bottom: false,
+        bottom: bottom,
         child: child,
       ),
     );
