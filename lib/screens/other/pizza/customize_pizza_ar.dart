@@ -639,7 +639,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       if (selected['toppings'] != null) {
         for (var i = 0; i < selected['toppings']!.length; i++) {
           final item = [...Pizza.vegetable, ...Pizza.meat].firstWhere(
-            (topping) => topping['name'] == selected['toppings']![i],
+            (topping) => topping['name'] == selected['toppings']![i]['name'],
           );
           toppingsNodes.add(_loadTopping(
             position,

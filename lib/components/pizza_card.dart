@@ -78,15 +78,12 @@ class PizzaCard extends StatelessWidget {
                         name: pizza.cheese!['name'],
                         imagePath: pizza.cheese!['imagePath'],
                       ),
-                    // print the toppings
-                    // Text(pizza.toppings.toString()),
                     if (pizza.toppings != null)
-                      for (Object topping in pizza.toppings!)
-                        Text(topping.toString()),
-                    // PizzaCardItem(
-                    //   name: topping['name'],
-                    //   imagePath: topping['imagePath'],
-                    // ),
+                      for (final topping in pizza.toppings!)
+                        PizzaCardItem(
+                          name: topping['name'],
+                          imagePath: topping['imagePath'],
+                        ),
                   ],
                 ),
               ),
