@@ -25,14 +25,14 @@ class CustomizePizzaArPage extends StatefulWidget {
 
 class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
   Map<String, dynamic> selected = {
-    'size': {'size': 'S', 'price': 5, 'scale': 0.4},
+    'size': Pizza.sizes[0],
     'sauce': null,
     'cheese': null,
     'toppings': null,
-    'scale': 0.4,
+    'scale': Pizza.sizes[0]['scale'],
   };
   Map<String, double> currentPrices = {
-    'size': 5,
+    'size': Pizza.sizes[0]['price'].toDouble(),
     'sauce': 0,
     'cheese': 0,
     'toppings': 0
@@ -384,8 +384,10 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: Pizza.vegetable.map((topping) {
-                bool isSelected =
-                    selected['toppings']?.contains(topping['name']) ?? false;
+                bool isSelected = selected['toppings'] != null
+                    ? selected['toppings']!
+                        .any((element) => element['name'] == topping['name'])
+                    : false;
 
                 return GestureDetector(
                   onTap: () {
@@ -405,8 +407,10 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: Pizza.meat.map((topping) {
-              bool isSelected =
-                  selected['toppings']?.contains(topping['name']) ?? false;
+              bool isSelected = selected['toppings'] != null
+                  ? selected['toppings']!
+                      .any((element) => element['name'] == topping['name'])
+                  : false;
 
               return GestureDetector(
                 onTap: () {
@@ -435,7 +439,9 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
     // Update scale of the dough
     selected['scale'] = item['scale'];
-    doughNode!.scale = vector.Vector3.all(selected['scale']);
+    if (doughNode != null) {
+      doughNode!.scale = vector.Vector3.all(selected['scale']);
+    }
   }
 
   // Update Sauce
@@ -497,12 +503,12 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     // Select or deselect topping and update total price
     if (!isSelected) {
       setState(() {
-        selected['toppings'].add(item['name'].toString());
+        selected['toppings'].add(item);
         currentPrices['toppings'] = currentPrices['toppings']! + item['price'];
       });
     } else {
       setState(() {
-        selected['toppings'].remove(item['name'].toString());
+        selected['toppings'].remove(item);
         currentPrices['toppings'] = currentPrices['toppings']! - item['price'];
       });
     }
@@ -519,7 +525,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     if (current['anchor'] != null) {
       for (var i = 0; i < selected['toppings']!.length; i++) {
         final item = [...Pizza.vegetable, ...Pizza.meat].firstWhere(
-          (topping) => topping['name'] == selected['toppings']![i],
+          (topping) => topping['name'] == selected['toppings']![i]['name'],
         );
         toppingsNodes.add(_loadTopping(
           current['anchor'].center,
@@ -532,7 +538,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     } else {
       for (var i = 0; i < selected['toppings']!.length; i++) {
         final item = [...Pizza.vegetable, ...Pizza.meat].firstWhere(
-          (topping) => topping['name'] == selected['toppings']![i],
+          (topping) => topping['name'] == selected['toppings']![i]['name'],
         );
         toppingsNodes.add(_loadTopping(
           current['tapPosition'],
@@ -635,7 +641,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       if (selected['toppings'] != null) {
         for (var i = 0; i < selected['toppings']!.length; i++) {
           final item = [...Pizza.vegetable, ...Pizza.meat].firstWhere(
-            (topping) => topping['name'] == selected['toppings']![i],
+            (topping) => topping['name'] == selected['toppings']![i]['name'],
           );
           toppingsNodes.add(_loadTopping(
             position,

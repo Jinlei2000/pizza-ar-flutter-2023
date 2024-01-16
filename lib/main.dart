@@ -1,4 +1,5 @@
 // main.dart
+import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';
 import 'package:bitz/utils/colors.dart';
@@ -24,8 +25,7 @@ class MyApp extends StatelessWidget {
       // Hide debug banner
       debugShowCheckedModeBanner: false,
 
-      // home: const BottomNavigation(),
-      home: const OverviewOrderPage(),
+      home: const BottomNavigation(),
       initialRoute: '/',
 
       theme: _theme(),

@@ -7,9 +7,7 @@ import 'package:bitz/components/pizza_empty.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:bitz/screens/other/pizza/payment.dart';
-import 'package:bitz/types/pizza_order.dart';
 import 'package:bitz/utils/colors.dart';
-import 'package:bitz/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -23,77 +21,6 @@ class OverviewOrderPage extends StatefulWidget {
 }
 
 class _OverviewOrderPageState extends State<OverviewOrderPage> {
-  // TEST DATA
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Initialize the pizzaOrder with test data
-      final pizzaOrder = Provider.of<PizzaOrderModel>(context, listen: false);
-      pizzaOrder.addPizza(
-        PizzaOrder(
-          id: 1,
-          size: Pizza.sizes[0],
-          sauce: Pizza.sauces[0],
-          cheese: Pizza.cheeses[0],
-          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
-          quantity: 1,
-          totalPrice: 20,
-          price: 20,
-        ),
-      );
-      pizzaOrder.addPizza(
-        PizzaOrder(
-          id: 2,
-          size: Pizza.sizes[0],
-          sauce: Pizza.sauces[0],
-          cheese: Pizza.cheeses[0],
-          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
-          quantity: 1,
-          totalPrice: 20,
-          price: 20,
-        ),
-      );
-      pizzaOrder.addPizza(
-        PizzaOrder(
-          id: 3,
-          size: Pizza.sizes[0],
-          sauce: Pizza.sauces[0],
-          cheese: Pizza.cheeses[0],
-          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
-          quantity: 1,
-          totalPrice: 20,
-          price: 20,
-        ),
-      );
-      pizzaOrder.addPizza(
-        PizzaOrder(
-          id: 4,
-          size: Pizza.sizes[0],
-          sauce: Pizza.sauces[0],
-          cheese: Pizza.cheeses[0],
-          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
-          quantity: 1,
-          totalPrice: 20,
-          price: 20,
-        ),
-      );
-      pizzaOrder.addPizza(
-        PizzaOrder(
-          id: 5,
-          size: Pizza.sizes[0],
-          sauce: Pizza.sauces[0],
-          cheese: Pizza.cheeses[0],
-          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
-          quantity: 1,
-          totalPrice: 20,
-          price: 20,
-        ),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return CustomSafeArea(
