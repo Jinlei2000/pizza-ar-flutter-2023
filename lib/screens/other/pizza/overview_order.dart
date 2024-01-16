@@ -23,6 +23,77 @@ class OverviewOrderPage extends StatefulWidget {
 }
 
 class _OverviewOrderPageState extends State<OverviewOrderPage> {
+  // TEST DATA
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Initialize the pizzaOrder with test data
+      final pizzaOrder = Provider.of<PizzaOrderModel>(context, listen: false);
+      pizzaOrder.addPizza(
+        PizzaOrder(
+          id: 1,
+          size: Pizza.sizes[0],
+          sauce: Pizza.sauces[0],
+          cheese: Pizza.cheeses[0],
+          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
+          quantity: 1,
+          totalPrice: 20,
+          price: 20,
+        ),
+      );
+      pizzaOrder.addPizza(
+        PizzaOrder(
+          id: 2,
+          size: Pizza.sizes[0],
+          sauce: Pizza.sauces[0],
+          cheese: Pizza.cheeses[0],
+          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
+          quantity: 1,
+          totalPrice: 20,
+          price: 20,
+        ),
+      );
+      pizzaOrder.addPizza(
+        PizzaOrder(
+          id: 3,
+          size: Pizza.sizes[0],
+          sauce: Pizza.sauces[0],
+          cheese: Pizza.cheeses[0],
+          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
+          quantity: 1,
+          totalPrice: 20,
+          price: 20,
+        ),
+      );
+      pizzaOrder.addPizza(
+        PizzaOrder(
+          id: 4,
+          size: Pizza.sizes[0],
+          sauce: Pizza.sauces[0],
+          cheese: Pizza.cheeses[0],
+          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
+          quantity: 1,
+          totalPrice: 20,
+          price: 20,
+        ),
+      );
+      pizzaOrder.addPizza(
+        PizzaOrder(
+          id: 5,
+          size: Pizza.sizes[0],
+          sauce: Pizza.sauces[0],
+          cheese: Pizza.cheeses[0],
+          toppings: [Pizza.vegetable[0], Pizza.meat[0], Pizza.meat[1]],
+          quantity: 1,
+          totalPrice: 20,
+          price: 20,
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomSafeArea(
@@ -63,23 +134,21 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
   Widget _body(BuildContext context, PizzaOrderModel pizzaOrder) {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
-      child: Consumer<PizzaOrderModel>(
-        builder: (context, pizzaOrder, child) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Pizza Cards
-              _buildPizzaCardsSection(context, pizzaOrder),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Pizza Cards
+          Expanded(
+            child: _buildPizzaCardsSection(context, pizzaOrder),
+          ),
 
-              // Add More Button
-              _buildAddMoreButton(context, pizzaOrder),
+          // Add More Button
+          _buildAddMoreButton(context, pizzaOrder),
 
-              // Bottom Actions (Price & Next Button)
-              const SizedBox(height: 16),
-              _buildBottomActions(context, pizzaOrder),
-            ],
-          );
-        },
+          // Bottom Actions (Price & Next Button)
+          const SizedBox(height: 16),
+          _buildBottomActions(context, pizzaOrder),
+        ],
       ),
     );
   }
@@ -88,42 +157,45 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
       BuildContext context, PizzaOrderModel pizzaOrder) {
     if (pizzaOrder.selectedPizzas.isNotEmpty) {
       // Selected Pizza's
-      return Expanded(
-        child: Stack(
-          children: [
-            ListView.builder(
-              itemCount: pizzaOrder.count,
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return PizzaCard(pizzaOrder: pizzaOrder, index: index);
-              },
-            ),
-            // Bottom Gradient Overlay
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 72,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withOpacity(0.4),
-                      MyColors.background,
-                    ],
-                  ),
+      return Stack(
+        children: [
+          ListView.builder(
+            itemCount: pizzaOrder.count,
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return PizzaCard(pizzaOrder: pizzaOrder, index: index);
+            },
+          ),
+          // Bottom Gradient Overlay
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 72,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.4),
+                    MyColors.background,
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     } else {
       // No available pizzas
-      return const PizzaEmpty();
+      return ListView(
+        shrinkWrap: true,
+        children: const [
+          PizzaEmpty(),
+        ],
+      );
     }
   }
 
