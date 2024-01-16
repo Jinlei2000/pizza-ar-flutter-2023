@@ -2,7 +2,6 @@
 import 'package:bitz/components/bottom_actions.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
-import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/components/pizza_cart_item.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/screens/other/pizza/payment.dart';
@@ -44,7 +43,7 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
       );
       pizzaOrder.addPizza(
         PizzaOrder(
-          id: 1,
+          id: 2,
           size: Pizza.sizes[0],
           sauce: Pizza.sauces[0],
           cheese: Pizza.cheeses[0],
@@ -56,7 +55,7 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
       );
       pizzaOrder.addPizza(
         PizzaOrder(
-          id: 1,
+          id: 3,
           size: Pizza.sizes[0],
           sauce: Pizza.sauces[0],
           cheese: Pizza.cheeses[0],
@@ -68,7 +67,7 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
       );
       pizzaOrder.addPizza(
         PizzaOrder(
-          id: 1,
+          id: 4,
           size: Pizza.sizes[0],
           sauce: Pizza.sauces[0],
           cheese: Pizza.cheeses[0],
@@ -80,7 +79,7 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
       );
       pizzaOrder.addPizza(
         PizzaOrder(
-          id: 1,
+          id: 5,
           size: Pizza.sizes[0],
           sauce: Pizza.sauces[0],
           cheese: Pizza.cheeses[0],
@@ -124,9 +123,6 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
               },
             ),
             body: _body(context, pizzaOrder),
-            floatingActionButton: _floatingActionButton(context, pizzaOrder),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.miniCenterDocked,
           );
         },
       ),
@@ -134,7 +130,7 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
   }
 
   Widget _body(BuildContext context, PizzaOrderModel pizzaOrder) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
       child: Consumer<PizzaOrderModel>(
         builder: (context, pizzaOrder, child) {
@@ -143,159 +139,163 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
             children: [
               // Selected Pizza's
               if (pizzaOrder.selectedPizzas.isNotEmpty)
-                ListView.builder(
-                  itemCount: pizzaOrder.count,
-                  shrinkWrap: true,
-                  // TODO: add scroll physics
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final pizza = pizzaOrder.selectedPizzas[index];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Pizza Card
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          margin: const EdgeInsets.only(bottom: 16),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: MyColors.cardBackground,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: MyColors.borderColor,
-                              width: 1,
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Size & Total Price
-                              Row(
-                                children: [
-                                  Text(
-                                    pizza.size['name'],
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      color: MyColors.textPrimary,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    '€${pizza.totalPrice.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: MyColors.textPrimary,
-                                    ),
-                                  ),
-                                ],
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: ListView.builder(
+                    itemCount: pizzaOrder.count,
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final pizza = pizzaOrder.selectedPizzas[index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Pizza Card
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            margin: const EdgeInsets.only(bottom: 16),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: MyColors.cardBackground,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: MyColors.borderColor,
+                                width: 1,
                               ),
-                              // All the toppings
-                              const SizedBox(height: 8),
-                              SizedBox(
-                                width: double.infinity,
-                                child: Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  direction: Axis.horizontal,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Size & Total Price
+                                Row(
                                   children: [
-                                    if (pizza.sauce != null)
-                                      PizzaCardItem(
-                                        name: pizza.sauce!['name'],
-                                        color: pizza.sauce!['color'],
+                                    Text(
+                                      pizza.size['name'],
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: MyColors.textPrimary,
                                       ),
-                                    if (pizza.cheese != null)
-                                      PizzaCardItem(
-                                        name: pizza.cheese!['name'],
-                                        imagePath: pizza.cheese!['imagePath'],
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      '€${pizza.totalPrice.toStringAsFixed(2)}',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: MyColors.textPrimary,
                                       ),
-                                    if (pizza.toppings != null)
-                                      ...pizza.toppings!.map(
-                                        (topping) => PizzaCardItem(
-                                          name: topping['name'],
-                                          imagePath: topping['imagePath'],
-                                        ),
-                                      ),
+                                    ),
                                   ],
                                 ),
-                              ),
-                              // Quantity
-                              const SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  // -
-                                  GestureDetector(
-                                    onTap: () {
-                                      // decrease quantity
-                                      pizzaOrder.updateQuantity(
-                                          pizza.id, pizza.quantity - 1);
-                                    },
-                                    child: Container(
-                                      height: 32,
-                                      width: 32,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        border: Border.all(
-                                          color: MyColors.borderColor,
-                                          width: 0.5,
+                                // All the toppings
+                                const SizedBox(height: 8),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Wrap(
+                                    spacing: 8,
+                                    runSpacing: 8,
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      if (pizza.sauce != null)
+                                        PizzaCardItem(
+                                          name: pizza.sauce!['name'],
+                                          color: pizza.sauce!['color'],
+                                        ),
+                                      if (pizza.cheese != null)
+                                        PizzaCardItem(
+                                          name: pizza.cheese!['name'],
+                                          imagePath: pizza.cheese!['imagePath'],
+                                        ),
+                                      if (pizza.toppings != null)
+                                        ...pizza.toppings!.map(
+                                          (topping) => PizzaCardItem(
+                                            name: topping['name'],
+                                            imagePath: topping['imagePath'],
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                // Quantity
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    // -
+                                    GestureDetector(
+                                      onTap: () {
+                                        // decrease quantity
+                                        pizzaOrder.updateQuantity(
+                                            pizza.id, pizza.quantity - 1);
+                                      },
+                                      child: Container(
+                                        height: 32,
+                                        width: 32,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          border: Border.all(
+                                            color: MyColors.borderColor,
+                                            width: 0.5,
+                                          ),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const Icon(
+                                          LucideIcons.minus,
+                                          size: 20,
+                                          color: Colors.red, // Use red color
                                         ),
                                       ),
-                                      alignment: Alignment.center,
-                                      child: const Icon(
-                                        LucideIcons.minus,
-                                        size: 20,
-                                        color: Colors.red, // Use red color
+                                    ),
+                                    const SizedBox(width: 12),
+                                    // quantity
+                                    Text(
+                                      pizza.quantity.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: MyColors.textPrimary,
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  // quantity
-                                  Text(
-                                    pizza.quantity.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      color: MyColors.textPrimary,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  // +
-                                  GestureDetector(
-                                    onTap: () {
-                                      // increase quantity
-                                      pizzaOrder.updateQuantity(
-                                          pizza.id, pizza.quantity + 1);
-                                    },
-                                    child: Container(
-                                      height: 32,
-                                      width: 32,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        border: Border.all(
-                                          color: MyColors.borderColor,
-                                          width: 0.5,
+                                    const SizedBox(width: 12),
+                                    // +
+                                    GestureDetector(
+                                      onTap: () {
+                                        // increase quantity
+                                        pizzaOrder.updateQuantity(
+                                            pizza.id, pizza.quantity + 1);
+                                      },
+                                      child: Container(
+                                        height: 32,
+                                        width: 32,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          border: Border.all(
+                                            color: MyColors.borderColor,
+                                            width: 0.5,
+                                          ),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const Icon(
+                                          LucideIcons.plus,
+                                          size: 20,
+                                          color:
+                                              Colors.green, // Use green color
                                         ),
                                       ),
-                                      alignment: Alignment.center,
-                                      child: const Icon(
-                                        LucideIcons.plus,
-                                        size: 20,
-                                        color: Colors.green, // Use green color
-                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
+                        ],
+                      );
+                    },
+                  ),
                 ),
 
               // No available pizzas
@@ -324,7 +324,9 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
                   ),
                 ),
 
-              // Add more pizza
+              const Spacer(),
+
+              // Add More Button
               GestureDetector(
                 onTap: () {
                   // TODO: navigate to custom pizza page
@@ -364,31 +366,26 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
                   ),
                 ),
               ),
+              // Bottom Actions (Price & Next Button)
+              const SizedBox(height: 16),
+              BottomActions(
+                price: '€${pizzaOrder.totalPrice.toStringAsFixed(2)}',
+                nextButtonTitle: 'Checkout',
+                nextButtonOnPressed: () {
+                  // Navigate to Overview Order Page
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: const PaymentPage(),
+                    withNavBar: false,
+                    // TODO: change animation
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  );
+                },
+                variant: 'card',
+              ),
             ],
           );
         },
-      ),
-    );
-  }
-
-  Widget _floatingActionButton(
-      BuildContext context, PizzaOrderModel pizzaOrder) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: BottomActions(
-        price: '€${pizzaOrder.totalPrice.toStringAsFixed(2)}',
-        nextButtonTitle: 'Checkout',
-        nextButtonOnPressed: () {
-          // Navigate to Overview Order Page
-          PersistentNavBarNavigator.pushNewScreen(
-            context,
-            screen: const PaymentPage(),
-            withNavBar: false,
-            // TODO: change animation
-            pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          );
-        },
-        variant: 'card',
       ),
     );
   }
