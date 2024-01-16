@@ -439,7 +439,9 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
     // Update scale of the dough
     selected['scale'] = item['scale'];
-    doughNode!.scale = vector.Vector3.all(selected['scale']);
+    if (doughNode != null) {
+      doughNode!.scale = vector.Vector3.all(selected['scale']);
+    }
   }
 
   // Update Sauce

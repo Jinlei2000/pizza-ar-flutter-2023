@@ -5,11 +5,11 @@ import '../utils/colors.dart';
 class PizzaCardItem extends StatelessWidget {
   final Color? color;
   final String? imagePath;
-  final String name;
+  final String? name;
 
   const PizzaCardItem({
     Key? key,
-    required this.name,
+    this.name,
     this.color,
     this.imagePath,
   })  : assert(
@@ -69,7 +69,7 @@ class PizzaCardItem extends StatelessWidget {
 
   Widget _buildLabel() {
     return Text(
-      name,
+      name!,
       style: const TextStyle(
         color: MyColors.textPrimary,
         fontSize: 12,
