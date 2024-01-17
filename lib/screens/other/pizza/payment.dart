@@ -4,6 +4,7 @@ import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
+import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:bitz/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +128,21 @@ class _PaymentPageState extends State<PaymentPage> {
         Button(
           text: 'Order And Pay',
           onPressed: () {
-            // TODO: Place the order & go back to the home screen
+            // TODO: Save the order
+
+            // clear the cart after placing the order
+            final pizzaOrderModel =
+                Provider.of<PizzaOrderModel>(context, listen: false);
+            pizzaOrderModel.removeAllPizzas();
+
+            // Use Provider to get the TabNavigationModel
+            final tabNavigationModel =
+                Provider.of<TabNavigationModel>(context, listen: false);
+            // Call the navigateToTab function from the TabNavigationModel (Orders tab)
+            tabNavigationModel.navigateToTab(2);
+
+            // go to first page
+            Navigator.popUntil(context, (route) => route.isFirst);
           },
         ),
       ],

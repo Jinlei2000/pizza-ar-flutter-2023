@@ -1,7 +1,7 @@
 // main.dart
 import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
-import 'package:bitz/screens/other/pizza/overview_order.dart';
+import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,8 +9,15 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => PizzaOrderModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => PizzaOrderModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TabNavigationModel(),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
