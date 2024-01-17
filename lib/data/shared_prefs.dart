@@ -17,7 +17,7 @@ class SharedPrefs {
   }
 
   // clear all data
-  static Future<void> clear() async {
+  static Future<void> clearAllData() async {
     final prefs = await _getPrefsInstance();
     await prefs.clear();
   }

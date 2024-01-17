@@ -1,13 +1,13 @@
 // pizza_order_model.dart
 import 'package:flutter/material.dart';
-import '../types/pizza_order.dart';
+import '../types/order_item.dart';
 
 class PizzaOrderModel extends ChangeNotifier {
-  final List<PizzaOrder> _selectedPizzas = [];
+  final List<OrderItem> _selectedPizzas = [];
 
-  List<PizzaOrder> get selectedPizzas => _selectedPizzas;
+  List<OrderItem> get selectedPizzas => _selectedPizzas;
 
-  void addPizza(PizzaOrder pizza) {
+  void addPizza(OrderItem pizza) {
     _selectedPizzas.add(pizza);
     notifyListeners();
   }

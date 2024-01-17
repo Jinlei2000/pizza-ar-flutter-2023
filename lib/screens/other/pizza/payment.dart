@@ -6,11 +6,12 @@ import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/data/pizza_sf.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
-import 'package:bitz/types/pizza_order.dart';
+import 'package:bitz/types/order.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:uid/uid.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);
@@ -134,13 +135,17 @@ class _PaymentPageState extends State<PaymentPage> {
             final tabNavigationModel =
                 Provider.of<TabNavigationModel>(context, listen: false);
 
-            // TODO: check if it works
             // Add a pizza order to the Shared Preferences
             PizzaSF pizzaSF = PizzaSF();
-            List<PizzaOrder> pizzaOrders = pizzaOrderModel.selectedPizzas;
-            await pizzaSF.addPizzaOrders(pizzaOrders);
+            Order order = Order(
+              id: UId.getId(),
+              orderItems: pizzaOrderModel.selectedPizzas,
+              createdAt: DateTime.now(),
+              totalPrice: pizzaOrderModel.totalPrice,
+            );
+            await pizzaSF.addOrder(order);
 
-            // clear the cart after placing the order
+            // Clear the cart after placing the order (provider)
             pizzaOrderModel.removeAllPizzas();
 
             // Call the navigateToTab function from the TabNavigationModel (Orders tab)

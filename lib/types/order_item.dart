@@ -1,5 +1,5 @@
-// pizza.dart
-class PizzaOrder {
+// order_item.dart
+class OrderItem {
   final int id;
   final Map<String, dynamic> size;
   final Map<String, dynamic>? sauce;
@@ -9,7 +9,7 @@ class PizzaOrder {
   double totalPrice;
   double price;
 
-  PizzaOrder({
+  OrderItem({
     required this.id,
     required this.size,
     required this.sauce,
@@ -31,7 +31,7 @@ class PizzaOrder {
         'price': price,
       };
 
-  PizzaOrder.fromJson(Map<String, dynamic> json)
+  OrderItem.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         size = json['size'],
         sauce = json['sauce'],
