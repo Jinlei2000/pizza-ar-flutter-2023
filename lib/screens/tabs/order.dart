@@ -14,6 +14,8 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends State<OrderPage> {
   List<Order> orders = [];
 
+  // BUG: this method is not called when the user navigates back to this page from the payment page
+
   @override
   void initState() {
     super.initState();
