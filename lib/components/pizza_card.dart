@@ -71,7 +71,7 @@ class PizzaCard extends StatelessWidget {
                     if (pizza.sauce != null)
                       PizzaCardItem(
                         name: pizza.sauce!['name'],
-                        color: pizza.sauce!['color'],
+                        color: Color(pizza.sauce!['color'] as int),
                       ),
                     if (pizza.cheese != null)
                       PizzaCardItem(

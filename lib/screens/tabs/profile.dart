@@ -3,6 +3,7 @@ import 'package:bitz/components/avatar_image.dart';
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
+import 'package:bitz/data/shared_prefs.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -125,7 +126,19 @@ class ProfilePage extends StatelessWidget {
               ),
             ],
           ),
-          // // Logout
+          // Clear cache
+          Container(
+            margin: const EdgeInsets.only(bottom: 24),
+            child: Button(
+              text: 'Clear cache',
+              color: MyColors.red,
+              onPressed: () {
+                // Clear all data
+                SharedPrefs.clearAllData();
+              },
+            ),
+          ),
+          // Logout
           const SizedBox(height: 32),
           Container(
             margin: const EdgeInsets.only(bottom: 24),

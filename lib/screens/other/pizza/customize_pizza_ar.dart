@@ -3,7 +3,7 @@ import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/pizza_item.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';
-import 'package:bitz/types/pizza_order.dart';
+import 'package:bitz/types/order_item.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:bitz/utils/constants.dart';
 import 'package:collection/collection.dart';
@@ -177,7 +177,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
                               context,
                               listen: false);
 
-                          pizzaOrder.addPizza(PizzaOrder(
+                          pizzaOrder.addPizza(OrderItem(
                             id: pizzaOrder.count + 1,
                             size: selected['size'],
                             sauce: selected['sauce'],
@@ -311,7 +311,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           child: PizzaItem(
             isSelected: isSelected,
             name: sauce['name'].toString(),
-            color: sauce['color'] as Color,
+            color: Color(sauce['color'] as int),
           ),
         );
       }).toList(),

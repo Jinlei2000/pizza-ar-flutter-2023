@@ -43,6 +43,8 @@ dependencies:
   vector_math: ^2.1.4
   collection: ^1.18.0
   flutter_toggle_tab: ^1.4.1
+  shared_preferences: ^2.2.2
+  uid: ^0.0.2
 
 dev_dependencies:
   flutter_test:

@@ -80,44 +80,41 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => TabNavigationModel(),
-      child: Consumer<TabNavigationModel>(
-        builder: (context, tabNavigationModel, child) {
-          return PersistentTabView(
-            context,
-            controller: tabNavigationModel.controller,
-            screens: _buildScreens(),
-            items: _navBarsItems(),
-            confineInSafeArea: true,
-            handleAndroidBackButtonPress: true,
-            resizeToAvoidBottomInset: true,
-            stateManagement: true,
-            hideNavigationBarWhenKeyboardShows: true,
-            popAllScreensOnTapOfSelectedTab: true,
-            popActionScreens: PopActionScreensType.all,
-            backgroundColor: MyColors.bottomNavBar,
-            navBarHeight: 56,
-            decoration: const NavBarDecoration(
-              border: Border.fromBorderSide(
-                BorderSide(width: 0.5, color: MyColors.gray200),
-              ),
+    return Consumer<TabNavigationModel>(
+      builder: (context, tabNavigationModel, child) {
+        return PersistentTabView(
+          context,
+          controller: tabNavigationModel.controller,
+          screens: _buildScreens(),
+          items: _navBarsItems(),
+          confineInSafeArea: true,
+          handleAndroidBackButtonPress: true,
+          resizeToAvoidBottomInset: true,
+          stateManagement: true,
+          hideNavigationBarWhenKeyboardShows: true,
+          popAllScreensOnTapOfSelectedTab: true,
+          popActionScreens: PopActionScreensType.all,
+          backgroundColor: MyColors.bottomNavBar,
+          navBarHeight: 56,
+          decoration: const NavBarDecoration(
+            border: Border.fromBorderSide(
+              BorderSide(width: 0.5, color: MyColors.gray200),
             ),
-            padding: const NavBarPadding.only(
-                bottom: 0, top: 0, left: 16, right: 16),
-            itemAnimationProperties: const ItemAnimationProperties(
-              duration: Duration(milliseconds: 200),
-              curve: Curves.ease,
-            ),
-            screenTransitionAnimation: const ScreenTransitionAnimation(
-              animateTabTransition: true,
-              curve: Curves.ease,
-              duration: Duration(milliseconds: 200),
-            ),
-            navBarStyle: NavBarStyle.style7,
-          );
-        },
-      ),
+          ),
+          padding: const NavBarPadding.only(
+              bottom: 0, top: 0, left: 16, right: 16),
+          itemAnimationProperties: const ItemAnimationProperties(
+            duration: Duration(milliseconds: 200),
+            curve: Curves.ease,
+          ),
+          screenTransitionAnimation: const ScreenTransitionAnimation(
+            animateTabTransition: true,
+            curve: Curves.ease,
+            duration: Duration(milliseconds: 200),
+          ),
+          navBarStyle: NavBarStyle.style7,
+        );
+      },
     );
   }
 }

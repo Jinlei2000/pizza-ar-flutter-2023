@@ -4,10 +4,14 @@ PODS:
     - GLTFSceneKit
   - Flutter (1.0.0)
   - GLTFSceneKit (0.3.0)
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - arkit_plugin (from `.symlinks/plugins/arkit_plugin/ios`)
   - Flutter (from `Flutter`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -18,11 +22,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/arkit_plugin/ios"
   Flutter:
     :path: Flutter
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
   arkit_plugin: bb56e71ef215147316ecf3774d5cb74beda20a10
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   GLTFSceneKit: d1b437c514ba2aed5555afb0fddd64e030612d57
+  shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
 
 PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
 

@@ -3,9 +3,15 @@ import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
+import 'package:bitz/data/pizza_sf.dart';
+import 'package:bitz/providers/pizza_order_model.dart';
+import 'package:bitz/providers/tab_navigation_model.dart';
+import 'package:bitz/types/order.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:provider/provider.dart';
+import 'package:uid/uid.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);
@@ -25,7 +31,13 @@ class _PaymentPageState extends State<PaymentPage> {
         appBar: CustomAppBar(
           title: 'Payment',
           onDeleteTap: () {
-            // TODO: Delete the current item & go back to the home screen
+            // remove all pizza
+            final pizzaOrderModel =
+                Provider.of<PizzaOrderModel>(context, listen: false);
+            pizzaOrderModel.removeAllPizzas();
+
+            // go to first page
+            Navigator.popUntil(context, (route) => route.isFirst);
           },
         ),
         body: MyCustomScrollBar(
@@ -83,9 +95,9 @@ class _PaymentPageState extends State<PaymentPage> {
 
         // Total
         const SizedBox(height: 16),
-        const Row(
+        Row(
           children: [
-            Text(
+            const Text(
               'Total',
               style: TextStyle(
                 fontSize: 18,
@@ -93,14 +105,22 @@ class _PaymentPageState extends State<PaymentPage> {
                 color: MyColors.textPrimary,
               ),
             ),
-            Spacer(),
-            Text(
-              '€29.5',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: MyColors.textPrimary,
-              ),
+            const Spacer(),
+            Consumer<PizzaOrderModel>(
+              builder: (
+                context,
+                pizzaOrder,
+                child,
+              ) {
+                return Text(
+                  '€${pizzaOrder.totalPrice.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: MyColors.textPrimary,
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -109,8 +129,30 @@ class _PaymentPageState extends State<PaymentPage> {
         const SizedBox(height: 56),
         Button(
           text: 'Order And Pay',
-          onPressed: () {
-            // TODO: Place the order & go back to the home screen
+          onPressed: () async {
+            final pizzaOrderModel =
+                Provider.of<PizzaOrderModel>(context, listen: false);
+            final tabNavigationModel =
+                Provider.of<TabNavigationModel>(context, listen: false);
+
+            // Add a pizza order to the Shared Preferences
+            PizzaSF pizzaSF = PizzaSF();
+            Order order = Order(
+              id: UId.getId(),
+              orderItems: pizzaOrderModel.selectedPizzas,
+              createdAt: DateTime.now(),
+              totalPrice: pizzaOrderModel.totalPrice,
+            );
+            await pizzaSF.addOrder(order);
+
+            // Clear the cart after placing the order (provider)
+            pizzaOrderModel.removeAllPizzas();
+
+            // Call the navigateToTab function from the TabNavigationModel (Orders tab)
+            tabNavigationModel.navigateToTab(2);
+
+            // go to the first page using the captured context
+            Navigator.popUntil(context, (route) => route.isFirst);
           },
         ),
       ],
