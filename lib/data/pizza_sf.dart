@@ -1,26 +1,27 @@
 // pizza_sf.dart
+import 'dart:convert';
 import 'package:bitz/types/pizza_order.dart';
 import 'package:bitz/utils/constants.dart';
 import 'shared_prefs.dart';
 
-class PizzaSF extends SharedPrefs {
-  // PIZZA ORDER
+class PizzaSF {
   final String pizzaOrderKey = Pizza.ordersKey;
 
-  Future<void> addPizzaOrder(List<PizzaOrder> pizzaOrders) async {
-    final List<String> pizzaOrdersString =
-        pizzaOrders.map((e) => e.toJson().toString()).toList();
-
-    await setStringList(pizzaOrderKey, pizzaOrdersString);
+  Future<void> addPizzaOrders(List<PizzaOrder> pizzaOrders) async {
+    final List<String> pizzaOrdersStringList =
+        pizzaOrders.map((e) => json.encode(e.toJson())).toList().cast<String>();
+    await SharedPrefs.setStringList(pizzaOrderKey, pizzaOrdersStringList);
   }
 
   Future<List<PizzaOrder>> getPizzaOrders() async {
-    List<PizzaOrder> orders = [];
-
-    // final List<String> pizzaOrdersString = await getStringList(pizzaOrderKey);
-
-
-
-    return [];
+    final List<String> pizzaOrdersStringList =
+        await SharedPrefs.getStringList(pizzaOrderKey);
+    if (pizzaOrdersStringList.isNotEmpty) {
+      return pizzaOrdersStringList
+          .map((e) => PizzaOrder.fromJson(json.decode(e)))
+          .toList();
+    } else {
+      return [];
+    }
   }
 }

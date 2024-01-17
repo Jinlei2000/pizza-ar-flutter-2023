@@ -2,36 +2,23 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
-  SharedPreferences? prefs;
-
-  SharedPrefs() {
-    // Call the asynchronous method for initialization
-    _initPrefs();
+  static Future<SharedPreferences> _getPrefsInstance() async {
+    return await SharedPreferences.getInstance();
   }
 
-  Future<void> _initPrefs() async {
-    // Use the 'await' keyword to wait for the result of the asynchronous call
-    prefs = await SharedPreferences.getInstance();
+  static Future<void> setStringList(String key, List<String> value) async {
+    final prefs = await _getPrefsInstance();
+    await prefs.setStringList(key, value);
   }
 
-  // Set List<String>
-  Future<void> setStringList(String key, List<String> value) async {
-    await prefs?.setStringList(key, value);
+  static Future<List<String>> getStringList(String key) async {
+    final prefs = await _getPrefsInstance();
+    return prefs.getStringList(key) ?? [];
   }
 
-  // Get List<String>
-  Future<List<String>> getStringList(String key) async {
-    return prefs?.getStringList(key) ?? [];
-  }
-
-  //Get test
-  Future<String?> getTest() async {
-    return prefs?.getString('test');
-  }
-
-  // Clear all data
-  // TODO: add a clear button in the app (delete cache data)
-  Future<void> clear() async {
-    await prefs?.clear();
+  // clear all data
+  static Future<void> clear() async {
+    final prefs = await _getPrefsInstance();
+    await prefs.clear();
   }
 }

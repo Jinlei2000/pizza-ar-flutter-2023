@@ -4,12 +4,10 @@ import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/data/pizza_sf.dart';
-import 'package:bitz/data/shared_prefs.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/types/pizza_order.dart';
 import 'package:bitz/utils/colors.dart';
-import 'package:bitz/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
@@ -140,7 +138,7 @@ class _PaymentPageState extends State<PaymentPage> {
             // Add a pizza order to the Shared Preferences
             PizzaSF pizzaSF = PizzaSF();
             List<PizzaOrder> pizzaOrders = pizzaOrderModel.selectedPizzas;
-            await pizzaSF.addPizzaOrder(pizzaOrders);
+            await pizzaSF.addPizzaOrders(pizzaOrders);
 
             // clear the cart after placing the order
             pizzaOrderModel.removeAllPizzas();
