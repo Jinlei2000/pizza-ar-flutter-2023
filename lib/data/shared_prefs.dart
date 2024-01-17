@@ -1,9 +1,8 @@
 // shared_prefs.dart
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
-  late SharedPreferences prefs;
+  SharedPreferences? prefs;
 
   SharedPrefs() {
     // Call the asynchronous method for initialization
@@ -16,30 +15,23 @@ class SharedPrefs {
   }
 
   // Set List<String>
-  Future<void> _setStringList(String key, List<String> value) async {
-    await prefs.setStringList(key, value);
+  Future<void> setStringList(String key, List<String> value) async {
+    await prefs?.setStringList(key, value);
   }
 
   // Get List<String>
-  Future<List<String>> _getStringList(String key) async {
-    return prefs.getStringList(key) ?? [];
+  Future<List<String>> getStringList(String key) async {
+    return prefs?.getStringList(key) ?? [];
+  }
+
+  //Get test
+  Future<String?> getTest() async {
+    return prefs?.getString('test');
   }
 
   // Clear all data
   // TODO: add a clear button in the app (delete cache data)
   Future<void> clear() async {
-    await prefs.clear();
-  }
-
-  // PIZZA ORDER
-  String pizzaOrderKey = 'pizza_orders';
-  // Add pizza to orders
-  Future<void> addPizzaOrder(List<String> pizzaOrders) async {
-    await _setStringList(pizzaOrderKey, pizzaOrders);
-  }
-
-  // Get pizza orders
-  Future<List<String>> getPizzaOrders() async {
-    return await _getStringList(pizzaOrderKey);
+    await prefs?.clear();
   }
 }

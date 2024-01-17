@@ -1,7 +1,8 @@
 // constants.dart
-import 'package:bitz/utils/colors.dart';
 
 class Pizza {
+  static const String ordersKey = 'pizza_orders';
+
   // Pizza Sizes
   static const List<Map<String, dynamic>> sizes = [
     {'size': 'S', 'name': 'Small', 'price': 5, 'scale': 0.4},
@@ -14,19 +15,19 @@ class Pizza {
     {
       'name': 'Tomato',
       'price': 0.5,
-      'color': MyColors.tomatoSauce,
+      'color': 0xFFB21807,
       'path': 'assets/models/tomato_sauce.glb'
     },
     {
       'name': 'Bbq',
       'price': 0.5,
-      'color': MyColors.bbqSauce,
+      'color': 0xFF551D19,
       'path': 'assets/models/bbq_sauce.glb'
     },
     {
       'name': 'Cream',
       'price': 0.5,
-      'color': MyColors.creamSauce,
+      'color': 0xFFFCFAF2,
       'path': 'assets/models/cream_sauce.glb'
     },
   ];

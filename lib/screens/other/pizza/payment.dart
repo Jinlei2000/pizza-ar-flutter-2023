@@ -3,8 +3,11 @@ import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
+import 'package:bitz/data/pizza_sf.dart';
+import 'package:bitz/data/shared_prefs.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
+import 'package:bitz/types/pizza_order.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:bitz/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -127,21 +130,25 @@ class _PaymentPageState extends State<PaymentPage> {
         const SizedBox(height: 56),
         Button(
           text: 'Order And Pay',
-          onPressed: () {
-            // TODO: Save the order
-
-            // clear the cart after placing the order
+          onPressed: () async {
             final pizzaOrderModel =
                 Provider.of<PizzaOrderModel>(context, listen: false);
-            pizzaOrderModel.removeAllPizzas();
-
-            // Use Provider to get the TabNavigationModel
             final tabNavigationModel =
                 Provider.of<TabNavigationModel>(context, listen: false);
+
+            // TODO: check if it works
+            // Add a pizza order to the Shared Preferences
+            PizzaSF pizzaSF = PizzaSF();
+            List<PizzaOrder> pizzaOrders = pizzaOrderModel.selectedPizzas;
+            await pizzaSF.addPizzaOrder(pizzaOrders);
+
+            // clear the cart after placing the order
+            pizzaOrderModel.removeAllPizzas();
+
             // Call the navigateToTab function from the TabNavigationModel (Orders tab)
             tabNavigationModel.navigateToTab(2);
 
-            // go to first page
+            // go to the first page using the captured context
             Navigator.popUntil(context, (route) => route.isFirst);
           },
         ),

@@ -311,7 +311,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
           child: PizzaItem(
             isSelected: isSelected,
             name: sauce['name'].toString(),
-            color: sauce['color'] as Color,
+            color: Color(sauce['color'] as int),
           ),
         );
       }).toList(),

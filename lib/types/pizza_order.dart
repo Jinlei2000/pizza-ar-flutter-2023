@@ -19,4 +19,25 @@ class PizzaOrder {
     required this.totalPrice,
     required this.price,
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'size': size,
+        'sauce': sauce,
+        'cheese': cheese,
+        'toppings': toppings,
+        'quantity': quantity,
+        'totalPrice': totalPrice,
+        'price': price,
+      };
+
+  PizzaOrder.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        size = json['size'],
+        sauce = json['sauce'],
+        cheese = json['cheese'],
+        toppings = json['toppings'],
+        quantity = json['quantity'],
+        totalPrice = json['totalPrice'],
+        price = json['price'];
 }
