@@ -3,12 +3,10 @@ import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/data/pizza_sf.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
-import 'package:bitz/types/order.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:uid/uid.dart';
 
 void main() {
   runApp(
