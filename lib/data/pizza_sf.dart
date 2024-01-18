@@ -75,7 +75,7 @@ class PizzaSF {
         id: UId.getId(),
         // Set a old date
         createdAt: DateTime.now().subtract(const Duration(days: 20)),
-        isCompleted: true,
+        isCompleted: false,
         totalPrice: 9,
         orderItems: [
           OrderItem(

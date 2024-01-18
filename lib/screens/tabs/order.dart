@@ -1,5 +1,6 @@
 // order.dart
 import 'package:bitz/components/custom_safe_area.dart';
+import 'package:bitz/components/order_card.dart';
 import 'package:bitz/data/pizza_sf.dart';
 import 'package:bitz/types/order.dart';
 import 'package:bitz/utils/colors.dart';
@@ -54,22 +55,14 @@ class _OrderPageState extends State<OrderPage> {
                   ),
                 ),
                 // list of orders
+                const SizedBox(height: 24),
                 Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: orders.length,
                     itemBuilder: (context, index) {
-                      final Order order = orders[index];
-                      // order card
-                      return Column(
-                        children: [
-                          Text(order.id),
-                          Text(order.createdAt.toString()),
-                          Text(order.isCompleted.toString()),
-                          Text(order.totalPrice.toString()),
-                          const Divider(),
-                        ],
-                      );
+                      // Order card
+                      return OrderCard(order: orders[index]);
                     },
                   ),
                 ),
