@@ -1,6 +1,7 @@
 // main.dart
 import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/data/pizza_sf.dart';
+import 'package:bitz/data/shared_prefs.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/utils/colors.dart';
@@ -40,9 +41,11 @@ class _MyAppState extends State<MyApp> {
 
   // Set some test data for the app
   Future<void> _initTestData() async {
-    final PizzaSF pizzaSF = PizzaSF();
+    // Clear all data
+    SharedPrefs.clearAllData();
 
     // Set some old orders
+    final PizzaSF pizzaSF = PizzaSF();
     pizzaSF.addOldOrders();
   }
 

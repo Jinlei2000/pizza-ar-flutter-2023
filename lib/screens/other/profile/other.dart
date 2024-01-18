@@ -61,14 +61,14 @@ class OtherPage extends StatelessWidget {
           Button(
             text: 'Clear cache',
             color: MyColors.button,
-            onPressed: () {
+            onPressed: () async {
               // Clear all data
-              SharedPrefs.clearAllData();
+              await SharedPrefs.clearAllData();
 
               // Set some test data for the app
               final PizzaSF pizzaSF = PizzaSF();
               // Set some old orders
-              pizzaSF.addOldOrders();
+              await pizzaSF.addOldOrders();
             },
           ),
         ],

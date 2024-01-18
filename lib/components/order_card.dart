@@ -17,6 +17,10 @@ class OrderCard extends StatelessWidget {
     return '${date.day}/${date.month}/${date.year} - ${date.hour}:${date.minute < 10 ? '0' : ''}${date.minute}';
   }
 
+  String _formatEstimatedTime(DateTime date) {
+    return '${date.hour}:${date.minute < 10 ? '0' : ''}${date.minute}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -102,7 +106,7 @@ class OrderCard extends StatelessWidget {
                 children: [
                   const SizedBox(height: 16),
                   Text(
-                    '${order.orderItems.length} pizza(s)',
+                    '${order.quantity} pizza(s)',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -135,7 +139,9 @@ class OrderCard extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          '${order.createdAt.add(const Duration(minutes: 20)).hour}:${order.createdAt.add(const Duration(minutes: 20)).minute}',
+                          _formatEstimatedTime(order.createdAt.add(
+                            const Duration(minutes: 20),
+                          )),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,

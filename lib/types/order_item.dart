@@ -40,4 +40,10 @@ class OrderItem {
         quantity = json['quantity'],
         totalPrice = json['totalPrice'],
         price = json['price'];
+
+  // to string for debugging
+  @override
+  String toString() {
+    return 'OrderItem(id: $id, size: $size, sauce: $sauce, cheese: $cheese, toppings: $toppings, quantity: $quantity, totalPrice: $totalPrice, price: $price)';
+  }
 }

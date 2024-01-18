@@ -22,6 +22,9 @@ class OrderDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('OrderDetailPage');
+    print(order);
+
     return CustomSafeArea(
       bottom: true,
       child: Scaffold(
@@ -234,20 +237,23 @@ class OrderDetailPage extends StatelessWidget {
         ),
 
         // Button to confirm the order
-        const SizedBox(height: 56),
-        Button(
-          text: 'Confirm Order',
-          onPressed: () {
-            // update the order status to completed
-            PizzaSF pizzaSF = PizzaSF();
-            pizzaSF.updateOrderIsCompleted(
-              order.id,
-            );
+        if (!order.isCompleted)
+          Container(
+            margin: const EdgeInsets.only(top: 56),
+            child: Button(
+              text: 'Confirm Order',
+              onPressed: () async {
+                // update the order status to completed
+                PizzaSF pizzaSF = PizzaSF();
+                await pizzaSF.updateOrderIsCompleted(
+                  order.id,
+                );
 
-            // go back to the previous screen
-            Navigator.pop(context);
-          },
-        ),
+                // go back to the previous screen
+                Navigator.pop(context);
+              },
+            ),
+          ),
       ],
     );
   }

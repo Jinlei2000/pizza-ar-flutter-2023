@@ -40,10 +40,12 @@ class PizzaSF {
       return Order.fromJson(orderMap);
     }).toList();
 
+    // sort by createdAt
+    orders.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
     return orders;
   }
 
-  // TODO: test this
   // update order isCompleted to true
   Future<void> updateOrderIsCompleted(String orderId) async {
     // get existing orders
@@ -74,9 +76,10 @@ class PizzaSF {
       Order(
         id: UId.getId(),
         // Set a old date
-        createdAt: DateTime.now().subtract(const Duration(days: 20)),
-        isCompleted: false,
+        createdAt: DateTime.now().subtract(const Duration(days: 20, hours: 2)),
+        isCompleted: true,
         totalPrice: 9,
+        quantity: 1,
         orderItems: [
           OrderItem(
             id: 1,
@@ -96,9 +99,10 @@ class PizzaSF {
       Order(
         id: UId.getId(),
         // Set a old date
-        createdAt: DateTime.now().subtract(const Duration(days: 15)),
+        createdAt: DateTime.now().subtract(const Duration(days: 15, hours: 5)),
         isCompleted: true,
         totalPrice: 36,
+        quantity: 2,
         orderItems: [
           OrderItem(
             id: 1,
@@ -128,9 +132,10 @@ class PizzaSF {
       Order(
         id: UId.getId(),
         // Set a old date
-        createdAt: DateTime.now().subtract(const Duration(days: 10)),
+        createdAt: DateTime.now().subtract(const Duration(days: 10, hours: 1)),
         isCompleted: true,
         totalPrice: 46,
+        quantity: 2,
         orderItems: [
           OrderItem(
             id: 1,
