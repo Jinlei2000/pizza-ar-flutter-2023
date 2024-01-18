@@ -28,12 +28,12 @@ class OrderDetailPage extends StatelessWidget {
         appBar: const CustomAppBar(
           title: 'Order Detail',
         ),
-        body: _body(),
+        body: _body(context),
       ),
     );
   }
 
-  Widget _body() {
+  Widget _body(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
       child: Column(
@@ -43,10 +43,9 @@ class OrderDetailPage extends StatelessWidget {
           Expanded(
             child: _pizzaCardsSection(),
           ),
-          // _pizzaCardsSection(),
 
           // Order summary & button to confirm the order
-          _orderSummary(),
+          _orderSummary(context),
         ],
       ),
     );
@@ -183,7 +182,7 @@ class OrderDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _orderSummary() {
+  Widget _orderSummary(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -238,14 +237,15 @@ class OrderDetailPage extends StatelessWidget {
         const SizedBox(height: 56),
         Button(
           text: 'Confirm Order',
-          onPressed: () async {
-            // TODO: update the order status to completed
-            PizzaSF pizzaSF = PizzaSF();
-
+          onPressed: () {
             // update the order status to completed
-            await pizzaSF.updateOrderIsCompleted(
+            PizzaSF pizzaSF = PizzaSF();
+            pizzaSF.updateOrderIsCompleted(
               order.id,
             );
+
+            // go back to the previous screen
+            Navigator.pop(context);
           },
         ),
       ],
