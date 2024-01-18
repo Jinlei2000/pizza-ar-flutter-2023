@@ -42,11 +42,11 @@ class _MyAppState extends State<MyApp> {
   // Set some test data for the app
   Future<void> _initTestData() async {
     // Clear all data
-    SharedPrefs.clearAllData();
+    await SharedPrefs.clearAllData();
 
     // Set some old orders
     final PizzaSF pizzaSF = PizzaSF();
-    pizzaSF.addOldOrders();
+    await pizzaSF.addOldOrders();
   }
 
   @override
