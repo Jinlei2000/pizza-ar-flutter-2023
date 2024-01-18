@@ -5,7 +5,7 @@ class Order {
   final String id;
   final List<OrderItem> orderItems;
   final DateTime createdAt;
-  bool isCompleted = false;
+  bool isCompleted;
   final double totalPrice;
 
   Order({
@@ -13,6 +13,7 @@ class Order {
     required this.orderItems,
     required this.createdAt,
     required this.totalPrice,
+    this.isCompleted = false,
   });
 
   Map<String, dynamic> toJson() => {

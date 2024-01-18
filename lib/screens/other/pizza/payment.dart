@@ -6,10 +6,12 @@ import 'package:bitz/components/my_custom_scroll_bar.dart';
 import 'package:bitz/data/pizza_sf.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
+import 'package:bitz/screens/tabs/order.dart';
 import 'package:bitz/types/order.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:uid/uid.dart';
 
@@ -151,7 +153,7 @@ class _PaymentPageState extends State<PaymentPage> {
             // Call the navigateToTab function from the TabNavigationModel (Orders tab)
             tabNavigationModel.navigateToTab(2);
 
-            // go to the first page using the captured context
+            // go to root page
             Navigator.popUntil(context, (route) => route.isFirst);
           },
         ),
