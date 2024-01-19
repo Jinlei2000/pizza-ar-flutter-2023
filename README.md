@@ -2,7 +2,7 @@
 
 This **Flutter** application utilizes the **ARKit** plugin to seamlessly incorporate **Augmented Reality (AR)** features, specifically designed for **iOS**. The **primary** objective of the app is to empower users to choose the **size** of a pizza and virtually explore different **sauces and toppings**. Through this **interactive experience**, users can visually preview their selected toppings on the pizza, enhancing their **decision-making process**.
 
-![](giphy.mp4)
+![]([giphy.mp4](https://github.com/Jinlei2000/pizza-ar-flutter-2023/blob/develop/giphy.mp4))
 
 ## Built With
 
