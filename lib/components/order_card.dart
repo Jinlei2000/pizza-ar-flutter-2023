@@ -29,7 +29,7 @@ class OrderCard extends StatelessWidget {
         PersistentNavBarNavigator.pushNewScreen(
           context,
           screen: OrderDetailPage(
-            order: order,
+            id: order.id,
           ),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,

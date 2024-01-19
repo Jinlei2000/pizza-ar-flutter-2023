@@ -3,8 +3,8 @@ import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
-import 'package:bitz/data/pizza_sf.dart';
-import 'package:bitz/providers/pizza_order_model.dart';
+import 'package:bitz/providers/cart_model.dart';
+import 'package:bitz/providers/pizza_sf_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/types/order.dart';
 import 'package:bitz/utils/colors.dart';
@@ -24,17 +24,25 @@ class _PaymentPageState extends State<PaymentPage> {
   // Selected payment method
   int selectedPaymentMethod = 0;
 
+  late CartModel cartModel;
+  late TabNavigationModel tabNavigationModel;
+  late PizzaSFModel pizzaSFModel;
+
   @override
   Widget build(BuildContext context) {
+    // Get the providers
+    cartModel = Provider.of<CartModel>(context, listen: false);
+    tabNavigationModel =
+        Provider.of<TabNavigationModel>(context, listen: false);
+    pizzaSFModel = Provider.of<PizzaSFModel>(context, listen: false);
+
     return CustomSafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
           title: 'Payment',
           onDeleteTap: () {
             // remove all pizza
-            final pizzaOrderModel =
-                Provider.of<PizzaOrderModel>(context, listen: false);
-            pizzaOrderModel.removeAllPizzas();
+            cartModel.removeAllPizzas();
 
             // go to first page
             Navigator.popUntil(context, (route) => route.isFirst);
@@ -106,14 +114,14 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
             ),
             const Spacer(),
-            Consumer<PizzaOrderModel>(
+            Consumer<CartModel>(
               builder: (
                 context,
-                pizzaOrder,
+                cart,
                 child,
               ) {
                 return Text(
-                  '€${pizzaOrder.totalPrice.toStringAsFixed(2)}',
+                  '€${cart.totalPrice.toStringAsFixed(2)}',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -130,31 +138,25 @@ class _PaymentPageState extends State<PaymentPage> {
         Button(
           text: 'Order And Pay',
           onPressed: () async {
-            final pizzaOrderModel =
-                Provider.of<PizzaOrderModel>(context, listen: false);
-            final tabNavigationModel =
-                Provider.of<TabNavigationModel>(context, listen: false);
-
             // quantity
             int quantity = 0;
-            for (var pizza in pizzaOrderModel.selectedPizzas) {
+            for (var pizza in cartModel.selectedPizzas) {
               quantity += pizza.quantity;
             }
 
-            // Add a pizza order to the Shared Preferences
-            PizzaSF pizzaSF = PizzaSF();
-            Order order = Order(
-              id: UId.getId(),
-              // BUG: check if orderItems is not empty
-              orderItems: pizzaOrderModel.selectedPizzas,
-              createdAt: DateTime.now(),
-              totalPrice: pizzaOrderModel.totalPrice,
-              quantity: quantity,
+            // Add a pizza order to the Provider
+            await pizzaSFModel.addOrder(
+              Order(
+                id: UId.getId(),
+                orderItems: cartModel.selectedPizzas,
+                createdAt: DateTime.now(),
+                totalPrice: cartModel.totalPrice,
+                quantity: quantity,
+              ),
             );
-            await pizzaSF.addOrder(order);
 
             // Clear the cart after placing the order (provider)
-            pizzaOrderModel.removeAllPizzas();
+            cartModel.removeAllPizzas();
 
             // Call the navigateToTab function from the TabNavigationModel (Orders tab)
             tabNavigationModel.navigateToTab(2);

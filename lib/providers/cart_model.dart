@@ -1,8 +1,8 @@
-// pizza_order_model.dart
+// cart_model.dart
 import 'package:flutter/material.dart';
 import '../types/order_item.dart';
 
-class PizzaOrderModel extends ChangeNotifier {
+class CartModel extends ChangeNotifier {
   final List<OrderItem> _selectedPizzas = [];
 
   List<OrderItem> get selectedPizzas => _selectedPizzas;
