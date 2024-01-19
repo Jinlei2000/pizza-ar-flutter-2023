@@ -22,9 +22,6 @@ class OrderDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('OrderDetailPage');
-    print(order);
-
     return CustomSafeArea(
       bottom: true,
       child: Scaffold(
