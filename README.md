@@ -35,15 +35,32 @@ https://github.com/Jinlei2000/pizza-ar-flutter-2023/assets/91153798/bce754c3-bc0
 
 ### Prerequisites
 
+Needed requirements to run the project locally on a physical device:
+
+- [MacBook](https://www.apple.com/mac/)
+- [Iphone](https://www.apple.com/iphone/)
+- [Xcode](https://developer.apple.com/xcode/)
+- [Flutter](https://flutter.dev/docs/get-started/install)
+
 ### Installation
 
-## Contributing
+#### 1. Clone the repo
+    ```sh
+    git clone
+    ```
+#### 2. Install Xcode & Flutter
+#### 3. Install the Flutter packages
+   ```sh
+   flutter pub get
+   ```
+#### 4. Follow the instructions
+Follow the instructions on the [Flutter Doc](https://docs.flutter.dev/get-started/install/macos/mobile-ios?tab=physical) to run the app on a physical device
 
 ## Contact
 
 Lei Jin - contact@leijin.be
 
-## Acknowledgements
+
 
 
 
