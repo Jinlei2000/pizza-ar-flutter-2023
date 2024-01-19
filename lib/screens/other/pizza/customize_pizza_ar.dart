@@ -655,13 +655,13 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
     void updateNodes(vector.Vector3 position, String parentNodeName) {
       addDoughNode(position, parentNodeName);
 
-      if (pageIndex > 0) {
+      if (pageIndex > 0 && selected['sauce'] != null) {
         addSauceNode(position, selected['sauce']['name'], parentNodeName);
       }
-      if (pageIndex > 1) {
+      if (pageIndex > 1 && selected['cheese'] != null) {
         addCheeseNode(position, selected['cheese']['name'], parentNodeName);
       }
-      if (pageIndex > 2) {
+      if (pageIndex > 2 && selected['toppings'] != null) {
         addToppingsNodes(position, parentNodeName);
       }
     }
