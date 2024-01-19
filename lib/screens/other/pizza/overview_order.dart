@@ -179,6 +179,9 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
       price: '€${cart.totalPrice.toStringAsFixed(2)}',
       nextButtonTitle: 'Checkout',
       nextButtonOnPressed: () {
+        // if no pizza selected, do nothing
+        if (cartModel.selectedPizzas.isEmpty) return;
+
         // Navigate to Overview Order Page
         PersistentNavBarNavigator.pushNewScreen(
           context,
