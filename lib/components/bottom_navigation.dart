@@ -94,6 +94,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           hideNavigationBarWhenKeyboardShows: true,
           popAllScreensOnTapOfSelectedTab: true,
           popActionScreens: PopActionScreensType.all,
+          popAllScreensOnTapAnyTabs: true,
           backgroundColor: MyColors.bottomNavBar,
           navBarHeight: 56,
           decoration: const NavBarDecoration(
@@ -101,8 +102,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
               BorderSide(width: 0.5, color: MyColors.gray200),
             ),
           ),
-          padding: const NavBarPadding.only(
-              bottom: 0, top: 0, left: 16, right: 16),
+          padding:
+              const NavBarPadding.only(bottom: 0, top: 0, left: 16, right: 16),
           itemAnimationProperties: const ItemAnimationProperties(
             duration: Duration(milliseconds: 200),
             curve: Curves.ease,

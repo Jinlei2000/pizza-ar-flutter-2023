@@ -1,5 +1,7 @@
 // main.dart
 import 'package:bitz/components/bottom_navigation.dart';
+import 'package:bitz/data/pizza_sf.dart';
+import 'package:bitz/data/shared_prefs.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/utils/colors.dart';
@@ -23,10 +25,29 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // TODO: add TEST DATA for old orders
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    _initTestData();
+  }
+
+  // Set some test data for the app
+  Future<void> _initTestData() async {
+    // Clear all data
+    await SharedPrefs.clearAllData();
+
+    // Set some old orders
+    final PizzaSF pizzaSF = PizzaSF();
+    await pizzaSF.addOldOrders();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,14 +5,17 @@ class Order {
   final String id;
   final List<OrderItem> orderItems;
   final DateTime createdAt;
-  bool isCompleted = false;
+  bool isCompleted;
   final double totalPrice;
+  final int quantity;
 
   Order({
     required this.id,
     required this.orderItems,
     required this.createdAt,
     required this.totalPrice,
+    required this.quantity,
+    this.isCompleted = false,
   });
 
   Map<String, dynamic> toJson() => {
@@ -21,6 +24,7 @@ class Order {
         'createdAt': createdAt.toIso8601String(),
         'isCompleted': isCompleted,
         'totalPrice': totalPrice,
+        'quantity': quantity,
       };
 
   Order.fromJson(Map<String, dynamic> json)
@@ -30,5 +34,12 @@ class Order {
             .toList(),
         createdAt = DateTime.parse(json['createdAt']),
         isCompleted = json['isCompleted'],
-        totalPrice = json['totalPrice'];
+        totalPrice = json['totalPrice'],
+        quantity = json['quantity'];
+
+  // to string for debugging
+  @override
+  String toString() {
+    return 'Order(id: $id, orderItems: $orderItems, createdAt: $createdAt, isCompleted: $isCompleted, totalPrice: $totalPrice, quantity: $quantity)';
+  }
 }

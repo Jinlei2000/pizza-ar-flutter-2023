@@ -3,10 +3,11 @@ import 'package:bitz/components/avatar_image.dart';
 import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
-import 'package:bitz/data/shared_prefs.dart';
+import 'package:bitz/screens/other/profile/other.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -16,17 +17,17 @@ class ProfilePage extends StatelessWidget {
     return CustomSafeArea(
       child: Scaffold(
         body: MyCustomScrollBar(
-          child: _body(),
+          child: _body(context),
         ),
       ),
     );
   }
 
-  Container _body() {
+  Container _body(BuildContext context) {
     List<Map<String, dynamic>> accountItems = [
       {'title': 'Personalization', 'icon': LucideIcons.user2},
       {'title': 'Privacy & Security', 'icon': LucideIcons.lock},
-      {'title': 'Billing', 'icon': LucideIcons.creditCard},
+      {'title': 'Other', 'icon': LucideIcons.wrench},
     ];
 
     List<Map<String, dynamic>> personalizationItems = [
@@ -87,7 +88,17 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     _profileItem(0, accountItems),
                     _profileItem(1, accountItems),
-                    _profileItem(2, accountItems),
+                    _profileItem(2, accountItems, onTap: () {
+                      // Navigate to other screen
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const OtherPage(),
+                        withNavBar: false,
+                        // TODO: change animation
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -126,18 +137,7 @@ class ProfilePage extends StatelessWidget {
               ),
             ],
           ),
-          // Clear cache
-          Container(
-            margin: const EdgeInsets.only(bottom: 24),
-            child: Button(
-              text: 'Clear cache',
-              color: MyColors.red,
-              onPressed: () {
-                // Clear all data
-                SharedPrefs.clearAllData();
-              },
-            ),
-          ),
+
           // Logout
           const SizedBox(height: 32),
           Container(
@@ -153,45 +153,49 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _profileItem(int index, List<Map<String, dynamic>> items) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: index == items.length - 1
-              ? BorderSide.none
-              : const BorderSide(
-                  color: MyColors.borderColor,
-                  width: 0.5,
-                ),
+  Widget _profileItem(int index, List<Map<String, dynamic>> items,
+      {Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
         ),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            items[index]['icon'],
-            size: 24,
-            color: MyColors.textPrimary,
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: index == items.length - 1
+                ? BorderSide.none
+                : const BorderSide(
+                    color: MyColors.borderColor,
+                    width: 0.5,
+                  ),
           ),
-          const SizedBox(width: 16),
-          Text(
-            items[index]['title'],
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
+        ),
+        child: Row(
+          children: [
+            Icon(
+              items[index]['icon'],
+              size: 24,
               color: MyColors.textPrimary,
             ),
-          ),
-          const Spacer(),
-          const Icon(
-            LucideIcons.chevronRight,
-            color: MyColors.textSecondary,
-            size: 24,
-          ),
-        ],
+            const SizedBox(width: 16),
+            Text(
+              items[index]['title'],
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: MyColors.textPrimary,
+              ),
+            ),
+            const Spacer(),
+            const Icon(
+              LucideIcons.chevronRight,
+              color: MyColors.textSecondary,
+              size: 24,
+            ),
+          ],
+        ),
       ),
     );
   }

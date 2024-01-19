@@ -135,13 +135,21 @@ class _PaymentPageState extends State<PaymentPage> {
             final tabNavigationModel =
                 Provider.of<TabNavigationModel>(context, listen: false);
 
+            // quantity
+            int quantity = 0;
+            for (var pizza in pizzaOrderModel.selectedPizzas) {
+              quantity += pizza.quantity;
+            }
+
             // Add a pizza order to the Shared Preferences
             PizzaSF pizzaSF = PizzaSF();
             Order order = Order(
               id: UId.getId(),
+              // BUG: check if orderItems is not empty
               orderItems: pizzaOrderModel.selectedPizzas,
               createdAt: DateTime.now(),
               totalPrice: pizzaOrderModel.totalPrice,
+              quantity: quantity,
             );
             await pizzaSF.addOrder(order);
 
@@ -151,7 +159,7 @@ class _PaymentPageState extends State<PaymentPage> {
             // Call the navigateToTab function from the TabNavigationModel (Orders tab)
             tabNavigationModel.navigateToTab(2);
 
-            // go to the first page using the captured context
+            // go to root page
             Navigator.popUntil(context, (route) => route.isFirst);
           },
         ),
