@@ -3,17 +3,19 @@ import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/pizza_cart_item.dart';
-import 'package:bitz/data/pizza_sf.dart';
+import 'package:bitz/providers/pizza_sf_model.dart';
 import 'package:bitz/types/order.dart';
+import 'package:bitz/types/order_item.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailPage extends StatelessWidget {
-  final Order order;
+  final String id;
 
   const OrderDetailPage({
     Key? key,
-    required this.order,
+    required this.id,
   }) : super(key: key);
 
   String _formatDate(DateTime date) {
@@ -36,36 +38,51 @@ class OrderDetailPage extends StatelessWidget {
   Widget _body(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Pizza cards
-          Expanded(
-            child: _pizzaCardsSection(),
-          ),
+      child: Consumer<PizzaSFModel>(builder: (
+        context,
+        pizzaSFModel,
+        child,
+      ) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Pizza cards
+            Expanded(
+              child: _pizzaCardsSection(pizzaSFModel.orders
+                  .where((order) => order.id == id)
+                  .toList()
+                  .first
+                  .orderItems),
+            ),
 
-          // Order summary & button to confirm the order
-          _orderSummary(context),
-        ],
-      ),
+            // Order summary & button to confirm the order
+            _orderSummary(
+                context,
+                pizzaSFModel.orders
+                    .where((order) => order.id == id)
+                    .toList()
+                    .first),
+          ],
+        );
+      }),
     );
   }
 
-  Widget _pizzaCardsSection() {
+  Widget _pizzaCardsSection(List<OrderItem> orderItems) {
     return Stack(
       children: [
         ListView.builder(
-          itemCount: order.orderItems.length,
+          itemCount: orderItems.length,
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-            final pizza = order.orderItems[index];
+            final pizza = orderItems[index];
             return Column(
               children: [
                 Container(
                   padding: const EdgeInsets.all(16),
                   margin: EdgeInsets.only(
-                    bottom: index == order.orderItems.length - 1 ? 72 : 16,
+                    bottom: index == orderItems.length - 1 ? 72 : 16,
                   ),
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -182,7 +199,7 @@ class OrderDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _orderSummary(BuildContext context) {
+  Widget _orderSummary(BuildContext context, Order order) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -241,10 +258,9 @@ class OrderDetailPage extends StatelessWidget {
               text: 'Confirm Order',
               onPressed: () async {
                 // update the order status to completed
-                PizzaSF pizzaSF = PizzaSF();
-                await pizzaSF.updateOrderIsCompleted(
-                  order.id,
-                );
+                PizzaSFModel pizzaSFModel =
+                    Provider.of<PizzaSFModel>(context, listen: false);
+                pizzaSFModel.updateOrderIsCompleted(order.id);
 
                 // go back to the previous screen
                 Navigator.pop(context);

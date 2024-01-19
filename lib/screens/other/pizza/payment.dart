@@ -3,8 +3,8 @@ import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
-import 'package:bitz/data/pizza_sf.dart';
 import 'package:bitz/providers/pizza_order_model.dart';
+import 'package:bitz/providers/pizza_sf_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/types/order.dart';
 import 'package:bitz/utils/colors.dart';
@@ -141,17 +141,18 @@ class _PaymentPageState extends State<PaymentPage> {
               quantity += pizza.quantity;
             }
 
-            // Add a pizza order to the Shared Preferences
-            PizzaSF pizzaSF = PizzaSF();
-            Order order = Order(
-              id: UId.getId(),
-              // BUG: check if orderItems is not empty
-              orderItems: pizzaOrderModel.selectedPizzas,
-              createdAt: DateTime.now(),
-              totalPrice: pizzaOrderModel.totalPrice,
-              quantity: quantity,
+            // Add a pizza order to the Provider
+            PizzaSFModel pizzaSFModel =
+                Provider.of<PizzaSFModel>(context, listen: false);
+            pizzaSFModel.addOrder(
+              Order(
+                id: UId.getId(),
+                orderItems: pizzaOrderModel.selectedPizzas,
+                createdAt: DateTime.now(),
+                totalPrice: pizzaOrderModel.totalPrice,
+                quantity: quantity,
+              ),
             );
-            await pizzaSF.addOrder(order);
 
             // Clear the cart after placing the order (provider)
             pizzaOrderModel.removeAllPizzas();

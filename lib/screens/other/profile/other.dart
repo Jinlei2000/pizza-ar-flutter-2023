@@ -3,8 +3,7 @@ import 'package:bitz/components/button.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/my_custom_scroll_bar.dart';
-import 'package:bitz/data/pizza_sf.dart';
-import 'package:bitz/data/shared_prefs.dart';
+import 'package:bitz/providers/pizza_sf_model.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -62,13 +61,8 @@ class OtherPage extends StatelessWidget {
             text: 'Clear cache',
             color: MyColors.button,
             onPressed: () async {
-              // Clear all data
-              await SharedPrefs.clearAllData();
-
-              // Set some test data for the app
-              final PizzaSF pizzaSF = PizzaSF();
-              // Set some old orders
-              await pizzaSF.addOldOrders();
+              // Clear all data and set test data
+              PizzaSFModel().initTestData();
             },
           ),
         ],
