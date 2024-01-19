@@ -26,7 +26,7 @@ class PizzaSFModel extends ChangeNotifier {
   }
 
   // add order
-  void addOrder(Order order) async {
+  Future<void> addOrder(Order order) async {
     // save to database
     await _pizzaSF.addOrder(order);
     getOrders();
@@ -34,7 +34,7 @@ class PizzaSFModel extends ChangeNotifier {
   }
 
   // get all orders
-  void getOrders() async {
+  Future<void> getOrders() async {
     // get from database
     final List<Order> orders = await _pizzaSF.getOrders();
     _orders = orders;
@@ -42,7 +42,7 @@ class PizzaSFModel extends ChangeNotifier {
   }
 
   // update order isCompleted to true
-  void updateOrderIsCompleted(String orderId) async {
+  Future<void> updateOrderIsCompleted(String orderId) async {
     // save to database
     await _pizzaSF.updateOrderIsCompleted(orderId);
     getOrders();

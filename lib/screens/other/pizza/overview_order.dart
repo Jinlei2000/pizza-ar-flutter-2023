@@ -4,7 +4,7 @@ import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/custom_safe_area.dart';
 import 'package:bitz/components/pizza_card.dart';
 import 'package:bitz/components/pizza_empty.dart';
-import 'package:bitz/providers/pizza_order_model.dart';
+import 'package:bitz/providers/cart_model.dart';
 import 'package:bitz/screens/other/pizza/customize_pizza_ar.dart';
 import 'package:bitz/screens/other/pizza/payment.dart';
 import 'package:bitz/utils/colors.dart';
@@ -21,44 +21,44 @@ class OverviewOrderPage extends StatefulWidget {
 }
 
 class _OverviewOrderPageState extends State<OverviewOrderPage> {
+  late CartModel cartModel;
+
   @override
   Widget build(BuildContext context) {
+    // Get the providers
+    cartModel = Provider.of<CartModel>(context, listen: false);
+
     return CustomSafeArea(
       bottom: true,
-      child: Consumer<PizzaOrderModel>(
-        builder: (context, pizzaOrder, child) {
+      child: Consumer<CartModel>(
+        builder: (context, cart, child) {
           return Scaffold(
             appBar: CustomAppBar(
               title: 'Overview Order',
               onBackTap: () {
                 // remove last added pizza
-                final pizzaOrderModel =
-                    Provider.of<PizzaOrderModel>(context, listen: false);
-                if (pizzaOrderModel.selectedPizzas.isNotEmpty) {
-                  pizzaOrderModel
-                      .removePizza(pizzaOrderModel.selectedPizzas.last.id);
+                if (cartModel.selectedPizzas.isNotEmpty) {
+                  cartModel.removePizza(cartModel.selectedPizzas.last.id);
                 }
 
                 Navigator.pop(context);
               },
               onDeleteTap: () {
                 // remove all pizza
-                final pizzaOrderModel =
-                    Provider.of<PizzaOrderModel>(context, listen: false);
-                pizzaOrderModel.removeAllPizzas();
+                cartModel.removeAllPizzas();
 
                 // go to first page
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
             ),
-            body: _body(context, pizzaOrder),
+            body: _body(context, cart),
           );
         },
       ),
     );
   }
 
-  Widget _body(BuildContext context, PizzaOrderModel pizzaOrder) {
+  Widget _body(BuildContext context, CartModel cart) {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
       child: Column(
@@ -66,32 +66,31 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
         children: [
           // Pizza Cards
           Expanded(
-            child: _buildPizzaCardsSection(context, pizzaOrder),
+            child: _buildPizzaCardsSection(context, cart),
           ),
 
           // Add More Button
-          _buildAddMoreButton(context, pizzaOrder),
+          _buildAddMoreButton(context),
 
           // Bottom Actions (Price & Next Button)
           const SizedBox(height: 16),
-          _buildBottomActions(context, pizzaOrder),
+          _buildBottomActions(context, cart),
         ],
       ),
     );
   }
 
-  Widget _buildPizzaCardsSection(
-      BuildContext context, PizzaOrderModel pizzaOrder) {
-    if (pizzaOrder.selectedPizzas.isNotEmpty) {
+  Widget _buildPizzaCardsSection(BuildContext context, CartModel cart) {
+    if (cart.selectedPizzas.isNotEmpty) {
       // Selected Pizza's
       return Stack(
         children: [
           ListView.builder(
-            itemCount: pizzaOrder.count,
+            itemCount: cart.count,
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return PizzaCard(pizzaOrder: pizzaOrder, index: index);
+              return PizzaCard(cart: cart, index: index);
             },
           ),
           // Bottom Gradient Overlay
@@ -126,7 +125,7 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
     }
   }
 
-  Widget _buildAddMoreButton(BuildContext context, PizzaOrderModel pizzaOrder) {
+  Widget _buildAddMoreButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
         // Navigate to custom pizza page
@@ -175,9 +174,9 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
     );
   }
 
-  Widget _buildBottomActions(BuildContext context, PizzaOrderModel pizzaOrder) {
+  Widget _buildBottomActions(BuildContext context, CartModel cart) {
     return BottomActions(
-      price: '€${pizzaOrder.totalPrice.toStringAsFixed(2)}',
+      price: '€${cart.totalPrice.toStringAsFixed(2)}',
       nextButtonTitle: 'Checkout',
       nextButtonOnPressed: () {
         // Navigate to Overview Order Page

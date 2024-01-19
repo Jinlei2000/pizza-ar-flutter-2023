@@ -1,20 +1,20 @@
 // pizza_card.dart
 import 'package:bitz/components/pizza_cart_item.dart';
-import 'package:bitz/providers/pizza_order_model.dart';
+import 'package:bitz/providers/cart_model.dart';
 import 'package:bitz/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class PizzaCard extends StatelessWidget {
-  final PizzaOrderModel pizzaOrder;
+  final CartModel cart;
   final int index;
 
-  const PizzaCard({Key? key, required this.pizzaOrder, required this.index})
+  const PizzaCard({Key? key, required this.cart, required this.index})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final pizza = pizzaOrder.selectedPizzas[index];
+    final pizza = cart.selectedPizzas[index];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +23,7 @@ class PizzaCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(16),
           margin: EdgeInsets.only(
-            bottom: index == pizzaOrder.count - 1 ? 72 : 16,
+            bottom: index == cart.count - 1 ? 72 : 16,
           ),
           width: double.infinity,
           decoration: BoxDecoration(
@@ -96,7 +96,7 @@ class PizzaCard extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       // decrease quantity
-                      pizzaOrder.updateQuantity(pizza.id, pizza.quantity - 1);
+                      cart.updateQuantity(pizza.id, pizza.quantity - 1);
                     },
                     child: Container(
                       height: 32,
@@ -131,7 +131,7 @@ class PizzaCard extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       // increase quantity
-                      pizzaOrder.updateQuantity(pizza.id, pizza.quantity + 1);
+                      cart.updateQuantity(pizza.id, pizza.quantity + 1);
                     },
                     child: Container(
                       height: 32,

@@ -1,6 +1,6 @@
 // main.dart
 import 'package:bitz/components/bottom_navigation.dart';
-import 'package:bitz/providers/pizza_order_model.dart';
+import 'package:bitz/providers/cart_model.dart';
 import 'package:bitz/providers/pizza_sf_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
 import 'package:bitz/utils/colors.dart';
@@ -12,7 +12,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => PizzaOrderModel()),
+        ChangeNotifierProvider(create: (context) => CartModel()),
         ChangeNotifierProvider(create: (context) => TabNavigationModel()),
         ChangeNotifierProvider(create: (context) => PizzaSFModel()),
       ],

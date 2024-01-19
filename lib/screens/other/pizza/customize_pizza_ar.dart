@@ -1,7 +1,7 @@
 import 'package:bitz/components/bottom_actions.dart';
 import 'package:bitz/components/custom_app_bar.dart';
 import 'package:bitz/components/pizza_item.dart';
-import 'package:bitz/providers/pizza_order_model.dart';
+import 'package:bitz/providers/cart_model.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';
 import 'package:bitz/types/order_item.dart';
 import 'package:bitz/utils/colors.dart';
@@ -173,12 +173,11 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
                       nextButtonOnPressed: () {
                         if (pageIndex == 3) {
                           // Add pizza to the order list (Provider)
-                          final pizzaOrder = Provider.of<PizzaOrderModel>(
-                              context,
-                              listen: false);
+                          final cartModel =
+                              Provider.of<CartModel>(context, listen: false);
 
-                          pizzaOrder.addPizza(OrderItem(
-                            id: pizzaOrder.count + 1,
+                          cartModel.addPizza(OrderItem(
+                            id: cartModel.count + 1,
                             size: selected['size'],
                             sauce: selected['sauce'],
                             cheese: selected['cheese'],
@@ -241,9 +240,8 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       });
     } else {
       // remove all pizza in the order list (Provider)
-      final pizzaOrderModel =
-          Provider.of<PizzaOrderModel>(context, listen: false);
-      pizzaOrderModel.removeAllPizzas();
+      final cartModel = Provider.of<CartModel>(context, listen: false);
+      cartModel.removeAllPizzas();
 
       // Go back to the previous screen
       Navigator.pop(context);

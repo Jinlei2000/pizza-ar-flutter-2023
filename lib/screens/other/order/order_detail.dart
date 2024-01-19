@@ -260,7 +260,7 @@ class OrderDetailPage extends StatelessWidget {
                 // update the order status to completed
                 PizzaSFModel pizzaSFModel =
                     Provider.of<PizzaSFModel>(context, listen: false);
-                pizzaSFModel.updateOrderIsCompleted(order.id);
+                await pizzaSFModel.updateOrderIsCompleted(order.id);
 
                 // go back to the previous screen
                 Navigator.pop(context);
