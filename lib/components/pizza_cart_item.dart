@@ -3,20 +3,14 @@ import 'package:flutter/material.dart';
 import '../utils/colors.dart';
 
 class PizzaCardItem extends StatelessWidget {
-  final Color? color;
   final String? imagePath;
   final String? name;
 
   const PizzaCardItem({
     Key? key,
     this.name,
-    this.color,
     this.imagePath,
-  })  : assert(
-            (color == null && imagePath != null) ||
-                (color != null && imagePath == null),
-            'Provide either color or imagePath, but not both.'),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +43,11 @@ class PizzaCardItem extends StatelessWidget {
   }
 
   Widget _buildCircleContent() {
-    if (color != null) {
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: color,
-        ),
-      );
-    } else if (imagePath != null) {
-      return Image(
-        image: AssetImage(imagePath!),
-        height: 18,
-        width: 18,
-      );
-    } else {
-      return const SizedBox();
-    }
+    return Image(
+      image: AssetImage(imagePath!),
+      height: 18,
+      width: 18,
+    );
   }
 
   Widget _buildLabel() {
