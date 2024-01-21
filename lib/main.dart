@@ -3,9 +3,8 @@ import 'package:bitz/components/bottom_navigation.dart';
 import 'package:bitz/providers/cart_model.dart';
 import 'package:bitz/providers/pizza_sf_model.dart';
 import 'package:bitz/providers/tab_navigation_model.dart';
-import 'package:bitz/utils/colors.dart';
+import 'package:bitz/utils/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -47,20 +46,7 @@ class _MyAppState extends State<MyApp> {
       home: const BottomNavigation(),
       initialRoute: '/',
 
-      theme: _theme(),
-    );
-  }
-
-  ThemeData _theme() {
-    return ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.light,
-      colorScheme: const ColorScheme.light(background: MyColors.background),
-      // set Inter as the default font
-      fontFamily: 'Inter',
-      appBarTheme: const AppBarTheme(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-      ),
+      theme: myTheme(),
     );
   }
 }
