@@ -699,7 +699,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       scale: vector.Vector3.all(selected['scale']),
       position: vector.Vector3(
         position.x,
-        position.y + 0.0003 + yPosition + 0.0001,
+        position.y + 0.0003 + yPosition + 0.001,
         position.z,
       ),
     );
