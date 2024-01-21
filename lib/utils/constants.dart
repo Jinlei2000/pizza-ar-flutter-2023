@@ -86,6 +86,18 @@ class Pizza {
       'imagePath': 'assets/images/ingredients/olive.png',
       'path': 'assets/models/olive.glb'
     },
+    {
+      'name': 'Chilli',
+      'price': 1,
+      'imagePath': 'assets/images/ingredients/chilli.png',
+      'path': 'assets/models/chilli.glb'
+    },
+    {
+      'name': 'Pineapple',
+      'price': 1,
+      'imagePath': 'assets/images/ingredients/pineapple.png',
+      'path': 'assets/models/pineapple.glb'
+    },
   ];
 
   // Pizza Toppings Meat
@@ -107,6 +119,12 @@ class Pizza {
       'price': 2,
       'imagePath': 'assets/images/ingredients/chicken.png',
       'path': 'assets/models/chicken.glb'
+    },
+    {
+      'name': 'Beef',
+      'price': 2,
+      'imagePath': 'assets/images/ingredients/beef.png',
+      'path': 'assets/models/beef.glb'
     },
   ];
 }
