@@ -30,6 +30,8 @@ https://github.com/Jinlei2000/pizza-ar-flutter-2023/assets/91153798/bce754c3-bc0
 ### Design
 
 - [Figma](https://www.figma.com/)
+- [Maya](https://www.autodesk.com/products/maya/overview)
+- [Blender](https://www.blender.org/)
 
 ## Getting Started
 
