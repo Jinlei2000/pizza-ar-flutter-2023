@@ -1,6 +1,6 @@
 import 'package:bitz/components/bottom_actions.dart';
 import 'package:bitz/components/custom_app_bar.dart';
-import 'package:bitz/components/pizza_item.dart';
+import 'package:bitz/components/pizza_Item_list.dart';
 import 'package:bitz/providers/cart_model.dart';
 import 'package:bitz/screens/other/pizza/overview_order.dart';
 import 'package:bitz/types/order_item.dart';
@@ -145,8 +145,6 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
             child: Container(
               padding: const EdgeInsets.only(
                 top: 24,
-                left: 16,
-                right: 16,
               ),
               color: Colors.transparent,
               child: SafeArea(
@@ -165,50 +163,54 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
                     if (pageIndex == 3) _buildPizzaToppings(),
 
                     // Price & Next Button
-                    const SizedBox(height: 24),
-                    BottomActions(
-                      price:
-                          '€ ${currentPrices.values.reduce((a, b) => a + b)}',
-                      nextButtonTitle: 'Next',
-                      nextButtonOnPressed: () {
-                        if (pageIndex == 3) {
-                          // Add pizza to the order list (Provider)
-                          final cartModel =
-                              Provider.of<CartModel>(context, listen: false);
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, top: 24),
+                      child: BottomActions(
+                        price:
+                            '€ ${currentPrices.values.reduce((a, b) => a + b)}',
+                        nextButtonTitle: 'Next',
+                        nextButtonOnPressed: () {
+                          if (pageIndex == 3) {
+                            // Add pizza to the order list (Provider)
+                            final cartModel =
+                                Provider.of<CartModel>(context, listen: false);
 
-                          cartModel.addPizza(OrderItem(
-                            id: cartModel.count + 1,
-                            size: selected['size'],
-                            sauce: selected['sauce'],
-                            cheese: selected['cheese'],
-                            toppings: selected['toppings'],
-                            quantity: 1,
-                            price: currentPrices.values.reduce((a, b) => a + b),
-                            totalPrice:
-                                currentPrices.values.reduce((a, b) => a + b),
-                          ));
+                            cartModel.addPizza(OrderItem(
+                              id: cartModel.count + 1,
+                              size: selected['size'],
+                              sauce: selected['sauce'],
+                              cheese: selected['cheese'],
+                              toppings: selected['toppings'],
+                              quantity: 1,
+                              price:
+                                  currentPrices.values.reduce((a, b) => a + b),
+                              totalPrice:
+                                  currentPrices.values.reduce((a, b) => a + b),
+                            ));
 
-                          // Navigate to Overview Order Page
-                          PersistentNavBarNavigator.pushNewScreen(
-                            context,
-                            screen: const OverviewOrderPage(),
-                            withNavBar: false,
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino,
-                          );
-                        } else {
-                          // Go to next page
-                          setState(() {
-                            pageIndex++;
-                          });
-                        }
-                      },
+                            // Navigate to Overview Order Page
+                            PersistentNavBarNavigator.pushNewScreen(
+                              context,
+                              screen: const OverviewOrderPage(),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
+                            );
+                          } else {
+                            // Go to next page
+                            setState(() {
+                              pageIndex++;
+                            });
+                          }
+                        },
+                      ),
                     )
                   ],
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -250,93 +252,68 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
 
   // Select Pizza Size
   Widget _buildPizzaSize() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: Pizza.sizes.map((size) {
-        bool isSelected = selected['size']['size'] == size['size'];
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(left: 16),
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: Pizza.sizes.map((size) {
+          bool isSelected = selected['size']['size'] == size['size'];
 
-        return GestureDetector(
-          onTap: () {
-            if (!isSelected) {
-              _updateSize(size);
-            }
-          },
-          child: Container(
-            height: 56,
-            width: 56,
-            margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color:
-                  isSelected ? MyColors.pizzaItemSelected : MyColors.pizzaItem,
-              border: Border.all(
+          return GestureDetector(
+            onTap: () {
+              if (!isSelected) {
+                _updateSize(size);
+              }
+            },
+            child: Container(
+              height: 56,
+              width: 56,
+              margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
                 color: isSelected
-                    ? MyColors.pizzaItemBorder
-                    : MyColors.borderColor,
-                width: 0.5,
+                    ? MyColors.pizzaItemSelected
+                    : MyColors.pizzaItem,
+                border: Border.all(
+                  color: isSelected
+                      ? MyColors.pizzaItemBorder
+                      : MyColors.borderColor,
+                  width: 0.5,
+                ),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                size['size'].toString(),
+                style: TextStyle(
+                  color: isSelected
+                      ? MyColors.pizzaItemTextSelected
+                      : MyColors.pizzaItemText,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
-            alignment: Alignment.center,
-            child: Text(
-              size['size'].toString(),
-              style: TextStyle(
-                color: isSelected
-                    ? MyColors.pizzaItemTextSelected
-                    : MyColors.pizzaItemText,
-                fontSize: 22,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 
   // Select Pizza Sauces
   Widget _buildPizzaSauces() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: Pizza.sauces.map((sauce) {
-        bool isSelected = selected['sauce']?['name'] == sauce['name'];
-
-        return GestureDetector(
-          onTap: () {
-            if (!isSelected) {
-              _updateSauce(sauce);
-            }
-          },
-          child: PizzaItem(
-            isSelected: isSelected,
-            name: sauce['name'].toString(),
-            color: Color(sauce['color'] as int),
-          ),
-        );
-      }).toList(),
-    );
+    return PizzaItemList(
+        items: Pizza.sauces,
+        isItemSelected: (item) => selected['sauce']?['name'] == item['name'],
+        updateFunction: _updateSauce);
   }
 
   // Select Pizza Cheeses
   Widget _buildPizzaCheeses() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: Pizza.cheeses.map((cheese) {
-        bool isSelected = selected['cheese']?['name'] == cheese['name'];
-
-        return GestureDetector(
-          onTap: () {
-            if (!isSelected) {
-              _updateCheese(cheese);
-            }
-          },
-          child: PizzaItem(
-            isSelected: isSelected,
-            imagePath: cheese['imagePath'].toString(),
-            name: cheese['name'].toString(),
-          ),
-        );
-      }).toList(),
-    );
+    return PizzaItemList(
+        items: Pizza.cheeses,
+        isItemSelected: (item) => selected['cheese']?['name'] == item['name'],
+        updateFunction: _updateCheese);
   }
 
   // Select Pizza Toppings
@@ -345,82 +322,64 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Toggle
-        FlutterToggleTab(
-          width: 50,
-          borderRadius: 30,
-          height: 35,
-          isShadowEnable: false,
-          selectedIndex: _tabTextIndexSelected,
-          selectedBackgroundColors: [MyColors.toggleUnselected],
-          unSelectedBackgroundColors: [MyColors.toggleUnselected],
-          marginSelected: const EdgeInsets.all(2),
-          selectedTextStyle: const TextStyle(
-            color: MyColors.toggleSelectedText,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: FlutterToggleTab(
+            width: 50,
+            borderRadius: 30,
+            height: 35,
+            isShadowEnable: false,
+            selectedIndex: _tabTextIndexSelected,
+            selectedBackgroundColors: [MyColors.toggleUnselected],
+            unSelectedBackgroundColors: [MyColors.toggleUnselected],
+            marginSelected: const EdgeInsets.all(2),
+            selectedTextStyle: const TextStyle(
+              color: MyColors.toggleSelectedText,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+            unSelectedTextStyle: TextStyle(
+              color: MyColors.toggleUnselectedText,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+            labels: _toggleList,
+            selectedLabelIndex: (index) {
+              setState(() {
+                _tabTextIndexSelected = index;
+              });
+            },
+            isScroll: false,
           ),
-          unSelectedTextStyle: TextStyle(
-            color: MyColors.toggleUnselectedText,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-          labels: _toggleList,
-          selectedLabelIndex: (index) {
-            setState(() {
-              _tabTextIndexSelected = index;
-            });
-          },
-          isScroll: false,
         ),
 
         // Toppings
         const SizedBox(height: 16),
-        // Vegetable
         if (_tabTextIndexSelected == 0)
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: Pizza.vegetable.map((topping) {
-                bool isSelected = selected['toppings'] != null
-                    ? selected['toppings']!
-                        .any((element) => element['name'] == topping['name'])
-                    : false;
-
-                return GestureDetector(
-                  onTap: () {
-                    _updateToppings(topping, isSelected);
-                  },
-                  child: PizzaItem(
-                    isSelected: isSelected,
-                    imagePath: topping['imagePath'].toString(),
-                    name: topping['name'].toString(),
-                  ),
-                );
-              }).toList(),
-            ),
+          PizzaItemList(
+            items: Pizza.vegetable,
+            isItemSelected: (item) =>
+                selected['toppings'] != null &&
+                selected['toppings']!
+                    .any((element) => element['name'] == item['name']),
+            updateFunction: (topping) => _updateToppings(
+                topping,
+                selected['toppings'] != null &&
+                    selected['toppings']!
+                        .any((element) => element['name'] == topping['name'])),
           ),
-        // Meat
         if (_tabTextIndexSelected == 1)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: Pizza.meat.map((topping) {
-              bool isSelected = selected['toppings'] != null
-                  ? selected['toppings']!
-                      .any((element) => element['name'] == topping['name'])
-                  : false;
-
-              return GestureDetector(
-                onTap: () {
-                  _updateToppings(topping, isSelected);
-                },
-                child: PizzaItem(
-                  isSelected: isSelected,
-                  imagePath: topping['imagePath'].toString(),
-                  name: topping['name'].toString(),
-                ),
-              );
-            }).toList(),
+          PizzaItemList(
+            items: Pizza.meat,
+            isItemSelected: (item) =>
+                selected['toppings'] != null &&
+                selected['toppings']!
+                    .any((element) => element['name'] == item['name']),
+            updateFunction: (topping) => _updateToppings(
+                topping,
+                selected['toppings'] != null &&
+                    selected['toppings']!
+                        .any((element) => element['name'] == topping['name'])),
           ),
       ],
     );
@@ -740,7 +699,7 @@ class _CustomizePizzaArPageState extends State<CustomizePizzaArPage> {
       scale: vector.Vector3.all(selected['scale']),
       position: vector.Vector3(
         position.x,
-        position.y + 0.0003 + yPosition + 0.0001,
+        position.y + 0.0003 + yPosition + 0.001,
         position.z,
       ),
     );

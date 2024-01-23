@@ -15,19 +15,19 @@ class Pizza {
     {
       'name': 'Tomato',
       'price': 0.5,
-      'color': 0xFFB21807,
+      'imagePath': 'assets/images/ingredients/tomato_sauce.png',
       'path': 'assets/models/tomato_sauce.glb'
     },
     {
       'name': 'Bbq',
       'price': 0.5,
-      'color': 0xFF551D19,
+      'imagePath': 'assets/images/ingredients/bbq_sauce.png',
       'path': 'assets/models/bbq_sauce.glb'
     },
     {
       'name': 'Cream',
       'price': 0.5,
-      'color': 0xFFFCFAF2,
+      'imagePath': 'assets/images/ingredients/cream_sauce.png',
       'path': 'assets/models/cream_sauce.glb'
     },
   ];
@@ -86,6 +86,18 @@ class Pizza {
       'imagePath': 'assets/images/ingredients/olive.png',
       'path': 'assets/models/olive.glb'
     },
+    {
+      'name': 'Chilli',
+      'price': 1,
+      'imagePath': 'assets/images/ingredients/chilli.png',
+      'path': 'assets/models/chilli.glb'
+    },
+    {
+      'name': 'Pineapple',
+      'price': 1,
+      'imagePath': 'assets/images/ingredients/pineapple.png',
+      'path': 'assets/models/pineapple.glb'
+    },
   ];
 
   // Pizza Toppings Meat
@@ -107,6 +119,12 @@ class Pizza {
       'price': 2,
       'imagePath': 'assets/images/ingredients/chicken.png',
       'path': 'assets/models/chicken.glb'
+    },
+    {
+      'name': 'Beef',
+      'price': 2,
+      'imagePath': 'assets/images/ingredients/beef.png',
+      'path': 'assets/models/beef.glb'
     },
   ];
 }

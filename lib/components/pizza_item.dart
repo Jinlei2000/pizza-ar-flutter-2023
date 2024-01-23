@@ -4,22 +4,15 @@ import '../utils/colors.dart';
 
 class PizzaItem extends StatelessWidget {
   final bool isSelected;
-  final Color? color;
   final String? imagePath;
   final String name;
 
-  // Updated constructor to ensure only color or imagePath is provided, not both.
   const PizzaItem({
     Key? key,
     required this.isSelected,
     required this.name,
-    this.color,
     this.imagePath,
-  })  : assert(
-            (color == null && imagePath != null) ||
-                (color != null && imagePath == null),
-            'Provide either color or imagePath, but not both.'),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,35 +21,10 @@ class PizzaItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          color != null
-              ? _buildCircleWithColor(isSelected, color!)
-              : _buildCircleWithImage(isSelected, imagePath!),
+          _buildCircleWithImage(isSelected, imagePath!),
           const SizedBox(height: 4),
           _buildLabel(isSelected, name),
         ],
-      ),
-    );
-  }
-
-  Widget _buildCircleWithColor(bool isSelected, Color color) {
-    return Container(
-      height: 56,
-      width: 56,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        color: isSelected ? MyColors.pizzaItemSelected : MyColors.pizzaItem,
-        border: Border.all(
-          color: isSelected ? MyColors.pizzaItemBorder : MyColors.borderColor,
-          width: 0.5,
-        ),
-      ),
-      alignment: Alignment.center,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: color,
-        ),
       ),
     );
   }
@@ -65,7 +33,7 @@ class PizzaItem extends StatelessWidget {
     return Container(
       height: 56,
       width: 56,
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         color: isSelected ? MyColors.pizzaItemSelected : MyColors.pizzaItem,
