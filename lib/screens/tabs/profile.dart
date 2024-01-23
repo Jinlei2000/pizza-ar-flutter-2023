@@ -94,9 +94,7 @@ class ProfilePage extends StatelessWidget {
                         context,
                         screen: const OtherPage(),
                         withNavBar: false,
-                        // TODO: change animation
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino,
+                        pageTransitionAnimation: PageTransitionAnimation.fade,
                       );
                     }),
                   ],

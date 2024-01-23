@@ -133,7 +133,6 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
           context,
           screen: const CustomizePizzaArPage(),
           withNavBar: false,
-          // TODO: change animation
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
       },
@@ -187,7 +186,6 @@ class _OverviewOrderPageState extends State<OverviewOrderPage> {
           context,
           screen: const PaymentPage(),
           withNavBar: false,
-          // TODO: change animation
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
       },
