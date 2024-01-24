@@ -85,7 +85,7 @@ class PizzaPage extends StatelessWidget {
             context,
             screen: const CustomizePizzaArPage(),
             withNavBar: false,
-            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+            pageTransitionAnimation: PageTransitionAnimation.fade,
           );
         },
       ),

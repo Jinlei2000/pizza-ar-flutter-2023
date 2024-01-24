@@ -130,7 +130,7 @@ class OrderDetailPage extends StatelessWidget {
                             if (pizza.sauce != null)
                               PizzaCardItem(
                                 name: pizza.sauce!['name'],
-                                color: Color(pizza.sauce!['color'] as int),
+                                imagePath: pizza.sauce!['imagePath'],
                               ),
                             if (pizza.cheese != null)
                               PizzaCardItem(
